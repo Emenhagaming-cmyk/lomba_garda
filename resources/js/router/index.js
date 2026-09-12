@@ -5,6 +5,12 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
+            path: '/',
+            name: 'landing',
+            component: () => import('../pages/LandingPage.vue'),
+            meta: { public: true },
+        },
+        {
             path: '/login',
             name: 'login',
             component: () => import('../pages/LoginPage.vue'),
@@ -17,7 +23,7 @@ const router = createRouter({
             meta: { guest: true },
         },
         {
-            path: '/',
+            path: '/dashboard',
             component: () => import('../layouts/AppLayout.vue'),
             meta: { requiresAuth: true },
             children: [
@@ -40,6 +46,10 @@ router.beforeEach(async (to) => {
 
     if (auth.loading) {
         await auth.fetchUser();
+    }
+
+    if (to.meta.public && auth.isAuthenticated) {
+        return { name: 'dashboard' };
     }
 
     if (to.meta.requiresAuth && !auth.isAuthenticated) {
