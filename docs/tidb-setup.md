@@ -5,11 +5,12 @@ container Vercel bersifat stateless. Gratis tier cukup untuk F0.
 
 ## Status
 
-**TERKONFIGURASI (2026-09-12).**
+**TERKONFIGURASI + TERDEPLOY (2026-09-12).**
 - Cluster dibuat di `ap-southeast-1`; database `nadi` dibuat.
 - Semua migration telah dijalankan terhadap TiDB (`php artisan migrate:status` → 5 migration "Ran").
 - TLS wajib: diisi via `MYSQL_ATTR_SSL_CA` (Laravel 12 default config mysql sudah membaca env ini).
-- Blocker sebelum deploy: set env di project Vercel + git push.
+- App produksi live di `https://lomba3.vercel.app`; alur auth (register/login/`/api/user`) terverifikasi langsung terhadap TiDB.
+- Deployment Protection (Vercel Authentication) dimatikan via `PATCH /v9/projects` `{"ssoProtection": null}` agar `*.vercel.app` tidak kena login-wall.
 
 ## Env produksi (set di Vercel project → Settings → Environment Variables)
 

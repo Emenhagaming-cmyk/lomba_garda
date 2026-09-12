@@ -38,12 +38,15 @@ Spesifikasi produk & aturan bisnis: **`PRD.md`** (sumber kebenaran, disalin dari
   yang butuh session (lihat `statefulHeaders()` di AuthTest).
 - Jangan commit secrets; `.env` jangan di-commit (sudah di .gitignore).
 
-## Status (F0 selesai)
+## Status (F0 selesai + deployed)
 
 Scaffold + auth session + SPA login/register/dashboard + pipeline deploy Vercel +
 test hijau. TiDB serverless LIVE (cluster ap-southeast-1, DB `nadi`, semua
-migration "Ran"; lihat `docs/tidb-setup.md`). Belum: deploy ke Vercel, CRUD
-produk/ingredien/inventori/penjualan, forecast, rekomendasi, role > OWNER, seed.
+migration "Ran"; lihat `docs/tidb-setup.md`). **Deployed**: Vercel project
+`lomba3` (produksi di `https://lomba3.vercel.app`, git-connected ke repo GitHub,
+build container otomatis tiap push ke `main`; env di-set di dashboard Vercel,
+jangan commit secrets). Belum: CRUD produk/ingredien/inventori/penjualan,
+forecast, rekomendasi, role > OWNER, seed.
 
 ## Catatan penting
 
