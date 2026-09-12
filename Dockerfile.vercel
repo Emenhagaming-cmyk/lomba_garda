@@ -20,6 +20,7 @@ FROM base AS application
 COPY --from=dependencies --chown=www-data:www-data /app/vendor ./vendor
 COPY --from=frontend --chown=www-data:www-data /app/public/build ./public/build
 COPY --chown=www-data:www-data . .
+COPY --from=dependencies /usr/bin/composer /usr/bin/composer
 RUN composer dump-autoload --no-dev --classmap-authoritative
 RUN chown -R www-data:www-data storage bootstrap/cache
 
