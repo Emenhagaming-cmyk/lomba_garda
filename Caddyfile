@@ -1,0 +1,14 @@
+{
+    # FrankenPHP global options.
+    frankenphp
+}
+
+:{$PORT} {
+    root * /app/public
+
+    encode zstd br gzip
+
+    php_server {
+        try_files {path} index.php
+    }
+}
