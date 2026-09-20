@@ -21,10 +21,6 @@ COPY --from=dependencies --chown=www-data:www-data /app/vendor ./vendor
 COPY --from=frontend --chown=www-data:www-data /app/public/build ./public/build
 COPY --chown=www-data:www-data . .
 COPY --from=dependencies /usr/bin/composer /usr/bin/composer
-RUN echo "=== DIAG composer ===" && composer --version && \
-    echo "=== DIAG vendor/laravel ===" && ls vendor/laravel/ && \
-    echo "=== DIAG pail in installed.php ===" && (grep -i "pail" vendor/composer/installed.php | head -8 || echo "NO pail in installed.php") && \
-    echo "=== DIAG packages.php? ===" && (grep -i "pail" bootstrap/cache/packages.php 2>/dev/null || echo "NO packages.php / no pail")
 RUN composer dump-autoload --no-dev --classmap-authoritative
 RUN chown -R www-data:www-data storage bootstrap/cache
 
