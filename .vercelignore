@@ -1,0 +1,10 @@
+# Generated Laravel caches (dev-artifact) — jangan di-upload ke build container
+bootstrap/cache/*.php
+storage/framework/views/*.php
+storage/framework/cache/*/*.php
+storage/framework/cache/data/*/*.php
+
+# Local env & sensitive — jangan pernah ikut ke image
+.env
+.env.*
+!.env.example
