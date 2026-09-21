@@ -71,10 +71,14 @@ Lead, Sale, SaleItem, StockMovement, Purchase, PurchaseItem, Expense) + model +
 API (produk, penjualan single-entry w/ stock & movement, stok/adjust, pembelian
 + receive, pengeluaran, leads pipeline, segmentasi customer, insight dashboard)
 + seeder realistis "Kopi Tertial" (demo@tokoku.app). Semua migration termigrasi
-ke TiDB `tokoku` (batch 2). 20 test hijau.
-Belum: UI modul (produk/penjualan/inventori/pembelian/pelanggan/leads), modul CRM
-pipeline UI, keuangan & laporan, insight engine + notification center, offline
-sync, role > OWNER.
+ke TiDB `tokoku` (batch 2). 21 test hijau. **UI Blok B selesai**: onboarding
+pilih tipe usaha + starter kategori, dashboard live dari /api/dashboard, halaman
+Produk (CRUD+nonaktifkan), Penjualan (riwayat+pagination+POS /sales/new),
+Stok (filter+adjust+riwayat movement), Pembelian (PO+receive), Pelanggan
+(list+detail segments+riwayat), Leads (pipeline+convert), Keuangan (expenses),
+Pengaturan bisnis — semua ter-deploy.
+Belum: modul CRM pipeline UI (advanced multi-step), keuangan & laporan lanjutan,
+insight engine + notification center, offline sync, role > OWNER.
 
 ## Keputusan (diambil bersama owner)
 
