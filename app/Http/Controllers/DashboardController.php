@@ -48,7 +48,7 @@ class DashboardController extends Controller
         $lowStock = Product::with('supplier:id,name')
             ->where('business_id', $businessId)
             ->whereColumn('stock', '<=', 'min_stock')
-            ->orderByRaw('stock - min_stock ASC')
+            ->orderByRaw('CAST(stock AS SIGNED) - CAST(min_stock AS SIGNED) ASC')
             ->limit(6)
             ->get();
 

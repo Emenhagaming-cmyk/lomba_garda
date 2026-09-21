@@ -22,7 +22,7 @@ class BusinessController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'string', Rule::in(['retail', 'fnb', 'fashion', 'reseller', 'service', 'production'])],
+            'type' => ['required', 'string', Rule::in(['retail', 'fnb', 'food-drink', 'fashion', 'reseller', 'service', 'production', 'other'])],
             'currency' => ['sometimes', 'string', 'max:8'],
             'payment_methods' => ['sometimes', 'array'],
             'payment_methods.*' => ['string', 'max:50'],

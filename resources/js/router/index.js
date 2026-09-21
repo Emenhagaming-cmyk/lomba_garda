@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { useBusinessStore } from '../stores/business';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -23,6 +24,12 @@ const router = createRouter({
             meta: { guest: true },
         },
         {
+            path: '/onboarding',
+            name: 'onboarding',
+            component: () => import('../pages/OnboardingPage.vue'),
+            meta: { requiresAuth: true, onboarding: true },
+        },
+        {
             path: '/dashboard',
             component: () => import('../layouts/AppLayout.vue'),
             meta: { requiresAuth: true },
@@ -35,56 +42,48 @@ const router = createRouter({
                 {
                     path: '/sales',
                     name: 'sales',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Penjualan', description: 'Catat transaksi penjualan dan pantau performa tiap produk.', icon: 'cart' },
+                    component: () => import('../pages/SalesPage.vue'),
                 },
                 {
                     path: '/sales/new',
                     name: 'sales-new',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Transaksi Baru', description: 'Input penjualan cepat — stok, keuangan, dan pelanggan ter-update otomatis.', icon: 'cart' },
+                    component: () => import('../pages/SaleNewPage.vue'),
                 },
                 {
                     path: '/products',
                     name: 'products',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Produk', description: 'Kelola katalog produk, harga jual, dan margin.', icon: 'box' },
+                    component: () => import('../pages/ProductsPage.vue'),
                 },
                 {
                     path: '/products/new',
                     name: 'products-new',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Produk Baru', description: 'Tambahkan produk ke dalam katalog.', icon: 'box' },
+                    component: () => import('../pages/ProductsPage.vue'),
+                    props: { autoOpenNew: true },
                 },
                 {
                     path: '/inventory',
                     name: 'inventory',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Stok', description: 'Pantau stok masuk/keluar dan stock opname.', icon: 'warehouse' },
+                    component: () => import('../pages/InventoryPage.vue'),
                 },
                 {
                     path: '/purchase',
                     name: 'purchase',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Pembelian', description: 'Kelola supplier dan purchase order.', icon: 'truck' },
+                    component: () => import('../pages/PurchasePage.vue'),
                 },
                 {
                     path: '/customers',
                     name: 'customers',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Pelanggan', description: 'Database pelanggan, riwayat transaksi, dan segmentasi.', icon: 'users' },
+                    component: () => import('../pages/CustomersPage.vue'),
                 },
                 {
                     path: '/leads',
                     name: 'leads',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Leads', description: 'Kelola prospek dan sales pipeline.', icon: 'target' },
+                    component: () => import('../pages/LeadsPage.vue'),
                 },
                 {
                     path: '/finance',
                     name: 'finance',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Keuangan', description: 'Pemasukan, pengeluaran, cashflow sederhana, dan profit.', icon: 'wallet' },
+                    component: () => import('../pages/FinancePage.vue'),
                 },
                 {
                     path: '/analytics',
@@ -95,8 +94,7 @@ const router = createRouter({
                 {
                     path: '/settings',
                     name: 'settings',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Pengaturan', description: 'Profil bisnis, pengguna, peran, dan sinkronisasi offline.', icon: 'settings' },
+                    component: () => import('../pages/SettingsPage.vue'),
                 },
             ],
         },
@@ -127,6 +125,22 @@ router.beforeEach(async (to) => {
 
     if (to.meta.guest && auth.isAuthenticated) {
         return { name: 'dashboard' };
+    }
+
+    if (to.meta.requiresAuth && auth.isAuthenticated) {
+        const business = useBusinessStore();
+
+        if (!business.hasBusiness && !business.loading) {
+            await business.fetchBusiness();
+        }
+
+        if (!business.hasBusiness && to.name !== 'onboarding') {
+            return { name: 'onboarding' };
+        }
+
+        if (business.hasBusiness && to.name === 'onboarding') {
+            return { name: 'dashboard' };
+        }
     }
 });
 
