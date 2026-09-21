@@ -10,11 +10,13 @@ container Vercel bersifat stateless. Gratis tier cukup untuk F0.
 
 ## Status
 
-**TERKONFIGURASI + TERDEPLOY (2026-09-12).**
-- Cluster dibuat di `ap-southeast-1`; database `tokoku` dibuat.
-- Semua migration telah dijalankan terhadap TiDB (`php artisan migrate:status` → 5 migration "Ran").
+**TERKONFIGURASI + TERDEPLOY (2026-09-12); DB DI-CREATE ULANG (2026-09-20).**
+- Cluster dibuat di `ap-southeast-1`; database **`tokoku`** dibuat ulang setelah
+  DB lama (`nadi`) terlanjur ke-drop. Semua 5 migration dijalankan ulang → 10
+  tabel ("Ran"). Data lama (termasuk akun) hilang; **akun OWNER di-register ulang
+  lewat SPA** (`owner@tokoku.app`, id=1).
 - TLS wajib: diisi via `MYSQL_ATTR_SSL_CA` (Laravel 12 default config mysql sudah membaca env ini).
-- App produksi live di `https://lomba3.vercel.app`; alur auth (register/login/`/api/user`) terverifikasi langsung terhadap TiDB.
+- App produksi live di `https://lomba-garda-xi.vercel.app`; alur auth (register/login/`/api/user`) + `/` + `/up` terverifikasi langsung terhadap TiDB.
 - Deployment Protection (Vercel Authentication) dimatikan via `PATCH /v9/projects` `{"ssoProtection": null}` agar `*.vercel.app` tidak kena login-wall.
 
 ## Env produksi (set di Vercel project → Settings → Environment Variables)
@@ -39,10 +41,20 @@ APP_DEBUG=false
 ```
 
 Catatan:
-- `MYSQL_ATTR_SSL_CA` menunjuk ke CA bundle OS. Lokal: `C:\xampp\apache\bin\curl-ca-bundle.crt`.
+- `MYSQL_ATTR_SSL_CA` menunjuk ke CA bundle OS. Lokal: `C:\xampp\apache\bin\curl-ca-bundle.crt`;
+  di Termux: `/data/data/com.termux/files/usr/etc/tls/cert.pem`.
 - `DB_SSLMODE` TIDAK dipakai — connector mysql Laravel 12 mengabaikannya; TLS dikendalikan `MYSQL_ATTR_SSL_CA`.
 - `*.vercel.app` membuat preview deployment ikut stateful (login cookie berfungsi di URL preview).
 - JANGAN letakkan password di file repo; kelola hanya via env Vercel / secret manager.
+- **Env Vercel jangan sampai kosong**: sekelompok env lama bernilai string kosong
+  yang menimpa default Dockerfile → `Manager::createDriver()` 0-arg crash ("502"/
+  "Server Error" di `/`). Var yang pernah terserang: `SESSION_DRIVER`,
+  `DB_CONNECTION`, `APP_MAINTENANCE_DRIVER`, `APP_URL`, `APP_KEY`, dst. Set
+  eksplisit nilai benar (lihat daftar di atas + `DB_*` + `APP_DEBUG=false`), dan
+  var yang cukup memakai default config HAPUS dari Vercel agar `env()` kembali
+  ke default (mis. `SESSION_DOMAIN`, `LOG_LEVEL`, `LOG_DEPRECATIONS_CHANNEL`).
+- Aset/URL dijamin https via `URL::forceScheme('https')` saat `APP_ENV=production`
+  (`AppServiceProvider`); tidak bergantung pada `APP_URL`.
 
 ## Migrate + seed (sekali saja, manual)
 

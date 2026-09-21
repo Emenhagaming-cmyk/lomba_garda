@@ -4,8 +4,10 @@ Repo monolith Laravel 12 + Vue 3 (SPA same-origin) untuk aplikasi manajemen
 operasional UMKM: satu input transaksi → stok, keuangan, pelanggan, dan laporan
 ter-update otomatis (ERP + CRM + Dashboard + Business Intelligence).
 
-Spesifikasi produk & aturan bisnis: **`PRD_UMKM_Business_OS.docx`** (sumber
-kebenaran). Ringkasan produk & roadmap ada di **`PRD.md`**.
+Spesifikasi produk & aturan bisnis: **`alur.docx`** (PRD terbaru dari owner;
+sumber kebenaran) + **`PRD_TokoKu_UMKM_Business_OS_Lengkap.docx`**.
+`PRD_UMKM_Business_OS.docx` lama sudah tergantikan. Ringkasan produk & roadmap
+ada di **`PRD.md`**.
 
 ## Nama produk
 
@@ -43,10 +45,14 @@ kebenaran). Ringkasan produk & roadmap ada di **`PRD.md`**.
   alias `role` sudah ada (`EnsureUserRole`); operasional role > OWNER belum dibuat.
 - AuthController: register/login/logout/user (auth:sanctum + session).
 - Frontend di `resources/js`, tailwind v4, pinia store di `resources/js/stores`.
-- Struktur navigasi sidebar mengikuti Information Architecture PRD:
-  Dashboard, Penjualan, Produk, Stok, Pembelian, Pelanggan, Leads, Keuangan,
-  Laporan, Pengaturan. Halaman modul yang belum dibangun memakai
+- Struktur navigasi sidebar mengikuti Information Architecture PRD
+  (`Sidebar.vue`): **DASHBOARD · BISNIS (Penjualan, Produk) · INVENTORI (Stok,
+  Pembelian) · PELANGGAN (Pelanggan, Leads) · KEUANGAN & ANALITIK (Keuangan,
+  Laporan) · PENGATURAN**. Halaman modul yang belum dibangun memakai
   `PlaceholderPage.vue` (route meta/props di `resources/js/router/index.js`).
+- **Offline-first wajib di MVP**: transaksi harus bisa dicatat offline, masuk
+  sync queue, retry, dan ada indikator status (single-device; conflict
+  resolution multi-device tahap lanjutan).
 - `php artisan test` mewajibkan header `Origin`/`Referer` saat memanggil `/api/*`
   yang butuh session (lihat `statefulHeaders()` di AuthTest).
 - Jangan commit secrets; `.env` jangan di-commit (sudah di .gitignore).
@@ -54,13 +60,27 @@ kebenaran). Ringkasan produk & roadmap ada di **`PRD.md`**.
 ## Status
 
 F0 selesai: scaffold + auth session + SPA login/register/dashboard + pipeline
-deploy Vercel + test hijau. Vercel project `lomba3` live di
-`https://lomba3.vercel.app` (TiDB serverless DB produksi; migration "Ran"; lihat
-`docs/tidb-setup.md`). **Rebrand & layout baru selesai**: konsep → TokoKu /
-UMKM Business OS, tema blue/indigo, sidebar layout responsif, dashboard skeleton
-dengan KPI cards (Penjualan, Order, Produk, Pelanggan + status stok + insight).
-Belum: CRUD produk/penjualan/inventori/pembelian/pelanggan, modul CRM,
-keuangan, insight engine, offline sync, role > OWNER, seed.
+deploy Vercel + test hijau. Vercel project `lomba-garda` live di
+`https://lomba-garda-xi.vercel.app` (TiDB serverless DB `tokoku`; migration
+"Ran"; lihat `docs/tidb-setup.md`). **Rebrand & layout baru selesai**: konsep →
+TokoKu / UMKM Business OS, tema blue/indigo, sidebar layout responsif, dashboard
+skeleton dengan KPI cards (Penjualan, Order, Produk, Pelanggan + status stok +
+insight).
+Belum: data model ERP/CRM (Business, Product, Supplier, Customer, Lead, Sale,
+SaleItem, StockMovement, Purchase, Expense), onboarding/business setup, CRUD
+produk/penjualan/inventori/pembelian/pelanggan, modul CRM (segmentation, leads
+pipeline, follow-up), keuangan & laporan, insight engine (auto restock, dead
+stock, product performance) + notification center, offline sync, role > OWNER,
+seed realistis.
+
+## Keputusan (diambil bersama owner)
+
+- **Offline-first wajib di MVP**: transaksi bisa dicatat offline → sync queue →
+  retry → indikator status (single-device untuk prototype).
+- **Seeder realistis** (tema kafe/kopi) diperlukan agar demo kompetisi hidup:
+  dashboard KPI, low-stock, auto restock, dan CRM langsung terlihat isinya.
+- Sumber kebenaran terbaru = **`alur.docx`** (baca file ini saat merubah
+  perilaku produk; jangan mengandalkan PRD lama).
 
 ## Catatan penting
 
