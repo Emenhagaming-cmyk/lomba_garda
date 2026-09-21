@@ -15,6 +15,8 @@ container Vercel bersifat stateless. Gratis tier cukup untuk F0.
   DB lama (`nadi`) terlanjur ke-drop. Semua 5 migration dijalankan ulang → 10
   tabel ("Ran"). Data lama (termasuk akun) hilang; **akun OWNER di-register ulang
   lewat SPA** (`owner@tokoku.app`, id=1).
+- **2026-09-21**: migration ERP/CRM (`2026_09_21_000001_create_business_erp_tables`,
+  12 tabel bisnis + CRM) di-migrate ke TiDB batch 2.
 - TLS wajib: diisi via `MYSQL_ATTR_SSL_CA` (Laravel 12 default config mysql sudah membaca env ini).
 - App produksi live di `https://lomba-garda-xi.vercel.app`; alur auth (register/login/`/api/user`) + `/` + `/up` terverifikasi langsung terhadap TiDB.
 - Deployment Protection (Vercel Authentication) dimatikan via `PATCH /v9/projects` `{"ssoProtection": null}` agar `*.vercel.app` tidak kena login-wall.

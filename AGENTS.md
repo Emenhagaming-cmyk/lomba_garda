@@ -66,12 +66,15 @@ deploy Vercel + test hijau. Vercel project `lomba-garda` live di
 TokoKu / UMKM Business OS, tema blue/indigo, sidebar layout responsif, dashboard
 skeleton dengan KPI cards (Penjualan, Order, Produk, Pelanggan + status stok +
 insight).
-Belum: data model ERP/CRM (Business, Product, Supplier, Customer, Lead, Sale,
-SaleItem, StockMovement, Purchase, Expense), onboarding/business setup, CRUD
-produk/penjualan/inventori/pembelian/pelanggan, modul CRM (segmentation, leads
-pipeline, follow-up), keuangan & laporan, insight engine (auto restock, dead
-stock, product performance) + notification center, offline sync, role > OWNER,
-seed realistis.
+Blok B backend ERP/CRM selesai: 12 tabel (Business, Supplier, Product, Customer,
+Lead, Sale, SaleItem, StockMovement, Purchase, PurchaseItem, Expense) + model +
+API (produk, penjualan single-entry w/ stock & movement, stok/adjust, pembelian
++ receive, pengeluaran, leads pipeline, segmentasi customer, insight dashboard)
++ seeder realistis "Kopi Tertial" (demo@tokoku.app). Semua migration termigrasi
+ke TiDB `tokoku` (batch 2). 20 test hijau.
+Belum: UI modul (produk/penjualan/inventori/pembelian/pelanggan/leads), modul CRM
+pipeline UI, keuangan & laporan, insight engine + notification center, offline
+sync, role > OWNER.
 
 ## Keputusan (diambil bersama owner)
 
