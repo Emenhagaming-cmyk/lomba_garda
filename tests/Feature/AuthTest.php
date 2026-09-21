@@ -30,6 +30,18 @@ class AuthTest extends TestCase
             ]);
     }
 
+    public function test_unauthenticated_api_request_without_json_accept_returns_401(): void
+    {
+        $response = $this->get('/api/user');
+
+        $response->assertStatus(401)
+            ->assertJson([
+                'error' => [
+                    'code' => 'UNAUTHENTICATED',
+                ],
+            ]);
+    }
+
     public function test_registration_creates_owner_account(): void
     {
         $response = $this->postJson('/api/register', [

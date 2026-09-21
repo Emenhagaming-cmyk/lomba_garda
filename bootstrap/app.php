@@ -21,6 +21,15 @@ return Application::configure(basePath: dirname(__DIR__))
             EnsureFrontendRequestsAreStateful::class,
         ]);
 
+        $middleware->redirectGuestsTo(function () {
+            return response()->json([
+                'error' => [
+                    'code' => 'UNAUTHENTICATED',
+                    'message' => 'You must be signed in to access this resource.',
+                ],
+            ], 401);
+        });
+
         $middleware->alias([
             'role' => EnsureUserRole::class,
         ]);
