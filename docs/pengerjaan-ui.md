@@ -1,8 +1,13 @@
-# Catatan Pengerjaan UI — BelanjaYuk!
+# Catatan Pengerjaan UI — TokoKu (UMKM Business OS)
 
-Dokumen ini mencatat kronologi pengerjaan UI aplikasi **BelanjaYuk!** (dahulu **NADI**),
-UMKM Predictive Operations: landing page, auth form, dan perubahan-perubahan desain
-yang sudah dilakukan.
+> **Dokumen historis.** Catatan ini merekam pengerjaan UI pada konsep lama
+> (NADI → BelanjaYuk!). Sejak rebrand final, produk bernama **TokoKu** dengan
+> tema blue/indigo dan sidebar layout. Pernyataan di bawah (nama, temas, brand)
+> hanya berlaku untuk periode yang dicatat, bukan kondisi saat ini.
+
+Dokumen ini mencatat kronologi pengerjaan UI aplikasi (dahulu **BelanjaYuk!**,
+sebelumnya **NADI**), UMKM Predictive Operations: landing page, auth form, dan
+perubahan-perubahan desain yang sudah dilakukan.
 
 ---
 

@@ -1,12 +1,17 @@
-# Setup TiDB Serverless (MySQL-compatible) — NADI
+# Setup TiDB Serverless (MySQL-compatible) — TokoKu (UMKM Business OS)
 
 Produksi memakai TiDB Cloud **serverless** sebagai database eksternal karena
 container Vercel bersifat stateless. Gratis tier cukup untuk F0.
 
+> Nama database teknis produksi: `tokoku`. Jika cluster TiDB yang sudah ter-
+> deploy masih memakai nama database lama, rename database (atau buat baru +
+> migrate) lalu samakan `DB_DATABASE`. Nama database internal tidak ikut-brand:
+> produk bernama **TokoKu / UMKM Business OS**.
+
 ## Status
 
 **TERKONFIGURASI + TERDEPLOY (2026-09-12).**
-- Cluster dibuat di `ap-southeast-1`; database `nadi` dibuat.
+- Cluster dibuat di `ap-southeast-1`; database `tokoku` dibuat.
 - Semua migration telah dijalankan terhadap TiDB (`php artisan migrate:status` → 5 migration "Ran").
 - TLS wajib: diisi via `MYSQL_ATTR_SSL_CA` (Laravel 12 default config mysql sudah membaca env ini).
 - App produksi live di `https://lomba3.vercel.app`; alur auth (register/login/`/api/user`) terverifikasi langsung terhadap TiDB.
@@ -18,7 +23,7 @@ container Vercel bersifat stateless. Gratis tier cukup untuk F0.
 DB_CONNECTION=mysql
 DB_HOST=<host>.tidbcloud.com
 DB_PORT=4000
-DB_DATABASE=nadi
+DB_DATABASE=tokoku
 DB_USERNAME=<user>.root
 DB_PASSWORD=<password>
 MYSQL_ATTR_SSL_CA=/etc/ssl/certs/ca-certificates.crt
@@ -48,7 +53,7 @@ terhubung saat build dan APP_KEY generik). Jalankan dari lokal terhadap TiDB:
 $env:DB_CONNECTION='mysql'
 $env:DB_HOST='<host>.tidbcloud.com'
 $env:DB_PORT='4000'
-$env:DB_DATABASE='nadi'
+$env:DB_DATABASE='tokoku'
 $env:DB_USERNAME='<user>.root'
 $env:DB_PASSWORD='<password>'
 $env:MYSQL_ATTR_SSL_CA='C:\xampp\apache\bin\curl-ca-bundle.crt'

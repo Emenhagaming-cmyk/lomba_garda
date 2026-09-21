@@ -7,13 +7,13 @@
       <a
         href="/"
         @click.prevent="$router.push('/')"
-        class="flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold text-emerald-600 transition hover:bg-gray-100"
+        class="flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold text-primary-600 transition hover:bg-gray-100"
       >
         <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M3 11L6.5 6.5l2.5 2.5L13 4"></path>
-          <path d="M3 5h10M3 11h6"></path>
+          <path d="M2 7l5-4 5 4v5a1 1 0 01-1 1H3a1 1 0 01-1-1V7z"></path>
+          <path d="M6 13v-4h4v4"></path>
         </svg>
-        BelanjaYuk!
+        TokoKu
       </a>
 
       <div class="mx-1 h-4 w-px bg-gray-200"></div>
@@ -39,7 +39,7 @@
       <a
         href="#"
         @click.prevent="$router.push('/register')"
-        class="rounded-full bg-emerald-600 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-emerald-500"
+        class="rounded-full bg-primary-600 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-primary-700"
       >Daftar</a>
     </div>
   </nav>

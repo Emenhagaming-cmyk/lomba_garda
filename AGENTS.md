@@ -1,10 +1,17 @@
-# NADI — UMKM Predictive Operations
+# TokoKu — UMKM Business OS
 
 Repo monolith Laravel 12 + Vue 3 (SPA same-origin) untuk aplikasi manajemen
-operasional UMKM: inventori → forecast → rekomendasi pembelian.
+operasional UMKM: satu input transaksi → stok, keuangan, pelanggan, dan laporan
+ter-update otomatis (ERP + CRM + Dashboard + Business Intelligence).
 
-Spesifikasi produk & aturan bisnis: **`PRD.md`** (sumber kebenaran, disalin dari
-`UMKM-Predictive-Operations-AGENTS-PRD.md`).
+Spesifikasi produk & aturan bisnis: **`PRD_UMKM_Business_OS.docx`** (sumber
+kebenaran). Ringkasan produk & roadmap ada di **`PRD.md`**.
+
+## Nama produk
+
+- **TokoKu** — nama tampilan (brand UI, sidebar, landing, auth).
+- **UMKM Business OS** — nama konsep/produk dalam PRD.
+- Konsep produk era sebelumnya **sudah dihapus** — jangan dipakai lagi. Produk selalu disebut **TokoKu / UMKM Business OS**.
 
 ## Stack
 
@@ -14,6 +21,8 @@ Spesifikasi produk & aturan bisnis: **`PRD.md`** (sumber kebenaran, disalin dari
   ke-middleware `api` (`bootstrap/app.php`) — stateful hanya jika `Referer`/`Origin`
   cocok dengan `sanctum.stateful`.
 - DB: SQLite lokal; produksi TiDB serverless (MySQL-compatible). SEE `docs/tidb-setup.md`.
+- Tema: Tailwind v4, token semantik `primary-*` (blue/indigo) di `resources/css/app.css`
+  — SSOT warna. UI pasca-login pakai sidebar layout (lihat `resources/js/components/Sidebar.vue`).
 
 ## Perintah
 
@@ -28,25 +37,30 @@ Spesifikasi produk & aturan bisnis: **`PRD.md`** (sumber kebenaran, disalin dari
 ## Konvensi
 
 - Semua respons API berbentuk envelope: sukses `{"data": ...}`, error
-  `{"error": {"code", "message", "details"}}` (PRD §24.2). Handler error sudah
+  `{"error": {"code", "message", "details"}}`. Handler error sudah
   disetup di `bootstrap/app.php` untuk ValidationException (422) & AuthenticationException (401).
-- Role: `OWNER` (default saat register), `MANAGER`, `STAFF` (PRD §25). Middleware
+- Role: `OWNER` (default saat register), `MANAGER`, `STAFF`. Middleware
   alias `role` sudah ada (`EnsureUserRole`); operasional role > OWNER belum dibuat.
 - AuthController: register/login/logout/user (auth:sanctum + session).
 - Frontend di `resources/js`, tailwind v4, pinia store di `resources/js/stores`.
+- Struktur navigasi sidebar mengikuti Information Architecture PRD:
+  Dashboard, Penjualan, Produk, Stok, Pembelian, Pelanggan, Leads, Keuangan,
+  Laporan, Pengaturan. Halaman modul yang belum dibangun memakai
+  `PlaceholderPage.vue` (route meta/props di `resources/js/router/index.js`).
 - `php artisan test` mewajibkan header `Origin`/`Referer` saat memanggil `/api/*`
   yang butuh session (lihat `statefulHeaders()` di AuthTest).
 - Jangan commit secrets; `.env` jangan di-commit (sudah di .gitignore).
 
-## Status (F0 selesai + deployed)
+## Status
 
-Scaffold + auth session + SPA login/register/dashboard + pipeline deploy Vercel +
-test hijau. TiDB serverless LIVE (cluster ap-southeast-1, DB `nadi`, semua
-migration "Ran"; lihat `docs/tidb-setup.md`). **Deployed**: Vercel project
-`lomba3` (produksi di `https://lomba3.vercel.app`, git-connected ke repo GitHub,
-build container otomatis tiap push ke `main`; env di-set di dashboard Vercel,
-jangan commit secrets). Belum: CRUD produk/ingredien/inventori/penjualan,
-forecast, rekomendasi, role > OWNER, seed.
+F0 selesai: scaffold + auth session + SPA login/register/dashboard + pipeline
+deploy Vercel + test hijau. Vercel project `lomba3` live di
+`https://lomba3.vercel.app` (TiDB serverless DB produksi; migration "Ran"; lihat
+`docs/tidb-setup.md`). **Rebrand & layout baru selesai**: konsep → TokoKu /
+UMKM Business OS, tema blue/indigo, sidebar layout responsif, dashboard skeleton
+dengan KPI cards (Penjualan, Order, Produk, Pelanggan + status stok + insight).
+Belum: CRUD produk/penjualan/inventori/pembelian/pelanggan, modul CRM,
+keuangan, insight engine, offline sync, role > OWNER, seed.
 
 ## Catatan penting
 

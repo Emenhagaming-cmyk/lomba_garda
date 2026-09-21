@@ -8,7 +8,7 @@
         <ul class="mt-3 space-y-2.5">
             <li class="flex items-center justify-between text-[11px]">
                 <span class="flex items-center gap-1.5 text-gray-700">
-                    <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-primary-500" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 8.5l3.2 3.2L13 4.5"></path>
                     </svg>
                     Telur ayam
@@ -17,7 +17,7 @@
             </li>
             <li class="flex items-center justify-between text-[11px]">
                 <span class="flex items-center gap-1.5 text-gray-700">
-                    <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-primary-500" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 8.5l3.2 3.2L13 4.5"></path>
                     </svg>
                     Tepung terigu

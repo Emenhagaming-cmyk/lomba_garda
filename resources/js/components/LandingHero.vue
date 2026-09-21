@@ -1,30 +1,30 @@
 <template>
     <section class="relative">
         <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 left-1/2 h-[34rem] w-[54rem] -translate-x-1/2 rounded-full bg-emerald-100 blur-3xl"></div>
+            <div class="absolute -top-40 left-1/2 h-[34rem] w-[54rem] -translate-x-1/2 rounded-full bg-primary-100 blur-3xl"></div>
         </div>
 
         <div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-24 lg:pt-32 lg:pb-40">
             <div class="relative mx-auto max-w-3xl text-center">
                 <RegistryBadge
-                    text="Predictive Operations untuk UMKM"
+                    text="ERP · CRM · Dashboard · Business Intelligence"
                     class="relative"
                 />
 
                 <h1 class="relative mt-6 text-4xl leading-tight font-bold text-gray-900 sm:text-5xl lg:text-6xl">
-                    Kelola stok, <span class="text-emerald-600">prediksi</span> permintaan,
+                    Satu aplikasi untuk <span class="text-primary-600">seluruh operasional</span>
                     <br class="hidden sm:block" />
-                    beli <span class="text-emerald-600">tepat waktu</span>.
+                    bisnis UMKM-mu.
                 </h1>
 
                 <p class="relative mx-auto mt-6 max-w-xl text-lg text-gray-500">
-                    BelanjaYuk! membaca penjualanmu, memprediksi kebutuhan minggu depan, lalu memberi rekomendasi pembelian — jadi kamu tidak pernah kekurangan stok saat ramai, atau menumpuk saat sepi.
+                    TokoKu menyatukan pencatatan pesanan, stok, pelanggan, dan keuangan. Cukup input transaksi satu kali — semuanya otomatis ter-update dan berubah menjadi rekomendasi yang bisa langsung kamu jalankan.
                 </p>
 
                 <div class="relative mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                     <RouterLink
                         to="/register"
-                        class="w-full rounded-xl bg-emerald-600 px-7 py-3 text-center font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-500 sm:w-auto"
+                        class="w-full rounded-xl bg-primary-600 px-7 py-3 text-center font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 sm:w-auto"
                     >
                         Mulai Gratis
                     </RouterLink>
@@ -37,7 +37,7 @@
                 </div>
 
                 <p class="relative mt-6 text-sm text-gray-400">
-                    Tanpa kartu kredit · Reset data otomatis · Siap untuk skala produksi
+                    Tanpa kartu kredit · Bisa dipakai offline · Data langsung menjadi keputusan
                 </p>
 
                 <div class="mt-16 flex justify-center xl:hidden">
