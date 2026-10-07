@@ -6,11 +6,6 @@
 
         <div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-24 lg:pt-32 lg:pb-40">
             <div class="relative mx-auto max-w-3xl text-center">
-                <RegistryBadge
-                    text="ERP · CRM · Dashboard · Business Intelligence"
-                    class="relative"
-                />
-
                 <h1 class="relative mt-6 text-4xl leading-tight font-bold text-gray-900 sm:text-5xl lg:text-6xl">
                     Satu aplikasi untuk <span class="text-primary-600">seluruh operasional</span>
                     <br class="hidden sm:block" />
@@ -37,7 +32,7 @@
                 </div>
 
                 <p class="relative mt-6 text-sm text-gray-400">
-                    Tanpa kartu kredit · Bisa dipakai offline · Data langsung menjadi keputusan
+                    Tanpa kartu kredit dan Bisa dipakai secara offline.
                 </p>
 
                 <div class="mt-16 flex justify-center xl:hidden">

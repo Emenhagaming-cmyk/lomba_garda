@@ -4,14 +4,25 @@ import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
+    envDir: '../backend',
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
+            input: ['src/app.css', 'src/app.js'],
+            publicDirectory: '../backend/public',
+            hotFile: '../backend/public/hot',
+            refresh: [
+                '../backend/app/**/*.php',
+                '../backend/config/*.php',
+                '../backend/resources/views/**/*.php',
+                '../backend/routes/*.php',
+            ],
         }),
         tailwindcss(),
         vue(),
     ],
+    build: {
+        emptyOutDir: true,
+    },
     server: {
         watch: {
             ignored: [

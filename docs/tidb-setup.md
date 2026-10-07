@@ -64,6 +64,7 @@ Container build/start TIDAK menjalankan migrate (stateless; DB belum tentu
 terhubung saat build dan APP_KEY generik). Jalankan dari lokal terhadap TiDB:
 
 ```powershell
+cd backend   # dari root repo
 $env:DB_CONNECTION='mysql'
 $env:DB_HOST='<host>.tidbcloud.com'
 $env:DB_PORT='4000'
@@ -91,5 +92,5 @@ Healthcheck `/up` juga akan 200 setelah deploy.
 ## Pitfall
 
 - TiDB serverless idle ~1s pada koneksi pertama — normal, bukan bug.
-- Driver `pdo_mysql` sudah ada di `Dockerfile.vercel`.
+- Driver `pdo_mysql` sudah ada di `Dockerfile.vercel` (stage `application`, `composer`/`artisan` dijalankan dari `backend/`).
 - Lokal dev TETAP SQLite; env TiDB hanya dipakai saat migrate/deploy.
