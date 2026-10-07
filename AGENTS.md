@@ -33,6 +33,9 @@ root        AGENTS.md PRD.md docs/ + vercel.json Dockerfile.vercel Caddyfile
 - `.gitignore` sengaja tidak me-root-anchor pola `vendor`, `node_modules`,
   `**/public/build`, dst, supaya tetap berlaku di dalam `backend/` & `frontend/`.
   Jangan kembalikan ke bentuk `/vendor`, `/node_modules`.
+- Aset statis non-build (mis. GLB) taruh di `backend/public/models/` → URL
+  `/models/...`, ke-track git & ikut ke image Vercel. Jangan taruh di
+  `frontend/public` (tidak di-serve, lihat `publicDir: false`).
 
 ## Stack
 
@@ -166,6 +169,14 @@ Envelope: sukses `{"data": ...}` (bisa di-key, mis. `data.product`), error
 - Guard di `frontend/src/router/index.js`: `meta.public` / `meta.guest` /
   `meta.requiresAuth`; setelah auth, user tanpa business dipaksa ke `/onboarding`.
 - Gaya: 4 spasi, single quote, semicolon (lihat `.editorconfig` + file ada).
+- Hero landing pakai model 3D: `frontend/src/components/landing/ModelViewer.vue`
+  (`three` + `GLTFLoader` + `OrbitControls`). Di-import **lazy** lewat
+  `defineAsyncComponent` di `LandingHero.vue` supaya `three` jadi chunk sendiri
+  (`ModelViewer-*.js`, ~163 kB gzip) dan tidak ikut masuk `app.js` yang dipakai
+  semua route. Aset GLB disajikan statis dari `backend/public/models/` (URL
+  `/models/...`), **bukan** `frontend/public` (plugin Laravel memaksa
+  `publicDir: false`). Dispose renderer/geometri/material di `onBeforeUnmount` —
+  ini SPA, halaman tidak pernah reload.
 
 ## Testing quirks
 
@@ -229,7 +240,7 @@ composer `--no-dev` → vite build → FrankenPHP + Caddyfile). Build context = 
 Selesai: auth session, onboarding, dashboard live (KPI + low/dead stock + insight),
 POS & riwayat penjualan, produk, stok + movement, pembelian + receive,
 pelanggan + segmentasi, leads pipeline + convert, keuangan (expenses), pengaturan
-bisnis. Semua ter-deploy.
+bisnis, landing hero 3D (model GLB). Semua ter-deploy.
 
 Belum: **offline-first / sync queue (WAJIB MVP, belum ada sama sekali)**,
 modul Laporan (`/analytics` masih placeholder), notification center, follow-up
