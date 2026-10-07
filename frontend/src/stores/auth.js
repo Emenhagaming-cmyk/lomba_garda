@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { fetchCsrfCookie, http } from '../api/client';
+import { useBusinessStore } from './business';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -28,6 +29,7 @@ export const useAuthStore = defineStore('auth', {
         async login(email, password) {
             await fetchCsrfCookie();
             await http.post('/login', { email, password });
+            useBusinessStore().reset();
             await this.fetchUser();
         },
 
@@ -39,6 +41,7 @@ export const useAuthStore = defineStore('auth', {
                 password,
                 password_confirmation: passwordConfirmation,
             });
+            useBusinessStore().reset();
             await this.fetchUser();
         },
 
@@ -46,6 +49,7 @@ export const useAuthStore = defineStore('auth', {
             await fetchCsrfCookie();
             await http.post('/logout');
             this.user = null;
+            useBusinessStore().reset();
         },
     },
 });

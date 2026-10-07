@@ -21,8 +21,8 @@ if (auth.isAuthenticated && route.name === 'landing') {
         <main class="mx-auto max-w-7xl pt-24 pb-8 px-4 sm:pt-32 lg:pt-32">
             <LandingHero />
 
-            <section id="harga" class="mx-auto max-w-3xl mt-16 px-4">
-                <div class="rounded-3xl border border-gray-200 bg-white p-10 shadow-sm text-center">
+            <section id="harga" class="mx-auto mt-12 max-w-3xl sm:mt-16">
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 text-center shadow-sm sm:p-10">
                     <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Kenapa memilih TokoKu?</h2>
                     <p class="mt-4 text-lg text-gray-500">Dirancang khusus untuk UMKM Indonesia yang ingin mengelola bisnis tanpa ribet.</p>
 
@@ -58,8 +58,8 @@ if (auth.isAuthenticated && route.name === 'landing') {
                 </div>
             </section>
 
-            <section id="cara-kerja" class="border-y border-gray-200 bg-gray-50">
-                <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:grid-cols-3">
+            <section id="cara-kerja" class="-mx-4 border-y border-gray-200 bg-gray-50 px-4">
+                <div class="mx-auto grid max-w-6xl gap-8 py-14 sm:grid-cols-3 sm:gap-10 sm:py-20">
                     <div class="flex gap-4">
                         <span class="text-4xl font-bold text-primary-200">01</span>
                         <div>
@@ -84,7 +84,7 @@ if (auth.isAuthenticated && route.name === 'landing') {
                 </div>
             </section>
 
-            <section id="cta" class="mx-auto max-w-6xl px-4 py-20 text-center">
+            <section id="cta" class="mx-auto max-w-6xl py-14 text-center sm:py-20">
                 <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Siap mengelola bisnismu lebih mudah?</h2>
                 <p class="mx-auto mt-4 max-w-xl text-lg text-gray-500">Satu platform untuk operasional, pelanggan, keuangan, dan keputusan bisnis. Gratis untuk memulai.</p>
                 <RouterLink

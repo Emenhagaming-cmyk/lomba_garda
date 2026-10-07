@@ -23,7 +23,7 @@ async function submit() {
         await auth.login(email.value, password.value);
         await router.replace(route.query.redirect || { name: 'dashboard' });
     } catch (error) {
-        errorMessage.value = formatApiError(error, 'Unable to sign in. Please check your credentials.');
+        errorMessage.value = formatApiError(error, 'Gagal masuk. Periksa email dan password kamu.');
     } finally {
         submitting.value = false;
     }
@@ -100,7 +100,7 @@ async function submit() {
 
                 <p class="mt-6 text-center text-sm text-gray-500">
                     Belum punya akun?
-                    <RouterLink to="/register" class="font-semibold text-primary-600 hover:text-primary-500">Daftar gratis</RouterLink>
+                    <RouterLink to="/register" class="font-semibold text-primary-600 hover:text-primary-500">Daftar</RouterLink>
                 </p>
             </div>
         </div>
@@ -123,7 +123,7 @@ async function submit() {
                         Satu transaksi, semua ter-update.
                     </h2>
                     <p class="mt-3 text-primary-100">
-                        Stok, keuangan, riwayat pelanggan, dan laporan — semua mengalir dari satu pencatatan. Bisa dipakai offline, tersinkron otomatis.
+                        Stok, keuangan, riwayat pelanggan dan laporan semua itu mengalir dari satu pencatatan. Di TokoKu Bisa dipakai secara offline maupun online. Semua data kamu dijamin tersinkron otomatis.
                     </p>
                 </div>
             </div>

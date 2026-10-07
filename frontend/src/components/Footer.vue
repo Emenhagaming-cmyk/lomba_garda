@@ -5,7 +5,7 @@
         <div class="flex items-start gap-3">
           <span class="text-2xl font-bold text-primary-600">TokoKu</span>
           <div>
-            <p class="text-sm text-gray-500">UMKM Business OS — kelola operasional, pelanggan, dan keputusan bisnis dalam satu platform.</p>
+            <p class="text-sm text-gray-500">Tokoku kelola operasional, pelanggan, dan keputusan bisnis dalam satu platform.</p>
           </div>
         </div>
       </div>

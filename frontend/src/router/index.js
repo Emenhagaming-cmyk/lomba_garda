@@ -130,7 +130,7 @@ router.beforeEach(async (to) => {
     if (to.meta.requiresAuth && auth.isAuthenticated) {
         const business = useBusinessStore();
 
-        if (!business.hasBusiness && !business.loading) {
+        if (!business.loaded) {
             await business.fetchBusiness();
         }
 

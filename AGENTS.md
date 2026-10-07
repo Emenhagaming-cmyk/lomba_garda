@@ -171,9 +171,10 @@ Envelope: sukses `{"data": ...}` (bisa di-key, mis. `data.product`), error
 - Gaya: 4 spasi, single quote, semicolon (lihat `.editorconfig` + file ada).
 - Hero landing pakai model 3D: `frontend/src/components/landing/ModelViewer.vue`
   (`three` + `GLTFLoader` + `OrbitControls`). Di-import **lazy** lewat
-  `defineAsyncComponent` di `LandingHero.vue` supaya `three` jadi chunk sendiri
+  `defineAsyncComponent` di `LandingHero.vue` dan hanya di-mount di desktop
+  (`min-width: 1024px`) supaya `three` jadi chunk sendiri
   (`ModelViewer-*.js`, ~163 kB gzip) dan tidak ikut masuk `app.js` yang dipakai
-  semua route. Aset GLB disajikan statis dari `backend/public/models/` (URL
+  semua route; di mobile chunk + GLB-nya tidak diunduh sama sekali. Aset GLB disajikan statis dari `backend/public/models/` (URL
   `/models/...`), **bukan** `frontend/public` (plugin Laravel memaksa
   `publicDir: false`). Dispose renderer/geometri/material di `onBeforeUnmount` —
   ini SPA, halaman tidak pernah reload.

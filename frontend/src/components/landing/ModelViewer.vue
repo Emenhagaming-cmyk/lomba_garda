@@ -116,7 +116,7 @@ function frameModel(object) {
     const radius = 0.5 * Math.sqrt(size.x ** 2 + size.y ** 2 + size.z ** 2) * scale;
     const vFov = THREE.MathUtils.degToRad(camera.fov);
     const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
-    const distance = Math.max(radius / Math.sin(vFov / 2), radius / Math.sin(hFov / 2)) * 1.15;
+    const distance = Math.max(radius / Math.sin(vFov / 2), radius / Math.sin(hFov / 2)) * 0.92;
 
     const direction = new THREE.Vector3(0.7, 0.32, 1).normalize();
     camera.position.copy(direction).multiplyScalar(distance);

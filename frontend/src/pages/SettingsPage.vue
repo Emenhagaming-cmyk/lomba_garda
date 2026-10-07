@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import { http, formatApiError } from '../api/client';
 import { useBusinessStore } from '../stores/business';
 import PageHeader from '../components/PageHeader.vue';
+import BusinessTypeIcon from '../components/BusinessTypeIcon.vue';
 import { BUSINESS_TEMPLATES, businessTemplate, businessTypeLabel } from '../utils/businessTypes';
 
 const business = useBusinessStore();
@@ -96,7 +97,7 @@ onMounted(async () => {
                                 :class="form.type === type ? 'border-primary-500 bg-primary-50 text-primary-800' : 'border-gray-200 text-gray-600 hover:border-gray-300'"
                                 @click="form.type = type"
                             >
-                                <span class="text-base">{{ businessTemplate(type).emoji }}</span>
+                                <BusinessTypeIcon :name="businessTemplate(type).icon" class="h-4 w-4 shrink-0" />
                                 <span class="font-medium">{{ businessTypeLabel(type) }}</span>
                             </button>
                         </div>
