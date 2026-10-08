@@ -81,20 +81,14 @@ async function submit() {
         <div class="w-full max-w-2xl">
             <div class="mb-6 flex items-center justify-center gap-2.5">
                 <div
-                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white"
+                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100 p-2 ring-1 ring-gray-200"
                     aria-hidden="true"
                 >
-                    <svg
-                        viewBox="0 0 24 24"
-                        class="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-                        <path
-                            d="M3 9l9-6 9 6v11a1 1 0 01-1 1h-5v-7h-6v7H4a1 1 0 01-1-1V9z"
-                        ></path>
-                    </svg>
+                    <img
+                        :src="'/logo.png'"
+                        alt=""
+                        class="h-full w-full object-contain"
+                    />
                 </div>
                 <div>
                     <p class="text-lg font-bold text-gray-900">TokoKu</p>

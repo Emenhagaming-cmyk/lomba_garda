@@ -2,6 +2,7 @@
     <div
         ref="container"
         class="model-viewer relative aspect-[4/3] w-full"
+        :class="interactive ? 'cursor-grab active:cursor-grabbing' : ''"
         role="img"
         :aria-label="'Model 3D ' + label"
     >
@@ -27,6 +28,7 @@ import { onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const props = defineProps({
     src: {
@@ -44,6 +46,7 @@ const ready = ref(false);
 const interactive = ref(false);
 
 const SPIN_SPEED = 0.28;
+const SPIN_IDLE_MS = 4000;
 
 let renderer;
 let scene;
@@ -53,8 +56,11 @@ let pivot;
 let frameId = 0;
 let resizeObserver;
 let intersectionObserver;
+let environmentTexture;
 let visible = true;
+let allowSpin = true;
 let spinning = true;
+let lastInteraction = 0;
 let disposed = false;
 let clock;
 
@@ -76,6 +82,10 @@ function tick() {
     if (!visible) return;
 
     const delta = clock.getDelta();
+
+    if (!spinning && allowSpin && lastInteraction && performance.now() - lastInteraction >= SPIN_IDLE_MS) {
+        spinning = true;
+    }
 
     if (spinning && pivot) {
         pivot.rotation.y += SPIN_SPEED * delta;
@@ -160,7 +170,8 @@ onMounted(() => {
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     interactive.value = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    spinning = !reducedMotion;
+    allowSpin = !reducedMotion;
+    spinning = allowSpin;
 
     try {
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -179,13 +190,20 @@ onMounted(() => {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(38, 1, 0.1, 1000);
 
-    scene.add(new THREE.HemisphereLight(0xffffff, 0xdbeafe, 2.4));
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const room = new RoomEnvironment();
+    environmentTexture = pmrem.fromScene(room, 0.04).texture;
+    scene.environment = environmentTexture;
+    pmrem.dispose();
+    room.dispose();
+
+    scene.add(new THREE.HemisphereLight(0xfffaf3, 0xeadcc8, 2.4));
 
     const key = new THREE.DirectionalLight(0xffffff, 2.4);
     key.position.set(4, 6, 5);
     scene.add(key);
 
-    const fill = new THREE.DirectionalLight(0xc7d2fe, 0.9);
+    const fill = new THREE.DirectionalLight(0xe9b393, 0.85);
     fill.position.set(-5, 2, -4);
     scene.add(fill);
 
@@ -195,10 +213,21 @@ onMounted(() => {
     controls.enablePan = false;
     controls.enableZoom = false;
     controls.rotateSpeed = 0.55;
-    controls.minPolarAngle = Math.PI / 6;
-    controls.maxPolarAngle = Math.PI / 2.05;
+    controls.minPolarAngle = 0.15;
+    controls.maxPolarAngle = Math.PI - 0.15;
     controls.enabled = interactive.value;
     renderer.domElement.style.touchAction = interactive.value ? 'none' : 'auto';
+
+    controls.addEventListener('start', () => {
+        spinning = false;
+        lastInteraction = performance.now();
+    });
+    controls.addEventListener('change', () => {
+        if (!spinning) lastInteraction = performance.now();
+    });
+    controls.addEventListener('end', () => {
+        lastInteraction = performance.now();
+    });
 
     clock = new THREE.Clock();
 
@@ -239,6 +268,8 @@ onBeforeUnmount(() => {
             });
         });
     }
+
+    environmentTexture?.dispose();
 
     renderer?.dispose();
     renderer?.domElement?.remove();

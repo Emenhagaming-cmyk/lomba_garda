@@ -29,11 +29,11 @@
                     <p class="text-[10px] font-medium text-gray-500">Tren penjualan</p>
                     <span class="rounded-full bg-primary-50 px-1.5 py-0.5 text-[9px] font-semibold text-primary-600">+8%</span>
                 </div>
-                <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="mt-2 h-10 w-full" role="img" aria-label="Grafik tren penjualan">
+                <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="mt-2 h-10 w-full text-primary-500" role="img" aria-label="Grafik tren penjualan">
                     <path
                         d="M0,32 L22,27 L44,30 L66,20 L88,25 L110,14 L132,19 L154,8 L176,13 L199,5"
                         fill="none"
-                        stroke="#2563eb"
+                        stroke="currentColor"
                         stroke-width="2"
                         stroke-linecap="round"
                     ></path>

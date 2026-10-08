@@ -41,10 +41,8 @@ const navGroups = [
 <template>
     <nav aria-label="Navigasi utama" class="flex h-full flex-col overflow-y-auto bg-white">
         <div class="flex items-center gap-2.5 px-5 py-5 border-b border-gray-100">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-600 text-white" aria-hidden="true">
-                <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-6 9 6v11a1 1 0 01-1 1h-5v-7h-6v7H4a1 1 0 01-1-1V9z"></path>
-                </svg>
+            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 p-1.5 ring-1 ring-gray-200" aria-hidden="true">
+                <img :src="'/logo.png'" alt="" class="h-full w-full object-contain">
             </div>
             <div>
                 <p class="text-sm font-bold text-gray-900">TokoKu</p>

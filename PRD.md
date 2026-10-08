@@ -118,8 +118,9 @@ StockMovement, Purchase, Expense`
 
 ## Design Direction
 
-Clean, calm, professional. Teks gelap di background terang/off-white, **satu warna
-utama muted (blue/indigo)**; warna lain hanya untuk status. SVG icons,
+Clean, calm, warm/editorial. Teks gelap di background **krim**, **satu warna
+utama terakota/clay**; warna lain hanya untuk status. Font **Quicksand** (self-host,
+300–700). SVG icons,
 touch-friendly, quick actions terlihat, dashboard memprioritaskan keputusan.
 Satu Main Dashboard; ERP/CRM memiliki sub-view, bukan dua homepage yang bersaing.
 Referensi visual di dokumen: CRM Dashboard & Business/Sales Dashboard.
@@ -129,7 +130,7 @@ Referensi visual di dokumen: CRM Dashboard & Business/Sales Dashboard.
 | Phase | Isi | Status |
 | --- | --- | --- |
 | Phase 0 | Scaffold, auth session, SPA login/register/dashboard, deploy Vercel | ✓ |
-| Phase 1 | Rebrand TokoKu + sidebar layout + dashboard skeleton (blue/indigo) | ✓ |
+| Phase 1 | Rebrand TokoKu + sidebar layout + dashboard skeleton (terakota/krim) | ✓ |
 | Phase 2 | Core ERP: data model, produk, penjualan, inventori + stock movement, pembelian | mulai di sini |
 | Phase 3 | CRM: pelanggan, segmentasi, leads pipeline, follow-up | |
 | Phase 4 | Intelligence: auto restock, dead stock, margin, insight cards + notification center | |

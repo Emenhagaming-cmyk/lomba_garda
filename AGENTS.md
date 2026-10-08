@@ -157,10 +157,21 @@ Envelope: sukses `{"data": ...}` (bisa di-key, mis. `data.product`), error
 
 ## Konvensi frontend
 
-- Token warna SSOT = `--color-primary-*` di `frontend/src/app.css` (`@theme`).
-  Pakai `bg-primary-600`/`text-primary-700`; warna lain hanya untuk status.
+- Token warna SSOT = `@theme` di `frontend/src/app.css`. Override `--color-primary-*`
+  (terakota/clay) + `--color-gray-*`/`--color-white` (krim hangat) — utility
+  `bg-white`/`text-gray-*` ikut berubah dari satu tempat. Pakai `bg-primary-600`/
+  `text-primary-700`; warna lain hanya untuk status.
   Tidak ada `tailwind.config.js` — konten dideteksi lewat `@source` di `app.css`
   (auto-detection Tailwind v4 juga aktif, dibatasi `.gitignore`).
+- Font = **Quicksand** (variable 300–700), self-host di
+  `frontend/src/assets/fonts/*.woff2`, di-`@font-face` pakai URL **relatif**
+  (`./assets/fonts/...`) di `app.css`. Wajib relatif: di dev Vite menyajikan `app.css`
+  sebagai `<link>` dari `:5173`, jadi URL absolut `/fonts/...` akan 404. Quicksand
+  **tidak punya** fitur `tnum`.
+- Logo/brand mark = `backend/public/logo.png` (diserve `/logo.png`), sekaligus favicon
+  (`app.blade.php`). Di template Vue pakai `:src="'/logo.png'"` (binding), **bukan**
+  `src="/logo.png"` statis — `publicDir: false` bikin Vite mencoba nge-bundle & gagal.
+
 - Reuse komponen yang sudah ada sebelum bikin baru: `PageHeader.vue` (9 pemakaian),
   `Modal.vue`, `StatCard.vue`, `FloatingNav.vue`.
 - API hanya lewat `frontend/src/api/client.js` (axios, `withCredentials`,
