@@ -298,4 +298,128 @@ class BusinessFlowTest extends TestCase
             'reference_type' => Purchase::class,
         ]);
     }
+
+    public function test_sale_rejects_product_and_customer_from_other_business(): void
+    {
+        $user = $this->makeUser();
+        $this->makeBusiness($user);
+
+        $otherUser = User::create([
+            'name' => 'Owner Lain',
+            'email' => 'lain@toko.test',
+            'password' => Hash::make('rahasia123'),
+            'role' => 'OWNER',
+        ]);
+        $otherBusiness = $otherUser->businesses()->create(['name' => 'Toko Lain', 'type' => 'fnb']);
+        $otherSupplier = $otherBusiness->suppliers()->create(['name' => 'PT Lain', 'lead_time_days' => 1]);
+        $otherProduct = $otherBusiness->products()->create([
+            'supplier_id' => $otherSupplier->id,
+            'name' => 'Produk Lain',
+            'buy_price' => 1000,
+            'sell_price' => 2000,
+            'hpp' => 1000,
+            'stock' => 10,
+        ]);
+        $otherCustomer = $otherBusiness->customers()->create(['name' => 'Pelanggan Lain']);
+
+        $this->actingAs($user);
+
+        $this->postJson('/api/sales', [
+            'items' => [['product_id' => $otherProduct->id, 'quantity' => 1]],
+        ])->assertStatus(422)->assertJsonPath('error.code', 'VALIDATION_ERROR');
+
+        $this->postJson('/api/sales', [
+            'customer_id' => $otherCustomer->id,
+            'items' => [['product_id' => $this->makeProduct($this->business($user))->id, 'quantity' => 1]],
+        ])->assertStatus(422)->assertJsonPath('error.code', 'VALIDATION_ERROR');
+
+        $this->assertDatabaseCount('sales', 0);
+        $this->assertDatabaseHas('products', ['id' => $otherProduct->id, 'stock' => 10]);
+    }
+
+    public function test_sale_rejects_duplicate_item_lines_that_exceed_stock(): void
+    {
+        $user = $this->makeUser();
+        $business = $this->makeBusiness($user);
+        $product = $this->makeProduct($business, 10);
+
+        $this->actingAs($user);
+
+        $this->postJson('/api/sales', [
+            'items' => [
+                ['product_id' => $product->id, 'quantity' => 7],
+                ['product_id' => $product->id, 'quantity' => 7],
+            ],
+        ])->assertStatus(422);
+
+        $this->assertDatabaseCount('sales', 0);
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'stock' => 10]);
+    }
+
+    public function test_purchase_rejects_supplier_and_product_from_other_business(): void
+    {
+        $user = $this->makeUser();
+        $business = $this->makeBusiness($user);
+        $product = $this->makeProduct($business, 5);
+
+        $otherUser = User::create([
+            'name' => 'Owner Lain',
+            'email' => 'lain@toko.test',
+            'password' => Hash::make('rahasia123'),
+            'role' => 'OWNER',
+        ]);
+        $otherBusiness = $otherUser->businesses()->create(['name' => 'Toko Lain', 'type' => 'fnb']);
+        $otherSupplier = $otherBusiness->suppliers()->create(['name' => 'PT Lain', 'lead_time_days' => 1]);
+        $otherProduct = $otherBusiness->products()->create([
+            'supplier_id' => $otherSupplier->id,
+            'name' => 'Produk Lain',
+            'buy_price' => 1000,
+            'sell_price' => 2000,
+            'hpp' => 1000,
+            'stock' => 10,
+        ]);
+
+        $this->actingAs($user);
+
+        $this->postJson('/api/purchases', [
+            'supplier_id' => $otherSupplier->id,
+            'items' => [['product_id' => $product->id, 'quantity' => 5]],
+        ])->assertStatus(422)->assertJsonPath('error.code', 'VALIDATION_ERROR');
+
+        $this->postJson('/api/purchases', [
+            'supplier_id' => $product->supplier_id,
+            'items' => [['product_id' => $otherProduct->id, 'quantity' => 5]],
+        ])->assertStatus(422)->assertJsonPath('error.code', 'VALIDATION_ERROR');
+
+        $this->assertDatabaseCount('purchases', 0);
+        $this->assertDatabaseHas('products', ['id' => $otherProduct->id, 'stock' => 10]);
+    }
+
+    public function test_receive_twice_does_not_increase_stock_twice(): void
+    {
+        $user = $this->makeUser();
+        $business = $this->makeBusiness($user);
+        $product = $this->makeProduct($business, 5);
+        $supplier = $product->supplier;
+
+        $this->actingAs($user);
+
+        $purchaseId = $this->postJson('/api/purchases', [
+            'supplier_id' => $supplier->id,
+            'items' => [['product_id' => $product->id, 'quantity' => 10, 'unit_cost' => 4000]],
+        ])->assertStatus(201)->json('data.purchase.id');
+
+        $this->postJson('/api/purchases/'.$purchaseId.'/receive')->assertOk();
+        $this->postJson('/api/purchases/'.$purchaseId.'/receive')
+            ->assertOk()
+            ->assertJsonPath('data.purchase.status', 'received');
+
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'stock' => 15]);
+        $this->assertDatabaseCount('stock_movements', 1);
+    }
+
+    private function business(User $user): Business
+    {
+        return $user->businesses()->first();
+    }
 }

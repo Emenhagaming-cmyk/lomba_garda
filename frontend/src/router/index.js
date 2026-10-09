@@ -88,8 +88,7 @@ const router = createRouter({
                 {
                     path: '/analytics',
                     name: 'analytics',
-                    component: () => import('../pages/PlaceholderPage.vue'),
-                    props: { title: 'Laporan', description: 'Rekomendasi dari data: restock, dead stock, forecast, dan insight.', icon: 'chart' },
+                    component: () => import('../pages/ReportsPage.vue'),
                 },
                 {
                     path: '/settings',

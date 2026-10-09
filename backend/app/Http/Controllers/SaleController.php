@@ -47,17 +47,28 @@ class SaleController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $businessId = $this->businessId($request->user());
+
+        $customerRule = ['sometimes', 'nullable', 'integer'];
+        $productRule = ['required', 'integer'];
+
+        if ($businessId === null) {
+            $customerRule[] = 'exists:customers,id';
+            $productRule[] = 'exists:products,id';
+        } else {
+            $customerRule[] = 'exists:customers,id,business_id,'.$businessId;
+            $productRule[] = 'exists:products,id,business_id,'.$businessId;
+        }
+
         $validated = $request->validate([
-            'customer_id' => ['sometimes', 'nullable', 'integer', 'exists:customers,id'],
+            'customer_id' => $customerRule,
             'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
+            'items.*.product_id' => $productRule,
             'items.*.quantity' => ['required', 'integer', 'min:1'],
             'payment_method' => ['sometimes', 'string', 'in:cash,qris,transfer,edc,other'],
             'discount' => ['sometimes', 'integer', 'min:0'],
             'note' => ['sometimes', 'nullable', 'string', 'max:500'],
         ]);
-
-        $businessId = $this->businessId($request->user());
 
         if ($businessId === null) {
             return response()->json([
@@ -70,75 +81,79 @@ class SaleController extends Controller
 
         $discount = $validated['discount'] ?? 0;
 
-        try {
-            $sale = DB::transaction(function () use ($request, $validated, $businessId, $discount): Sale {
-                $products = Product::whereKey(array_column($validated['items'], 'product_id'))
-                    ->lockForUpdate()
-                    ->get()
-                    ->keyBy('id');
+        $sale = DB::transaction(function () use ($request, $validated, $businessId, $discount): Sale {
+            $products = Product::where('business_id', $businessId)
+                ->whereKey(array_column($validated['items'], 'product_id'))
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
 
-                foreach ($validated['items'] as $item) {
-                    $product = $products->get($item['product_id']);
+            $required = [];
 
-                    if ($product === null || $product->stock < $item['quantity']) {
-                        $name = $product?->name ?? 'produk';
-                        $stock = $product?->stock ?? 0;
+            foreach ($validated['items'] as $item) {
+                $productId = $item['product_id'];
+                $required[$productId] = ($required[$productId] ?? 0) + $item['quantity'];
+            }
 
-                        throw ValidationException::withMessages([
-                            'items' => "Stok '{$name}' tidak mencukupi (sisa {$stock}).",
-                        ]);
-                    }
+            foreach ($required as $productId => $quantity) {
+                $product = $products->get($productId);
+
+                if ($product === null || $product->stock < $quantity) {
+                    $name = $product?->name ?? 'produk';
+                    $stock = $product?->stock ?? 0;
+
+                    throw ValidationException::withMessages([
+                        'items' => "Stok '{$name}' tidak mencukupi (sisa {$stock}).",
+                    ]);
                 }
+            }
 
-                $sale = Sale::create([
-                    'business_id' => $businessId,
-                    'user_id' => $request->user()->id,
-                    'customer_id' => $validated['customer_id'] ?? null,
-                    'invoice_no' => 'INV-'.str_pad((string) (Sale::max('id') + 1), 6, '0', STR_PAD_LEFT),
-                    'payment_method' => $validated['payment_method'] ?? 'cash',
-                    'discount' => $discount,
-                    'total' => 0,
-                    'note' => $validated['note'] ?? null,
+            $sale = Sale::create([
+                'business_id' => $businessId,
+                'user_id' => $request->user()->id,
+                'customer_id' => $validated['customer_id'] ?? null,
+                'invoice_no' => 'INV-'.str_pad((string) (Sale::max('id') + 1), 6, '0', STR_PAD_LEFT),
+                'payment_method' => $validated['payment_method'] ?? 'cash',
+                'discount' => $discount,
+                'total' => 0,
+                'note' => $validated['note'] ?? null,
+            ]);
+
+            $total = 0;
+
+            foreach ($validated['items'] as $item) {
+                $product = $products->get($item['product_id']);
+                $quantity = $item['quantity'];
+                $lineTotal = $product->sell_price * $quantity;
+
+                SaleItem::create([
+                    'sale_id' => $sale->id,
+                    'product_id' => $product->id,
+                    'quantity' => $quantity,
+                    'unit_price' => $product->sell_price,
+                    'cost_price' => $product->hpp,
+                    'discount' => 0,
+                    'line_total' => $lineTotal,
                 ]);
 
-                $total = 0;
+                $product->decrement('stock', $quantity);
 
-                foreach ($validated['items'] as $item) {
-                    $product = $products->get($item['product_id']);
-                    $quantity = $item['quantity'];
-                    $lineTotal = $product->sell_price * $quantity;
+                StockMovement::create([
+                    'product_id' => $product->id,
+                    'type' => StockMovement::TYPE_OUT,
+                    'quantity' => $quantity,
+                    'reference_type' => Sale::class,
+                    'reference_id' => $sale->id,
+                    'note' => $sale->invoice_no,
+                ]);
 
-                    SaleItem::create([
-                        'sale_id' => $sale->id,
-                        'product_id' => $product->id,
-                        'quantity' => $quantity,
-                        'unit_price' => $product->sell_price,
-                        'cost_price' => $product->hpp,
-                        'discount' => 0,
-                        'line_total' => $lineTotal,
-                    ]);
+                $total += $lineTotal;
+            }
 
-                    $product->decrement('stock', $quantity);
+            $sale->update(['total' => max(0, $total - $discount)]);
 
-                    StockMovement::create([
-                        'product_id' => $product->id,
-                        'type' => StockMovement::TYPE_OUT,
-                        'quantity' => $quantity,
-                        'reference_type' => Sale::class,
-                        'reference_id' => $sale->id,
-                        'note' => $sale->invoice_no,
-                    ]);
-
-                    $total += $lineTotal;
-                }
-
-                $sale->update(['total' => max(0, $total - $discount)]);
-
-                return $sale;
-            });
-        } catch (ValidationException $exception) {
-            throw $exception;
-        }
+            return $sale;
+        });
 
         return response()->json([
             'data' => ['sale' => $this->showPayload($sale)],

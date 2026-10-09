@@ -36,6 +36,8 @@ class ProductController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $businessId = $this->businessId($request->user());
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'sku' => ['sometimes', 'nullable', 'string', 'max:100', Rule::unique('products', 'sku')],
@@ -46,12 +48,12 @@ class ProductController extends Controller
             'sell_price' => ['required', 'integer', 'min:0'],
             'hpp' => ['sometimes', 'nullable', 'integer', 'min:0'],
             'min_stock' => ['sometimes', 'integer', 'min:0'],
-            'supplier_id' => ['sometimes', 'nullable', 'integer', 'exists:suppliers,id'],
+            'supplier_id' => $this->supplierRule($businessId),
             'initial_stock' => ['sometimes', 'integer', 'min:0'],
         ]);
 
         $product = new Product($validated);
-        $product->business_id = $this->businessId($request->user());
+        $product->business_id = $businessId;
         $product->hpp = $validated['hpp'] ?? $validated['buy_price'];
         $product->stock = 0;
         $product->save();
@@ -92,7 +94,7 @@ class ProductController extends Controller
             'sell_price' => ['sometimes', 'integer', 'min:0'],
             'hpp' => ['sometimes', 'nullable', 'integer', 'min:0'],
             'min_stock' => ['sometimes', 'integer', 'min:0'],
-            'supplier_id' => ['sometimes', 'nullable', 'integer', 'exists:suppliers,id'],
+            'supplier_id' => $this->supplierRule($this->businessId($request->user())),
             'is_active' => ['sometimes', 'boolean'],
         ]);
 
@@ -109,6 +111,17 @@ class ProductController extends Controller
         $product->update(['is_active' => false]);
 
         return response()->json(['data' => null]);
+    }
+
+    private function supplierRule(?int $businessId): array
+    {
+        $rule = ['sometimes', 'nullable', 'integer'];
+
+        $rule[] = $businessId === null
+            ? 'exists:suppliers,id'
+            : 'exists:suppliers,id,business_id,'.$businessId;
+
+        return $rule;
     }
 
     private function serialize(Product $product): array

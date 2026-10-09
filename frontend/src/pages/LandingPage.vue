@@ -29,23 +29,23 @@ if (auth.isAuthenticated && route.name === 'landing') {
                     <ul class="mt-10 space-y-4 text-left max-w-md mx-auto">
                         <li class="flex items-start gap-3">
                             <svg class="h-5 w-5 text-primary-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5"></path></svg>
-                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Satu input, semua ter-update</strong> — transaksi langsung memperbarui stok, keuangan, pelanggan, dan laporan</span>
+                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Satu input, semua ter-update</strong><br> transaksi langsung memperbarui stok, keuangan, pelanggan, dan laporan</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="h-5 w-5 text-primary-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5"></path></svg>
-                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Kelola pelanggan & CRM</strong> — riwayat belanja, pelanggan tetap, leads, dan follow-up dalam satu tempat</span>
+                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Kelola pelanggan & CRM</strong><br> riwayat belanja, pelanggan tetap, leads, dan follow-up dalam satu tempat</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="h-5 w-5 text-primary-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5"></path></svg>
-                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Insight yang bisa ditindak</strong> — auto restock, prediksi permintaan, deteksi stok lambat, dan analisis margin</span>
+                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Insight yang bisa ditindak</strong><br> auto restock, prediksi permintaan, deteksi stok lambat, dan analisis margin</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="h-5 w-5 text-primary-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5"></path></svg>
-                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Bisa dipakai offline</strong> — tetap catat transaksi saat internet bermasalah, tersinkron otomatis saat kembali online</span>
+                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Bisa dipakai offline</strong><br> tetap catat transaksi saat internet bermasalah, tersinkron otomatis saat kembali online</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="h-5 w-5 text-primary-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5"></path></svg>
-                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Mudah digunakan</strong> — tanpa pelatihan, langsung bisa pakai</span>
+                            <span class="text-sm text-gray-600"><strong class="text-gray-900">Mudah digunakan</strong><br> Tutorial yang mudah dipahami dijamin langsung bisa pakai!</span>
                         </li>
                     </ul>
 
@@ -58,7 +58,7 @@ if (auth.isAuthenticated && route.name === 'landing') {
                 </div>
             </section>
 
-            <section id="cara-kerja" class="-mx-4 border-y border-gray-200 bg-gray-50 px-4">
+            <section id="cara-kerja" class="-mx-4 mt-12 border-y border-gray-200 bg-gray-50 px-4 sm:mt-16">
                 <div class="mx-auto grid max-w-6xl gap-8 py-14 sm:grid-cols-3 sm:gap-10 sm:py-20">
                     <div class="flex gap-4">
                         <span class="text-4xl font-bold text-primary-200">01</span>
@@ -85,6 +85,11 @@ if (auth.isAuthenticated && route.name === 'landing') {
             </section>
 
             <section id="cta" class="mx-auto max-w-6xl py-14 text-center sm:py-20">
+                <img
+                    :src="'/logo.png'"
+                    alt="TokoKu"
+                    class="mx-auto mb-6 h-20 w-20 object-contain"
+                >
                 <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Siap mengelola bisnismu lebih mudah?</h2>
                 <p class="mx-auto mt-4 max-w-xl text-lg text-gray-500">Satu platform untuk operasional, pelanggan, keuangan, dan keputusan bisnis. Gratis untuk memulai.</p>
                 <RouterLink

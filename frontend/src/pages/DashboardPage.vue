@@ -238,7 +238,7 @@ onMounted(async () => {
                                     to="/purchase"
                                     class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary-600 hover:text-primary-700"
                                 >
-                                    Buat Pesanan →
+                                    Buat Pesanan
                                 </RouterLink>
                             </div>
                         </li>

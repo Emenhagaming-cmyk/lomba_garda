@@ -183,7 +183,7 @@ onMounted(() => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 1.15;
     renderer.domElement.setAttribute('aria-hidden', 'true');
     el.appendChild(renderer.domElement);
 
@@ -194,18 +194,23 @@ onMounted(() => {
     const room = new RoomEnvironment();
     environmentTexture = pmrem.fromScene(room, 0.04).texture;
     scene.environment = environmentTexture;
+    scene.environmentIntensity = 0.5;
     pmrem.dispose();
     room.dispose();
 
-    scene.add(new THREE.HemisphereLight(0xfffaf3, 0xeadcc8, 2.4));
+    scene.add(new THREE.HemisphereLight(0xfffaf3, 0x8a7355, 0.8));
 
-    const key = new THREE.DirectionalLight(0xffffff, 2.4);
+    const key = new THREE.DirectionalLight(0xffffff, 3.4);
     key.position.set(4, 6, 5);
     scene.add(key);
 
-    const fill = new THREE.DirectionalLight(0xe9b393, 0.85);
+    const fill = new THREE.DirectionalLight(0xe9b393, 0.45);
     fill.position.set(-5, 2, -4);
     scene.add(fill);
+
+    const rim = new THREE.DirectionalLight(0xcfe0ff, 1.4);
+    rim.position.set(-3, 4, -6);
+    scene.add(rim);
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;

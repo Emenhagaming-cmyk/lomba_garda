@@ -41,7 +41,7 @@ async function submit() {
                 <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M10 3l-5 5 5 5"></path>
                 </svg>
-                Kembali
+                
             </RouterLink>
 
             <div class="w-full max-w-sm">
@@ -106,13 +106,7 @@ async function submit() {
         </div>
 
         <!-- Right: Visual Panel -->
-        <div class="relative hidden w-1/2 items-center justify-center overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 lg:flex">
-            <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-                <div class="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
-                <div class="absolute -right-24 -bottom-24 h-96 w-96 rounded-full bg-indigo-300/20 blur-3xl"></div>
-                <div class="absolute top-1/3 right-1/4 h-40 w-40 rounded-full bg-blue-300/20 blur-2xl"></div>
-            </div>
-
+        <div class="relative hidden w-1/2 items-center justify-center overflow-hidden bg-primary-700 lg:flex">
             <div class="relative z-10 max-w-md px-10 text-center">
                 <div class="rotate-1">
                     <AppMockCard class="shadow-2xl shadow-primary-900/30" />

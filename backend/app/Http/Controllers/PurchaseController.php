@@ -46,21 +46,35 @@ class PurchaseController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $businessId = $this->businessId($request->user());
+
+        $supplierRule = ['required', 'integer'];
+        $productRule = ['required', 'integer'];
+
+        if ($businessId === null) {
+            $supplierRule[] = 'exists:suppliers,id';
+            $productRule[] = 'exists:products,id';
+        } else {
+            $supplierRule[] = 'exists:suppliers,id,business_id,'.$businessId;
+            $productRule[] = 'exists:products,id,business_id,'.$businessId;
+        }
+
         $validated = $request->validate([
-            'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
+            'supplier_id' => $supplierRule,
             'order_date' => ['sometimes', 'date'],
             'status' => ['sometimes', 'string', 'in:draft,ordered,received'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
+            'items.*.product_id' => $productRule,
             'items.*.quantity' => ['required', 'integer', 'min:1'],
             'items.*.unit_cost' => ['sometimes', 'integer', 'min:0'],
             'note' => ['sometimes', 'nullable', 'string', 'max:500'],
         ]);
 
-        $businessId = $this->businessId($request->user());
-
         $purchase = DB::transaction(function () use ($validated, $businessId): Purchase {
-            $products = Product::whereKey(array_column($validated['items'], 'product_id'))->get()->keyBy('id');
+            $products = Product::where('business_id', $businessId)
+                ->whereKey(array_column($validated['items'], 'product_id'))
+                ->get()
+                ->keyBy('id');
             $total = 0;
 
             $purchase = Purchase::create([
@@ -108,12 +122,14 @@ class PurchaseController extends Controller
     {
         abort_unless($purchase->business_id === $this->businessId($request->user()), 404);
 
-        if ($purchase->status === Purchase::STATUS_RECEIVED) {
-            return response()->json(['data' => ['purchase' => $this->showPayload($purchase)]]);
-        }
-
         DB::transaction(function () use ($purchase): void {
-            $this->applyReceive($purchase);
+            $locked = Purchase::whereKey($purchase->id)->lockForUpdate()->first();
+
+            if ($locked === null || $locked->status === Purchase::STATUS_RECEIVED) {
+                return;
+            }
+
+            $this->applyReceive($locked);
         });
 
         return response()->json(['data' => ['purchase' => $this->showPayload($purchase->fresh())]]);

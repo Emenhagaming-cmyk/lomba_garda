@@ -46,7 +46,7 @@ const navGroups = [
             </div>
             <div>
                 <p class="text-sm font-bold text-gray-900">TokoKu</p>
-                <p class="text-[11px] text-gray-500">UMKM Business OS</p>
+                <p class="text-[11px] text-gray-500">UMKM manage product</p>
             </div>
         </div>
 

@@ -137,7 +137,7 @@ onMounted(loadLeads);
                             <p v-if="lead.phone">{{ lead.phone }}</p>
                             <p v-if="lead.next_follow_up_at">Follow-up: {{ formatDate(lead.next_follow_up_at) }}</p>
                             <p v-if="lead.notes" class="italic text-gray-400">{{ lead.notes }}</p>
-                            <p v-if="lead.converted_customer_id" class="font-medium text-emerald-600">✓ Pelanggan dibuat otomatis</p>
+                            <p v-if="lead.converted_customer_id" class="font-medium text-emerald-600">Pelanggan dibuat otomatis</p>
                         </div>
 
                         <div class="mt-2.5 flex items-center gap-1">
@@ -148,7 +148,7 @@ onMounted(loadLeads);
                                 class="flex-1 rounded-lg border border-primary-200 px-2 py-1 text-xs font-semibold text-primary-700 transition hover:bg-primary-50 disabled:opacity-50"
                                 @click="moveStage(lead, nextStage(column.value))"
                             >
-                                → {{ leadStageLabel(nextStage(column.value)) }}
+                                {{ leadStageLabel(nextStage(column.value)) }}
                             </button>
                             <button
                                 v-if="column.value !== 'converted'"

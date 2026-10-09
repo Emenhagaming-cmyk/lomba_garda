@@ -8,6 +8,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
@@ -52,4 +53,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/leads', [LeadController::class, 'index']);
     Route::post('/leads', [LeadController::class, 'store']);
     Route::patch('/leads/{lead}', [LeadController::class, 'update']);
+
+    Route::get('/reports/summary', [ReportController::class, 'summary']);
 });
