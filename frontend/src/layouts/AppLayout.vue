@@ -2,9 +2,13 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { useSyncStore } from '../stores/sync';
+import { onMounted, onUnmounted } from 'vue';
 import Sidebar from '../components/Sidebar.vue';
+import SyncStatus from '../components/SyncStatus.vue';
 
 const auth = useAuthStore();
+const sync = useSyncStore();
 const router = useRouter();
 const route = useRoute();
 const mobileOpen = ref(false);
@@ -13,6 +17,14 @@ async function logout() {
     await auth.logout();
     await router.replace({ name: 'landing' });
 }
+
+onMounted(() => {
+    sync.init();
+});
+
+onUnmounted(() => {
+    sync.destroy();
+});
 
 const pageTitles = {
     dashboard: 'Dashboard',
@@ -81,6 +93,8 @@ const today = () =>
                     </div>
 
                     <div class="flex items-center gap-2 sm:gap-3">
+                        <SyncStatus />
+
                         <button
                             type="button"
                             class="relative rounded-lg p-2 text-gray-500 transition hover:bg-gray-100"

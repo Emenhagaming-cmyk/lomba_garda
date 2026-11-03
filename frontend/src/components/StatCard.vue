@@ -12,16 +12,16 @@ defineProps({
 
 <template>
     <div
-        class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
-        :class="accent ? 'border-primary-600 bg-primary-600 text-white' : ''"
+        class="rounded-xl p-5 shadow-sm"
+        :class="accent ? 'border-primary-600 bg-primary-600 text-white' : 'border-gray-200 bg-white'"
     >
         <div class="flex items-center justify-between">
-            <p class="text-sm font-medium" :class="accent ? 'text-primary-100' : 'text-gray-500'">{{ label }}</p>
+            <p class="text-sm font-medium" :class="accent ? 'text-primary-100' : 'text-gray-700'">{{ label }}</p>
             <svg
                 v-if="icon"
                 viewBox="0 0 24 24"
                 class="h-5 w-5"
-                :class="accent ? 'text-white/80' : 'text-gray-400'"
+                :class="accent ? 'text-white/80' : 'text-gray-500'"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="1.8"
@@ -51,7 +51,7 @@ defineProps({
             </svg>
         </div>
 
-        <p class="mt-3 text-2xl font-bold sm:text-3xl" :class="accent ? 'text-white' : 'text-gray-900'">
+        <p class="mt-3 text-2xl font-bold sm:text-3xl" :class="accent ? 'text-white' : 'text-gray-800'">
             {{ value }}
         </p>
 
@@ -73,7 +73,7 @@ defineProps({
                 </svg>
                 {{ trend }}
             </span>
-            <span v-if="hint" :class="accent ? 'text-primary-100' : 'text-gray-400'">{{ hint }}</span>
+            <span v-if="hint" :class="accent ? 'text-primary-100' : 'text-gray-500'">{{ hint }}</span>
         </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { http, formatApiError } from '../api/client';
+import { http, formatApiError, requestWithOfflineSupport } from '../api/client';
 import { useBusinessStore } from '../stores/business';
 import PageHeader from '../components/PageHeader.vue';
 import { formatRupiah, PAYMENT_METHODS } from '../utils/format';
@@ -94,14 +94,40 @@ async function submit() {
     submitting.value = true;
 
     try {
-        const { data } = await http.post('/sales', {
-            customer_id: customerId.value || undefined,
+        const response = await requestWithOfflineSupport({
+            method: 'POST',
+            url: '/sales',
+            data: {
+                customer_id: customerId.value || undefined,
+                payment_method: paymentMethod.value,
+                discount: Number(discount.value) || 0,
+                items: cartItems.value.map((item) => ({ product_id: item.id, quantity: item.quantity })),
+            }
+        }, {
+            invoice_no: `OFFLINE-${Date.now()}`,
+            customer: customerId.value ? customers.value.find(c => c.id === Number(customerId.value))?.name || 'Walk-in' : 'Walk-in',
             payment_method: paymentMethod.value,
             discount: Number(discount.value) || 0,
-            items: cartItems.value.map((item) => ({ product_id: item.id, quantity: item.quantity })),
+            total: total.value,
+            items: cartItems.value.map(item => ({
+                product: item.name,
+                quantity: item.quantity,
+                unit_price: item.sell_price,
+                line_total: item.quantity * item.sell_price
+            })),
+            created_at: new Date().toISOString(),
+            offline: true
         });
 
-        success.value = data.data.sale;
+        if (response.data.data.offline) {
+            success.value = {
+                ...response.data.data.data,
+                offline: true
+            };
+        } else {
+            success.value = response.data.data.sale;
+        }
+
         cart.value = new Map();
         discount.value = 0;
         await loadProducts();
@@ -193,7 +219,15 @@ onMounted(async () => {
                 </span>
                 <div>
                     <p class="text-lg font-bold text-emerald-800">Transaksi {{ success.invoice_no }} tersimpan</p>
-                    <p class="text-sm text-emerald-600">Total {{ formatRupiah(success.total) }} · stok berhasil diperbarui.</p>
+                    <p class="text-sm text-emerald-600">
+                        Total {{ formatRupiah(success.total) }} · stok berhasil diperbarui.
+                        <span v-if="success.offline" class="ml-2 inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-medium text-yellow-700">
+                            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            Disimpan Offline
+                        </span>
+                    </p>
                 </div>
                 <div class="flex gap-2">
                     <button type="button" class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700" @click="success = null">

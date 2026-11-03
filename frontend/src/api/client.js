@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { addToSyncQueue } from '../utils/indexedDB';
+import { useSyncStore } from '../stores/sync';
 
 export const http = axios.create({
     baseURL: '/api',
@@ -8,6 +10,28 @@ export const http = axios.create({
         'X-Requested-With': 'XMLHttpRequest',
     },
 });
+
+http.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error.code === 'ECONNABORTED' || !error.response) {
+            if (!navigator.onLine) {
+                const syncStore = useSyncStore();
+                const config = error.config;
+
+                if (config && config.method !== 'get') {
+                    await syncStore.queueForSync({
+                        endpoint: config.url,
+                        method: config.method.toUpperCase(),
+                        data: config.data,
+                        headers: config.headers
+                    });
+                }
+            }
+        }
+        return Promise.reject(error);
+    }
+);
 
 export async function fetchCsrfCookie() {
     await axios.get('/sanctum/csrf-cookie', {
@@ -25,4 +49,30 @@ export function formatApiError(error, fallback) {
     }
 
     return message || fallback;
+}
+
+export async function requestWithOfflineSupport(config, offlineData = null) {
+    try {
+        const response = await http(config);
+        return response;
+    } catch (error) {
+        if (!navigator.onLine && config.method !== 'get') {
+            const syncStore = useSyncStore();
+            await syncStore.queueForSync({
+                endpoint: config.url,
+                method: config.method.toUpperCase(),
+                data: config.data,
+                headers: config.headers
+            });
+
+            return {
+                data: {
+                    data: offlineData,
+                    offline: true,
+                    message: 'Data tersimpan lokal, akan disinkronkan saat online'
+                }
+            };
+        }
+        throw error;
+    }
 }
