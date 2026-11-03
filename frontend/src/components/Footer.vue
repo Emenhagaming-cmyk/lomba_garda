@@ -7,39 +7,38 @@
                     <div>
                         <h4 class="font-semibold text-gray-900 mb-3">Legal</h4>
                         <ul class="space-y-2 text-sm text-gray-500">
-                            <li><a href="#" class="hover:text-primary-600 transition">Kebijakan privasi</a></li>
-                            <li><a href="#" class="hover:text-primary-600 transition">Syarat penggunaan</a></li>
+                            <li><RouterLink to="/privacy" class="hover:text-primary-600 transition">Kebijakan privasi</RouterLink></li>
+                            <li><RouterLink to="/terms" class="hover:text-primary-600 transition">Syarat penggunaan</RouterLink></li>
                         </ul>
                     </div>
                 </div>
-                <!-- <p class="mt-3 text-sm text-gray-500">Tokoku kelola operasional, pelanggan, dan keputusan bisnis dalam satu platform.</p> -->
             </div>
 
             <div>
                 <h4 class="font-semibold text-gray-900 mb-3">Produk</h4>
                 <ul class="space-y-2 text-sm text-gray-500">
-                    <li><a href="#" class="hover:text-primary-600 transition">Penjualan</a></li>
-                    <li><a href="#" class="hover:text-primary-600 transition">Inventori</a></li>
-                    <li><a href="#" class="hover:text-primary-600 transition">Pelanggan</a></li>
-                    <li><a href="#" class="hover:text-primary-600 transition">Insight & laporan</a></li>
+                    <li><RouterLink to="/features/penjualan" class="hover:text-primary-600 transition">Penjualan</RouterLink></li>
+                    <li><RouterLink to="/features/inventori" class="hover:text-primary-600 transition">Inventori</RouterLink></li>
+                    <li><RouterLink to="/features/pelanggan" class="hover:text-primary-600 transition">Pelanggan</RouterLink></li>
+                    <li><RouterLink to="/features/insight" class="hover:text-primary-600 transition">Insight & laporan</RouterLink></li>
                 </ul>
             </div>
 
             <div>
                 <h4 class="font-semibold text-gray-900 mb-3">Company</h4>
                 <ul class="space-y-2 text-sm text-gray-500">
-                    <li><a href="#" class="hover:text-primary-600 transition">Tentang kami</a></li>
-                    <li><a href="#" class="hover:text-primary-600 transition">Karir</a></li>
-                    <li><a href="#" class="hover:text-primary-600 transition">Blog</a></li>
+                    <li><RouterLink to="/about" class="hover:text-primary-600 transition">Tentang kami</RouterLink></li>
+                    <li><RouterLink to="/careers" class="hover:text-primary-600 transition">Karir</RouterLink></li>
+                    <li><RouterLink to="/blog" class="hover:text-primary-600 transition">Blog</RouterLink></li>
                 </ul>
             </div>
 
             <div>
                 <h4 class="font-semibold text-gray-900 mb-3">Resources</h4>
                 <ul class="space-y-2 text-sm text-gray-500">
-                    <li><a href="#" class="hover:text-primary-600 transition">Bantuan</a></li>
-                    <li><a href="#" class="hover:text-primary-600 transition">Dokumentasi</a></li>
-                    <li><a href="#" class="hover:text-primary-600 transition">Status sistem</a></li>
+                    <li><RouterLink to="/help" class="hover:text-primary-600 transition">Bantuan</RouterLink></li>
+                    <li><RouterLink to="/docs" class="hover:text-primary-600 transition">Dokumentasi</RouterLink></li>
+                    <li><RouterLink to="/status" class="hover:text-primary-600 transition">Status sistem</RouterLink></li>
                 </ul>
             </div>
         </div>
@@ -49,3 +48,7 @@
         </div>
     </footer>
 </template>
+
+<script setup>
+import { RouterLink } from 'vue-router';
+</script>

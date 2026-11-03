@@ -15,6 +15,51 @@ const remember = ref(false);
 const errorMessage = ref('');
 const submitting = ref(false);
 const showPassword = ref(false);
+
+const emailError = ref('');
+const passwordError = ref('');
+
+function validateForm() {
+    let valid = true;
+    emailError.value = '';
+    passwordError.value = '';
+
+    if (!email.value.trim()) {
+        emailError.value = 'Email wajib diisi';
+        valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        emailError.value = 'Format email tidak valid';
+        valid = false;
+    }
+
+    if (!password.value) {
+        passwordError.value = 'Password wajib diisi';
+        valid = false;
+    }
+
+    return valid;
+}
+
+async function submit() {
+    errorMessage.value = '';
+    emailError.value = '';
+    passwordError.value = '';
+
+    if (!validateForm()) {
+        return;
+    }
+
+    submitting.value = true;
+
+    try {
+        await auth.login(email.value, password.value);
+        await router.replace(route.query.redirect || { name: 'dashboard' });
+    } catch (error) {
+        errorMessage.value = formatApiError(error, 'Gagal masuk. Periksa email dan password kamu.');
+    } finally {
+        submitting.value = false;
+    }
+}
 </script>
 
 <template>
@@ -50,8 +95,12 @@ const showPassword = ref(false);
                             type="email"
                             required
                             autocomplete="email"
-                            class="mt-1 w-full rounded-lg bg-gray-50 border border-gray-300 px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            :class="[
+                                'mt-1 w-full rounded-lg bg-gray-50 border px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                                emailError ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300'
+                            ]"
                         >
+                        <p v-if="emailError" class="mt-1 text-sm text-red-500" role="alert">{{ emailError }}</p>
                     </div>
 
                     <div class="relative">
@@ -64,6 +113,7 @@ const showPassword = ref(false);
                             autocomplete="current-password"
                             class="mt-1 w-full rounded-lg bg-gray-50 border border-gray-300 px-3 py-2 pr-10 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                         >
+                        <p v-if="passwordError" class="mt-1 text-sm text-red-500" role="alert">{{ passwordError }}</p>
                         <button
                             type="button"
                             @click="showPassword = !showPassword"
@@ -111,9 +161,9 @@ const showPassword = ref(false);
                     <button
                         type="submit"
                         :disabled="submitting"
-                        class="w-full rounded-lg bg-primary-600 hover:bg-primary-700 disabled:opacity-50 px-3 py-2 font-medium text-white transition"
+                        class="w-full rounded-lg bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 font-medium text-white transition"
                     >
-                        {{ submitting ? 'Masuk…' : 'Masuk' }}
+                        {{ submitting ? 'Memproses…' : 'Masuk' }}
                     </button>
                 </form>
 

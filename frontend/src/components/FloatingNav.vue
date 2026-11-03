@@ -4,14 +4,13 @@
     aria-label="Main navigation"
   >
     <div class="flex items-center gap-1">
-      <a
-        href="/"
-        @click.prevent="$router.push('/')"
+      <RouterLink
+        to="/"
         class="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold whitespace-nowrap text-primary-600 transition hover:bg-gray-100 sm:px-4"
       >
         <img :src="'/logo.png'" alt="" class="h-4 w-4 object-contain" aria-hidden="true">
         TokoKu
-      </a>
+      </RouterLink>
 
       <div class="mx-1 h-4 w-px bg-gray-200"></div>
 
@@ -30,16 +29,14 @@
         <div class="mx-1 h-4 w-px bg-gray-200"></div>
       </div>
 
-      <a
-        href="#"
-        @click.prevent="$router.push('/login')"
+      <RouterLink
+        to="/login"
         class="rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
-      >Masuk</a>
-      <a
-        href="#"
-        @click.prevent="$router.push('/register')"
+      >Masuk</RouterLink>
+      <RouterLink
+        to="/register"
         class="rounded-full bg-primary-600 px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-white transition hover:bg-primary-700"
-      >Daftar</a>
+      >Daftar</RouterLink>
     </div>
   </nav>
 </template>
