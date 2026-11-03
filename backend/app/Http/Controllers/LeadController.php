@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Lead;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
 class LeadController extends Controller
@@ -23,6 +24,78 @@ class LeadController extends Controller
         return response()->json([
             'data' => [
                 'leads' => $leads->map(fn (Lead $lead) => $this->serialize($lead)),
+            ],
+        ]);
+    }
+
+    public function followUps(Request $request): JsonResponse
+    {
+        $businessId = $this->businessId($request->user());
+        $today = Carbon::today();
+        $weekAhead = Carbon::today()->endOfDay()->addDays(7);
+
+        $leads = Lead::where('business_id', $businessId)
+            ->whereNotNull('next_follow_up_at')
+            ->where('stage', '!=', 'converted')
+            ->orderBy('next_follow_up_at')
+            ->get();
+
+        $overdue = $leads->filter(fn (Lead $lead) => $lead->next_follow_up_at->lt($today))->values();
+        $dueToday = $leads->filter(fn (Lead $lead) => $lead->next_follow_up_at->isSameDay($today))->values();
+        $upcoming = $leads
+            ->filter(fn (Lead $lead) => $lead->next_follow_up_at->gt($today->copy()->endOfDay()) && $lead->next_follow_up_at->lte($weekAhead))
+            ->values();
+
+        $customers = Customer::where('business_id', $businessId)
+            ->withCount('sales')
+            ->withSum('sales', 'total')
+            ->withMax('sales', 'created_at')
+            ->get()
+            ->map(function (Customer $customer): ?array {
+                $last = $customer->sales_max_created_at;
+
+                if ($last === null) {
+                    return null;
+                }
+
+                $spending = (int) ($customer->sales_sum_total ?? 0);
+                $orders = (int) ($customer->sales_count ?? 0);
+                $days = Carbon::parse($last)->diffInDays();
+                $segment = Customer::segmentFor($spending, $orders, $last);
+
+                if ($days <= Customer::AT_RISK_DAYS) {
+                    return null;
+                }
+
+                return [
+                    'id' => $customer->id,
+                    'name' => $customer->name,
+                    'phone' => $customer->phone,
+                    'segment' => $segment,
+                    'days_since' => (int) $days,
+                    'total_spending' => $spending,
+                    'order_count' => $orders,
+                    'last_purchase' => Carbon::parse($last)->toIso8601String(),
+                ];
+            })
+            ->filter(fn (?array $customer) => $customer !== null)
+            ->sortByDesc('days_since')
+            ->values();
+
+        return response()->json([
+            'data' => [
+                'leads' => [
+                    'overdue' => $overdue->map(fn (Lead $lead) => $this->serialize($lead)),
+                    'today' => $dueToday->map(fn (Lead $lead) => $this->serialize($lead)),
+                    'upcoming' => $upcoming->map(fn (Lead $lead) => $this->serialize($lead)),
+                ],
+                'customers' => $customers,
+                'counts' => [
+                    'overdue' => $overdue->count(),
+                    'today' => $dueToday->count(),
+                    'upcoming' => $upcoming->count(),
+                    'customers' => $customers->count(),
+                ],
             ],
         ]);
     }

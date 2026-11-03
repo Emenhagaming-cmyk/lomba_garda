@@ -81,6 +81,11 @@ const router = createRouter({
                     component: () => import('../pages/LeadsPage.vue'),
                 },
                 {
+                    path: '/follow-ups',
+                    name: 'follow-ups',
+                    component: () => import('../pages/FollowUpsPage.vue'),
+                },
+                {
                     path: '/finance',
                     name: 'finance',
                     component: () => import('../pages/FinancePage.vue'),

@@ -113,3 +113,25 @@ export function leadStageClasses(stage) {
 
     return map[stage] || 'bg-gray-100 text-gray-600';
 }
+
+export function whatsappLink(phone, message = '') {
+    if (!phone) {
+        return null;
+    }
+
+    let digits = String(phone).replace(/\D/g, '');
+
+    if (!digits) {
+        return null;
+    }
+
+    if (digits.startsWith('0')) {
+        digits = '62' + digits.slice(1);
+    } else if (digits.startsWith('8')) {
+        digits = '62' + digits;
+    }
+
+    const query = message ? `?text=${encodeURIComponent(message)}` : '';
+
+    return `https://wa.me/${digits}${query}`;
+}

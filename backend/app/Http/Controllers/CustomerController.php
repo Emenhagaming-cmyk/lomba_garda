@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\Sale;
+use App\Models\SaleItem;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 class CustomerController extends Controller
 {
@@ -62,6 +63,50 @@ class CustomerController extends Controller
             ->limit(10)
             ->get();
 
+        $lastSale = $customer->sales()->latest()->with('items.product:id,name,stock,min_stock')->first();
+        $lastOrder = [];
+
+        if ($lastSale) {
+            $lastOrder = $lastSale->items->map(function ($item): array {
+                return [
+                    'product_id' => $item->product_id,
+                    'name' => $item->product?->name,
+                    'quantity' => $item->quantity,
+                    'stock' => $item->product?->stock ?? 0,
+                    'min_stock' => $item->product?->min_stock ?? 0,
+                    'sell_price' => $item->unit_price,
+                ];
+            })->values();
+        }
+
+        $frequent = SaleItem::selectRaw('product_id, SUM(quantity) as total_qty, MAX(sale_items.created_at) as last_bought')
+            ->whereHas('sale', function ($query) use ($customer): void {
+                $query->where('customer_id', $customer->id);
+            })
+            ->groupBy('product_id')
+            ->orderByDesc('total_qty')
+            ->orderByDesc('last_bought')
+            ->limit(5)
+            ->get()
+            ->map(function ($row): array {
+                $product = Product::select('id', 'name', 'stock', 'min_stock', 'sell_price')->find($row->product_id);
+
+                if ($product === null) {
+                    return null;
+                }
+
+                return [
+                    'product_id' => $product->id,
+                    'name' => $product->name,
+                    'stock' => $product->stock,
+                    'min_stock' => $product->min_stock,
+                    'sell_price' => $product->sell_price,
+                    'total_qty' => (int) $row->total_qty,
+                ];
+            })
+            ->filter(fn ($item) => $item !== null)
+            ->values();
+
         return response()->json([
             'data' => [
                 'customer' => $this->serialize($customer, $customer->sales()->sum('total')),
@@ -71,6 +116,10 @@ class CustomerController extends Controller
                     'average_order' => (int) round($customer->sales()->count() ? $customer->sales()->sum('total') / $customer->sales()->count() : 0),
                     'last_purchase' => $customer->sales()->latest()->value('created_at'),
                     'segment' => $this->segment($customer),
+                ],
+                'repeat' => [
+                    'last_order' => $lastOrder,
+                    'frequent' => $frequent,
                 ],
                 'history' => $sales->map(fn (Sale $sale) => [
                     'id' => $sale->id,
@@ -105,32 +154,6 @@ class CustomerController extends Controller
 
     private function segment(Customer $customer): string
     {
-        $orders = $customer->sales()->count();
-
-        if ($orders === 0) {
-            return 'new';
-        }
-
-        $spending = $customer->sales()->sum('total');
-        $lastPurchase = $customer->sales()->latest()->value('created_at');
-        $daysSince = $lastPurchase ? Carbon::parse($lastPurchase)->diffInDays() : null;
-
-        if ($spending >= 1_500_000) {
-            return 'vip';
-        }
-
-        if ($daysSince !== null && $daysSince > 90) {
-            return 'inactive';
-        }
-
-        if ($daysSince !== null && $daysSince > 45) {
-            return 'at_risk';
-        }
-
-        if ($orders >= 3) {
-            return 'loyal';
-        }
-
-        return 'new';
+        return $customer->segment();
     }
 }

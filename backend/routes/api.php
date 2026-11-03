@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/expenses', [ExpenseController::class, 'store']);
 
     Route::get('/leads', [LeadController::class, 'index']);
+    Route::get('/leads/follow-ups', [LeadController::class, 'followUps']);
     Route::post('/leads', [LeadController::class, 'store']);
     Route::patch('/leads/{lead}', [LeadController::class, 'update']);
 

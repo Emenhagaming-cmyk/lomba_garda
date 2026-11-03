@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { http, formatApiError } from '../api/client';
 import PageHeader from '../components/PageHeader.vue';
 import Modal from '../components/Modal.vue';
@@ -15,16 +16,11 @@ const showForm = ref(false);
 const creating = ref(false);
 const formError = ref('');
 const formSuccess = ref('');
-
-const form = ref({
-    supplier_id: '',
-    order_date: '',
-    status: 'ordered',
-    items: [],
-    note: '',
-});
-
+const prefillNote = ref('');
+const form = ref({ supplier_id: '', order_date: '', status: 'ordered', items: [], note: '' });
 const newItemForm = ref({ product_id: '', quantity: 1, unit_cost: '' });
+const route = useRoute();
+const router = useRouter();
 
 const statusBadges = {
     draft: 'bg-gray-100 text-gray-600',
@@ -79,7 +75,35 @@ function openCreate() {
     newItemForm.value = { product_id: '', quantity: 1, unit_cost: '' };
     formError.value = '';
     formSuccess.value = '';
+    prefillNote.value = '';
     showForm.value = true;
+}
+
+function openPrepopulatedForm() {
+    const productId = Number(route.query.product_id);
+    const product = products.value.find((item) => item.id === productId);
+
+    if (!product) {
+        return;
+    }
+
+    openCreate();
+
+    const quantity = Math.max(1, Number(route.query.quantity) || 1);
+
+    form.value.supplier_id = product.supplier_id || '';
+    form.value.items = [
+        {
+            product_id: product.id,
+            product: product.name,
+            quantity,
+            unit_cost: product.buy_price,
+        },
+    ];
+
+    if (!product.supplier_id) {
+        prefillNote.value = 'Produk ini belum punya supplier. Pilih supplier manual sebelum menyimpan PO.';
+    }
 }
 
 function addItem() {
@@ -167,8 +191,12 @@ async function receive(purchase) {
 }
 
 onMounted(async () => {
-    const [optionsStub] = await Promise.allSettled([loadOptions()]);
+    await Promise.allSettled([loadOptions()]);
     await loadPurchases();
+
+    if (route.query.product_id) {
+        openPrepopulatedForm();
+    }
 });
 </script>
 
@@ -245,6 +273,8 @@ onMounted(async () => {
         <!-- Create PO modal -->
         <Modal v-if="showForm" title="Purchase Order Baru" max-width="max-w-2xl" @close="showForm = false">
             <form class="space-y-4" @submit.prevent="submitPurchase">
+                <p v-if="prefillNote" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-700">{{ prefillNote }}</p>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Supplier *</label>
@@ -308,7 +338,7 @@ onMounted(async () => {
                 <p v-if="formError" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{{ formError }}</p>
 
                 <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50" @click="showForm = false">
+                    <button type="button" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50" @click="showForm = false; router.replace('/purchase')">
                         Batal
                     </button>
                     <button type="submit" :disabled="creating" class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-60">

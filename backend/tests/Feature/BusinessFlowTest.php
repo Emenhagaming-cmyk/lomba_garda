@@ -8,6 +8,7 @@ use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -416,6 +417,150 @@ class BusinessFlowTest extends TestCase
 
         $this->assertDatabaseHas('products', ['id' => $product->id, 'stock' => 15]);
         $this->assertDatabaseCount('stock_movements', 1);
+    }
+
+    public function test_follow_ups_group_leads_and_include_at_risk_customers(): void
+    {
+        $user = $this->makeUser();
+        $business = $this->makeBusiness($user);
+        $product = $this->makeProduct($business, 10);
+        $customer = $business->customers()->create(['name' => 'Rina']);
+
+        $this->actingAs($user);
+
+        $this->postJson('/api/sales', [
+            'customer_id' => $customer->id,
+            'items' => [['product_id' => $product->id, 'quantity' => 1]],
+        ])->assertStatus(201);
+
+        Sale::where('customer_id', $customer->id)->update([
+            'created_at' => Carbon::now()->subDays(50),
+        ]);
+
+        $this->postJson('/api/leads', [
+            'name' => 'Lead Overdue',
+            'next_follow_up_at' => Carbon::today()->subDay()->setTime(9, 0)->toDateTimeString(),
+        ])->assertStatus(201);
+
+        $this->postJson('/api/leads', [
+            'name' => 'Lead Hari Ini',
+            'next_follow_up_at' => Carbon::today()->setTime(10, 0)->toDateTimeString(),
+        ])->assertStatus(201);
+
+        $this->postJson('/api/leads', [
+            'name' => 'Lead Minggu Ini',
+            'next_follow_up_at' => Carbon::today()->addDays(3)->setTime(10, 0)->toDateTimeString(),
+        ])->assertStatus(201);
+
+        $this->postJson('/api/leads', [
+            'name' => 'Lead Konversi',
+            'stage' => 'converted',
+            'next_follow_up_at' => Carbon::today()->subDay()->toDateTimeString(),
+        ])->assertStatus(201);
+
+        $this->getJson('/api/leads/follow-ups')
+            ->assertOk()
+            ->assertJsonPath('data.counts.overdue', 1)
+            ->assertJsonPath('data.counts.today', 1)
+            ->assertJsonPath('data.counts.upcoming', 1)
+            ->assertJsonPath('data.leads.overdue.0.name', 'Lead Overdue')
+            ->assertJsonPath('data.leads.today.0.name', 'Lead Hari Ini')
+            ->assertJsonPath('data.leads.upcoming.0.name', 'Lead Minggu Ini')
+            ->assertJsonPath('data.counts.customers', 1)
+            ->assertJsonPath('data.customers.0.name', 'Rina');
+    }
+
+    public function test_dashboard_auto_restock_insight_includes_supplier_details(): void
+    {
+        $user = $this->makeUser();
+        $business = $this->makeBusiness($user);
+        $product = $this->makeProduct($business, 42);
+
+        $this->actingAs($user);
+
+        $this->postJson('/api/sales', [
+            'items' => [['product_id' => $product->id, 'quantity' => 40]],
+        ])->assertStatus(201);
+
+        $insights = $this->getJson('/api/dashboard')->assertOk()->json('data.insights');
+        $restock = collect($insights)->firstWhere('type', 'auto_restock');
+
+        $this->assertNotNull($restock);
+        $this->assertSame($product->id, $restock['product_id']);
+        $this->assertSame('PT Kopi Nusantara', $restock['supplier_name']);
+        $this->assertSame($product->supplier_id, $restock['supplier_id']);
+        $this->assertSame($product->buy_price, $restock['buy_price']);
+        $this->assertGreaterThanOrEqual(1, $restock['recommended_quantity']);
+    }
+
+    public function test_customer_detail_exposes_repeat_order_candidates(): void
+    {
+        $user = $this->makeUser();
+        $business = $this->makeBusiness($user);
+        $espresso = $this->makeProduct($business, 50);
+        $latte = $business->products()->create([
+            'supplier_id' => $espresso->supplier_id,
+            'name' => 'Latte',
+            'buy_price' => 6000,
+            'sell_price' => 15000,
+            'hpp' => 6000,
+            'min_stock' => 3,
+            'stock' => 50,
+        ]);
+        $customer = $business->customers()->create(['name' => 'Dimas']);
+
+        $this->actingAs($user);
+
+        $this->postJson('/api/sales', [
+            'customer_id' => $customer->id,
+            'items' => [
+                ['product_id' => $espresso->id, 'quantity' => 4],
+                ['product_id' => $latte->id, 'quantity' => 1],
+            ],
+        ])->assertStatus(201);
+
+        $this->travel(1)->minutes();
+
+        $this->postJson('/api/sales', [
+            'customer_id' => $customer->id,
+            'items' => [
+                ['product_id' => $espresso->id, 'quantity' => 2],
+            ],
+        ])->assertStatus(201);
+
+        $this->getJson('/api/customers/'.$customer->id)
+            ->assertOk()
+            ->assertJsonCount(1, 'data.repeat.last_order')
+            ->assertJsonPath('data.repeat.last_order.0.product_id', $espresso->id)
+            ->assertJsonPath('data.repeat.last_order.0.quantity', 2)
+            ->assertJsonPath('data.repeat.frequent.0.product_id', $espresso->id)
+            ->assertJsonPath('data.repeat.frequent.0.total_qty', 6)
+            ->assertJsonPath('data.repeat.frequent.1.product_id', $latte->id)
+            ->assertJsonPath('data.repeat.frequent.1.total_qty', 1);
+    }
+
+    public function test_dashboard_lists_at_risk_customers_after_45_days(): void
+    {
+        $user = $this->makeUser();
+        $business = $this->makeBusiness($user);
+        $product = $this->makeProduct($business, 10);
+        $customer = $business->customers()->create(['name' => 'Pelanggan Lama']);
+
+        $this->actingAs($user);
+
+        $this->postJson('/api/sales', [
+            'customer_id' => $customer->id,
+            'items' => [['product_id' => $product->id, 'quantity' => 1]],
+        ])->assertStatus(201);
+
+        $this->travel(50)->days();
+
+        $this->getJson('/api/dashboard')
+            ->assertOk()
+            ->assertJsonCount(1, 'data.at_risk_customers')
+            ->assertJsonPath('data.at_risk_customers.0.id', $customer->id)
+            ->assertJsonPath('data.at_risk_customers.0.name', 'Pelanggan Lama')
+            ->assertJsonPath('data.at_risk_customers.0.days_since', 50);
     }
 
     private function business(User $user): Business

@@ -115,6 +115,10 @@ class DashboardController extends Controller
                     'title' => 'Restock '.$product->name,
                     'message' => 'Stok tersisa '.$product->stock.' (cukup ~'.number_format($coverage, 1).' hari). Rekomendasi PO: '.$recommended.' pcs.',
                     'recommended_quantity' => $recommended,
+                    'supplier_id' => $product->supplier_id,
+                    'supplier_name' => $product->supplier?->name,
+                    'buy_price' => $product->buy_price,
+                    'unit' => $product->unit,
                     'action' => 'create_purchase',
                 ]);
             });
@@ -132,6 +136,40 @@ class DashboardController extends Controller
                 'action' => 'promote',
             ]);
         }
+
+        $atRisk = Customer::where('business_id', $businessId)
+            ->withCount('sales')
+            ->withSum('sales', 'total')
+            ->withMax('sales', 'created_at')
+            ->get()
+            ->map(function (Customer $customer): ?array {
+                $last = $customer->sales_max_created_at;
+
+                if ($last === null) {
+                    return null;
+                }
+
+                $days = Carbon::parse($last)->diffInDays();
+
+                if ($days <= Customer::AT_RISK_DAYS) {
+                    return null;
+                }
+
+                return [
+                    'id' => $customer->id,
+                    'name' => $customer->name,
+                    'phone' => $customer->phone,
+                    'segment' => Customer::segmentFor((int) ($customer->sales_sum_total ?? 0), (int) ($customer->sales_count ?? 0), $last),
+                    'days_since' => (int) $days,
+                    'total_spending' => (int) ($customer->sales_sum_total ?? 0),
+                    'order_count' => (int) ($customer->sales_count ?? 0),
+                    'last_purchase' => Carbon::parse($last)->toIso8601String(),
+                ];
+            })
+            ->filter(fn (?array $item) => $item !== null)
+            ->sortByDesc('days_since')
+            ->take(5)
+            ->values();
 
         return response()->json([
             'data' => [
@@ -159,6 +197,7 @@ class DashboardController extends Controller
                     'stock' => $p->stock,
                     'last_sold_days' => $lastSales->has($p->id) ? Carbon::parse($lastSales->get($p->id))->diffInDays() : null,
                 ]),
+                'at_risk_customers' => $atRisk,
                 'recent_sales' => $recentSales,
                 'insights' => $insights->take(8)->values(),
             ],

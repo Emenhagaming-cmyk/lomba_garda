@@ -148,32 +148,55 @@ onMounted(loadCustomers);
         </div>
 
         <!-- Detail modal -->
-        <Modal v-if="showDetail" :title="detail?.customer?.name || 'Detail Pelanggan'" @close="showDetail = false">
-            <div v-if="detailLoading" class="flex justify-center py-8">
-                <div class="h-6 w-6 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
+    <Modal v-if="showDetail" :title="detail?.customer?.name || 'Detail Pelanggan'" :max-width="'max-w-2xl'" @close="showDetail = false">
+        <div v-if="detailLoading" class="flex justify-center py-8">
+            <div class="h-6 w-6 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
+        </div>
+        <div v-else-if="detail" class="space-y-5">
+            <div class="grid grid-cols-3 gap-3">
+                <div class="rounded-lg bg-gray-50 px-3 py-2.5 text-center">
+                    <p class="text-lg font-bold text-gray-900">{{ formatRupiah(detail.metrics.total_spending) }}</p>
+                    <p class="text-xs text-gray-500">Total Belanja</p>
+                </div>
+                <div class="rounded-lg bg-gray-50 px-3 py-2.5 text-center">
+                    <p class="text-lg font-bold text-gray-900">{{ detail.metrics.order_count }}</p>
+                    <p class="text-xs text-gray-500">Transaksi</p>
+                </div>
+                <div class="rounded-lg bg-gray-50 px-3 py-2.5 text-center">
+                    <p class="text-lg font-bold text-gray-900">{{ formatRupiah(detail.metrics.average_order) }}</p>
+                    <p class="text-xs text-gray-500">Rata-rata</p>
+                </div>
             </div>
-            <div v-else-if="detail" class="space-y-5">
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="rounded-lg bg-gray-50 px-3 py-2.5 text-center">
-                        <p class="text-lg font-bold text-gray-900">{{ formatRupiah(detail.metrics.total_spending) }}</p>
-                        <p class="text-xs text-gray-500">Total Belanja</p>
-                    </div>
-                    <div class="rounded-lg bg-gray-50 px-3 py-2.5 text-center">
-                        <p class="text-lg font-bold text-gray-900">{{ detail.metrics.order_count }}</p>
-                        <p class="text-xs text-gray-500">Transaksi</p>
-                    </div>
-                    <div class="rounded-lg bg-gray-50 px-3 py-2.5 text-center">
-                        <p class="text-lg font-bold text-gray-900">{{ formatRupiah(detail.metrics.average_order) }}</p>
-                        <p class="text-xs text-gray-500">Rata-rata</p>
-                    </div>
-                </div>
 
-                <div class="flex items-center justify-between rounded-lg border border-gray-200 px-4 py-3">
-                    <span class="text-sm text-gray-500">Segmen</span>
-                    <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="segmentClasses(detail.metrics.segment)">
-                        {{ segmentLabel(detail.metrics.segment) }}
-                    </span>
+            <div class="flex items-center justify-between rounded-lg border border-gray-200 px-4 py-3">
+                <span class="text-sm text-gray-500">Segmen</span>
+                <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="segmentClasses(detail.metrics.segment)">
+                    {{ segmentLabel(detail.metrics.segment) }}
+                </span>
+            </div>
+
+            <div v-if="detail.repeat.last_order.length || detail.repeat.frequent.length" class="rounded-lg border border-gray-200 p-4">
+                <h4 class="text-sm font-semibold text-gray-900">Ulangi Pesanan</h4>
+                <p class="mt-0.5 text-xs text-gray-500">Isi keranjang transaksi baru dari riwayat pelanggan ini.</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    <RouterLink
+                        v-if="detail.repeat.last_order.length"
+                        :to="{ path: '/sales/new', query: { customer_id: detail.customer.id, source: 'last' } }"
+                        class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white hover:bg-primary-700"
+                        @click="showDetail = false"
+                    >
+                        Ulangi Pesanan Terakhir
+                    </RouterLink>
+                    <RouterLink
+                        v-if="detail.repeat.frequent.length"
+                        :to="{ path: '/sales/new', query: { customer_id: detail.customer.id, source: 'frequent' } }"
+                        class="inline-flex items-center gap-2 rounded-lg border border-primary-600 px-3 py-2 text-sm font-semibold text-primary-700 hover:bg-primary-50"
+                        @click="showDetail = false"
+                    >
+                        Pesan Produk Favorit
+                    </RouterLink>
                 </div>
+            </div>
 
                 <div>
                     <h4 class="mb-2 text-sm font-semibold text-gray-900">Riwayat Transaksi</h4>

@@ -1,10 +1,12 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { http, formatApiError } from '../api/client';
 import { useBusinessStore } from '../stores/business';
 import PageHeader from '../components/PageHeader.vue';
 import { formatRupiah, PAYMENT_METHODS } from '../utils/format';
 
+const route = useRoute();
 const business = useBusinessStore();
 
 const products = ref([]);
@@ -19,6 +21,7 @@ const discount = ref(0);
 const submitting = ref(false);
 const formError = ref('');
 const success = ref(null);
+const prefillInfo = ref('');
 
 const filteredProducts = computed(() => {
     const keyword = search.value.trim().toLowerCase();
@@ -114,6 +117,43 @@ async function loadProducts() {
     products.value = data.data.products;
 }
 
+async function applyPrefill() {
+    const customer = Number(route.query.customer_id);
+
+    if (!customer) {
+        return;
+    }
+
+    try {
+        const { data } = await http.get(`/customers/${customer}`);
+        const detail = data.data;
+        const useFrequent = route.query.source === 'frequent';
+        const lines = useFrequent ? detail.repeat.frequent : detail.repeat.last_order;
+
+        customerId.value = customer;
+
+        let added = 0;
+
+        lines.forEach((line) => {
+            const product = products.value.find((item) => item.id === line.product_id);
+
+            if (!product || product.stock <= 0) {
+                return;
+            }
+
+            const quantity = Math.min(Math.max(1, Number(line.quantity) || 1), product.stock);
+            cart.value.set(product.id, { ...product, quantity });
+            added += 1;
+        });
+
+        if (added > 0) {
+            prefillInfo.value = `Keranjang diisi dari ${useFrequent ? 'produk favorit' : 'pesanan terakhir'} ${detail.customer.name}.`;
+        }
+    } catch {
+        prefillInfo.value = '';
+    }
+}
+
 onMounted(async () => {
     try {
         const [productsResponse, customersResponse] = await Promise.all([
@@ -122,6 +162,7 @@ onMounted(async () => {
         ]);
         products.value = productsResponse.data.data.products;
         customers.value = customersResponse.data.data.customers;
+        await applyPrefill();
     } catch (err) {
         error.value = formatApiError(err, 'Gagal memuat data produk.');
     } finally {
@@ -137,6 +178,8 @@ onMounted(async () => {
                 <RouterLink to="/sales" class="text-sm font-semibold text-primary-600 hover:text-primary-700">← Riwayat Penjualan</RouterLink>
             </template>
         </PageHeader>
+
+        <p v-if="prefillInfo" class="rounded-xl bg-primary-50 px-5 py-3 text-sm font-medium text-primary-700">{{ prefillInfo }}</p>
 
         <p v-if="error" class="rounded-xl bg-red-50 px-5 py-4 text-sm text-red-600">{{ error }}</p>
 

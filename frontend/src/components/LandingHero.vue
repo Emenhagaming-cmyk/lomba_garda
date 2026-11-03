@@ -30,9 +30,9 @@
                     </RouterLink>
                 </div>
 
-                <p class="mt-5 text-sm text-gray-400">
+                <!-- <p class="mt-5 text-sm text-gray-400">
                     Tanpa kartu kredit dan Bisa dipakai secara offline.
-                </p>
+                </p> -->
 
                 <div class="mt-12 flex justify-center lg:hidden">
                     <AppMockCard class="w-full max-w-md rotate-1 shadow-2xl shadow-gray-200" />

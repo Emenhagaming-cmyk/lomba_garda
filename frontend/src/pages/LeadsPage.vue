@@ -11,7 +11,7 @@ const error = ref('');
 const showCreate = ref(false);
 const creating = ref(false);
 const createError = ref('');
-const createForm = ref({ name: '', phone: '', email: '', source: '', stage: 'new', notes: '' });
+const createForm = ref({ name: '', phone: '', email: '', source: '', stage: 'new', notes: '', next_follow_up_at: '' });
 const updating = ref(false);
 
 const columns = computed(() =>
@@ -44,7 +44,7 @@ async function loadLeads() {
 }
 
 function resetCreate() {
-    createForm.value = { name: '', phone: '', email: '', source: '', stage: 'new', notes: '' };
+    createForm.value = { name: '', phone: '', email: '', source: '', stage: 'new', notes: '', next_follow_up_at: '' };
     createError.value = '';
 }
 
@@ -60,7 +60,11 @@ async function createLead() {
     creating.value = true;
 
     try {
-        await http.post('/leads', createForm.value);
+        await http.post('/leads', {
+            ...createForm.value,
+            next_follow_up_at: createForm.value.next_follow_up_at || null,
+        });
+        resetCreate();
         showCreate.value = false;
         await loadLeads();
     } catch (err) {
@@ -191,6 +195,10 @@ onMounted(loadLeads);
                             <option v-for="stage in LEAD_STAGES" :key="stage.value" :value="stage.value">{{ stage.label }}</option>
                         </select>
                     </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Jadwal follow-up</label>
+                    <input v-model="createForm.next_follow_up_at" type="datetime-local" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Catatan</label>

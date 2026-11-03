@@ -78,7 +78,7 @@ if (auth.isAuthenticated && route.name === 'landing') {
                         <span class="text-4xl font-bold text-primary-200">03</span>
                         <div>
                             <h3 class="font-semibold text-gray-900">Ambil keputusan</h3>
-                            <p class="mt-1.5 text-sm text-gray-500">Terima rekomendasi: apa yang harus di-restock, pelanggan mana yang perlu di-follow-up, dan masalah yang perlu diperhatikan hari ini.</p>
+                            <p class="mt-1.5 text-sm text-gray-500">Terima rekomendasi: apa yang harus di-restock, pelanggan mana yang perlu di follow-up dan masalah yang perlu diperhatikan hari ini.</p>
                         </div>
                     </div>
                 </div>

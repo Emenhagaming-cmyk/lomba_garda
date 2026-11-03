@@ -22,6 +22,7 @@ const pageTitles = {
     purchase: 'Pembelian',
     customers: 'Pelanggan',
     leads: 'Leads',
+    'follow-ups': 'Follow-up',
     finance: 'Keuangan',
     analytics: 'Laporan',
     settings: 'Pengaturan',

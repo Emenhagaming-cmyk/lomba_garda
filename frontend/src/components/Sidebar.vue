@@ -26,6 +26,7 @@ const navGroups = [
         items: [
             { name: 'Pelanggan', path: '/customers', icon: 'users' },
             { name: 'Leads', path: '/leads', icon: 'target' },
+            { name: 'Follow-up', path: '/follow-ups', icon: 'clock' },
         ],
     },
     {
@@ -108,6 +109,10 @@ const navGroups = [
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <circle cx="12" cy="12" r="6"></circle>
                                     <circle cx="12" cy="12" r="2"></circle>
+                                </template>
+                                <template v-else-if="item.icon === 'clock'">
+                                    <circle cx="12" cy="12" r="9"></circle>
+                                    <path d="M12 7v5l3 3"></path>
                                 </template>
                                 <template v-else-if="item.icon === 'wallet'">
                                     <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>

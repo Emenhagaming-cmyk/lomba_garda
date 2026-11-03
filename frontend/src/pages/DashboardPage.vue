@@ -5,7 +5,7 @@ import { http, formatApiError } from '../api/client';
 import { useAuthStore } from '../stores/auth';
 import { useBusinessStore } from '../stores/business';
 import StatCard from '../components/StatCard.vue';
-import { formatCompactRupiah, formatRupiah, formatDateTime, badgeClasses, stockStatusLabel } from '../utils/format';
+import { formatCompactRupiah, formatRupiah, formatDateTime, badgeClasses, stockStatusLabel, whatsappLink } from '../utils/format';
 
 const router = useRouter();
 const auth = useAuthStore();
@@ -235,7 +235,7 @@ onMounted(async () => {
                                 <p class="mt-0.5 text-xs leading-relaxed text-gray-500">{{ insight.message }}</p>
                                 <RouterLink
                                     v-if="insight.type === 'auto_restock'"
-                                    to="/purchase"
+                                    :to="{ path: '/purchase', query: { product_id: insight.product_id, quantity: insight.recommended_quantity } }"
                                     class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary-600 hover:text-primary-700"
                                 >
                                     Buat Pesanan
@@ -247,6 +247,47 @@ onMounted(async () => {
                         <p class="text-sm text-gray-400">Belum ada insight. Data akan muncul setelah ada transaksi.</p>
                     </div>
                 </div>
+            </section>
+
+            <!-- At-risk customers -->
+            <section
+                v-if="data.at_risk_customers?.length"
+                aria-label="Pelanggan perlu perhatian"
+                class="rounded-xl border border-amber-200 bg-white shadow-sm"
+            >
+                <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Pelanggan Perlu Perhatian</h3>
+                        <p class="mt-0.5 text-xs text-gray-500">Belum bertransaksi lebih dari 45 hari. Sapu mereka untuk winback.</p>
+                    </div>
+                    <RouterLink to="/customers" class="text-xs font-semibold text-primary-600 hover:text-primary-700">
+                        Lihat semua
+                    </RouterLink>
+                </div>
+                <ul class="divide-y divide-gray-100">
+                    <li
+                        v-for="customer in data.at_risk_customers"
+                        :key="customer.id"
+                        class="flex flex-wrap items-center justify-between gap-3 px-5 py-3"
+                    >
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-gray-900">{{ customer.name }}</p>
+                            <p class="text-xs text-gray-400">
+                                {{ customer.days_since }} hari sejak transaksi terakhir · {{ formatRupiah(customer.total_spending) }}
+                            </p>
+                        </div>
+                        <a
+                            v-if="customer.phone"
+                            :href="whatsappLink(customer.phone, 'Halo ' + customer.name + ', kami kangen! Ada promo spesial untuk Anda.')"
+                            target="_blank"
+                            rel="noopener"
+                            class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                        >
+                            WhatsApp
+                        </a>
+                        <span v-else class="text-xs text-gray-400">Tanpa nomor</span>
+                    </li>
+                </ul>
             </section>
         </template>
     </div>
