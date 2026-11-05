@@ -26,3 +26,6 @@ Homestead.json
 Homestead.yaml
 
 .vercel
+
+.vercel
+.env*
