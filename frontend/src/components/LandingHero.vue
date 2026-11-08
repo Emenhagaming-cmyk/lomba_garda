@@ -15,21 +15,6 @@
                    di TokoKu menyatukan pencatatan pesanan, stok, pelanggan dan keuangan. Cukup input transaksi satu kali semuanya otomatis ter-update.
                 </p> -->
 
-                <div class="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
-                    <RouterLink
-                        to="/register"
-                        class="w-full rounded-xl bg-primary-600 px-7 py-3 text-center font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 sm:w-auto"
-                    >
-                        Daftar Gratis
-                    </RouterLink>
-                    <RouterLink
-                        to="/login"
-                        class="w-full rounded-xl border border-gray-300 px-7 py-3 text-center font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 sm:w-auto"
-                    >
-                        Masuk
-                    </RouterLink>
-                </div>
-
                 <!-- <p class="mt-5 text-sm text-gray-400">
                     Tanpa kartu kredit dan Bisa dipakai secara offline.
                 </p> -->
