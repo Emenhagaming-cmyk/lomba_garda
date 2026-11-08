@@ -221,7 +221,7 @@ onMounted(async () => {
         <p v-if="formSuccess" class="rounded-xl bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">{{ formSuccess }}</p>
         <p v-else-if="error" class="rounded-xl bg-red-50 px-5 py-4 text-sm text-red-600">{{ error }}</p>
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -230,30 +230,30 @@ onMounted(async () => {
                 <table class="w-full text-left text-sm">
                     <thead class="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
                         <tr>
-                            <th class="px-5 py-3">PO No.</th>
-                            <th class="px-5 py-3">Supplier</th>
-                            <th class="px-5 py-3">Tanggal</th>
-                            <th class="px-5 py-3">Status</th>
-                            <th class="px-5 py-3 text-right">Total</th>
-                            <th class="px-5 py-3 text-right">Aksi</th>
+                            <th class="px-3 py-3 sm:px-5">PO No.</th>
+                            <th class="px-3 py-3 sm:px-5">Supplier</th>
+                            <th class="px-3 py-3 sm:px-5">Tanggal</th>
+                            <th class="px-3 py-3 sm:px-5">Status</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Total</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <tr v-for="purchase in purchases" :key="purchase.id" class="hover:bg-gray-50/60">
-                            <td class="px-5 py-3 font-semibold text-gray-900">{{ purchase.po_number }}</td>
-                            <td class="px-5 py-3 text-gray-600">{{ purchase.supplier?.name || '—' }}</td>
-                            <td class="px-5 py-3 text-gray-600">{{ formatDate(purchase.order_date) }}</td>
-                            <td class="px-5 py-3">
+                            <td class="px-3 py-3 sm:px-5 font-semibold text-gray-900">{{ purchase.po_number }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">{{ purchase.supplier?.name || '—' }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">{{ formatDate(purchase.order_date) }}</td>
+                            <td class="px-3 py-3 sm:px-5">
                                 <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="statusBadges[purchase.status] || 'bg-gray-100 text-gray-600'">
                                     {{ statusLabels[purchase.status] || purchase.status }}
                                 </span>
                             </td>
-                            <td class="px-5 py-3 text-right font-semibold text-gray-900">{{ formatRupiah(purchase.total) }}</td>
-                            <td class="px-5 py-3 text-right">
+                            <td class="px-3 py-3 sm:px-5 text-right font-semibold text-gray-900">{{ formatRupiah(purchase.total) }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right">
                                 <button
                                     v-if="purchase.status !== 'received'"
                                     type="button"
-                                    class="rounded-lg bg-primary-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-primary-700"
+                                    class="rounded-lg bg-primary-600 px-2.5 py-2 text-xs font-semibold text-white hover:bg-primary-700"
                                     @click="receive(purchase)"
                                 >
                                     Terima Barang
@@ -264,7 +264,7 @@ onMounted(async () => {
                     </tbody>
                 </table>
             </div>
-            <div v-else class="px-5 py-16 text-center">
+            <div v-else class="px-5 py-10 sm:py-16 text-center">
                 <p class="text-sm font-medium text-gray-700">Belum ada purchase order</p>
                 <p class="mt-1 text-sm text-gray-400">Buat PO pertama ke supplier untuk mengisi stok.</p>
             </div>
@@ -275,7 +275,7 @@ onMounted(async () => {
             <form class="space-y-4" @submit.prevent="submitPurchase">
                 <p v-if="prefillNote" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-700">{{ prefillNote }}</p>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Supplier *</label>
                         <select v-model="form.supplier_id" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none">
@@ -317,7 +317,7 @@ onMounted(async () => {
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="text-sm font-semibold text-gray-900">{{ formatRupiah(item.quantity * item.unit_cost) }}</span>
-                            <button type="button" class="text-gray-300 hover:text-red-500" aria-label="Hapus" @click="removeItem(index)">
+                            <button type="button" class="p-2.5 -m-2.5 text-gray-300 hover:text-red-500" aria-label="Hapus" @click="removeItem(index)">
                                 <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14"></path>
                                 </svg>

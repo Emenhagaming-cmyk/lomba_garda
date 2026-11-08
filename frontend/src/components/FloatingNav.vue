@@ -6,7 +6,7 @@
     <div class="flex items-center gap-1">
       <RouterLink
         to="/"
-        class="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold whitespace-nowrap text-primary-600 transition hover:bg-gray-100 sm:px-4"
+        class="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-bold whitespace-nowrap text-primary-600 transition hover:bg-gray-100 sm:px-4"
       >
         <img :src="'/logo.png'" alt="" class="h-4 w-4 object-contain" aria-hidden="true">
         TokoKu
@@ -18,12 +18,12 @@
         <a
           href="#harga"
           @click.prevent="scrollTo('harga')"
-          class="rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
+          class="rounded-full px-3.5 py-2 text-sm whitespace-nowrap text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
         >Tentang Kami</a>
         <a
           href="#cara-kerja"
           @click.prevent="scrollTo('cara-kerja')"
-          class="rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
+          class="rounded-full px-3.5 py-2 text-sm whitespace-nowrap text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
         >Cara kerja</a>
 
         <div class="mx-1 h-4 w-px bg-gray-200"></div>
@@ -31,11 +31,11 @@
 
       <RouterLink
         to="/login"
-        class="rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+        class="rounded-full px-3.5 py-2 text-sm whitespace-nowrap text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
       >Masuk</RouterLink>
       <RouterLink
         to="/register"
-        class="rounded-full bg-primary-600 px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-white transition hover:bg-primary-700"
+        class="rounded-full bg-primary-600 px-4 py-2 text-sm font-semibold whitespace-nowrap text-white transition hover:bg-primary-700"
       >Daftar</RouterLink>
     </div>
   </nav>

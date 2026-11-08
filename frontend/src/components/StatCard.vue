@@ -12,7 +12,7 @@ defineProps({
 
 <template>
     <div
-        class="rounded-xl p-5 shadow-sm"
+        class="rounded-xl p-4 shadow-sm sm:p-5"
         :class="accent ? 'border-primary-600 bg-primary-600 text-white' : 'border-gray-200 bg-white'"
     >
         <div class="flex items-center justify-between">
@@ -51,7 +51,7 @@ defineProps({
             </svg>
         </div>
 
-        <p class="mt-3 text-2xl font-bold sm:text-3xl" :class="accent ? 'text-white' : 'text-gray-800'">
+        <p class="mt-3 text-xl font-bold sm:text-3xl" :class="accent ? 'text-white' : 'text-gray-800'">
             {{ value }}
         </p>
 

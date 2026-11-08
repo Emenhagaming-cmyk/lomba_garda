@@ -71,7 +71,7 @@ onMounted(async () => {
     <div class="space-y-6">
         <PageHeader title="Pengaturan Bisnis" description="Informasi profil usaha yang tampil di seluruh aplikasi." />
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -79,7 +79,7 @@ onMounted(async () => {
             <p v-if="success" class="rounded-xl bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">{{ success }}</p>
             <p v-if="error" class="rounded-xl bg-red-50 px-5 py-4 text-sm text-red-600">{{ error }}</p>
 
-            <form class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm" @submit.prevent="save">
+            <form class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6" @submit.prevent="save">
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-700">Nama usaha *</label>
@@ -88,7 +88,7 @@ onMounted(async () => {
 
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-700">Jenis usaha</label>
-                        <div class="mt-2 grid grid-cols-2 gap-2">
+                        <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
                             <button
                                 v-for="type in Object.keys(BUSINESS_TEMPLATES)"
                                 :key="type"

@@ -78,7 +78,7 @@ onMounted(async () => {
         </div>
 
         <!-- Loading -->
-        <div v-if="loading" class="flex flex-col items-center justify-center rounded-xl bg-white py-20 text-center">
+        <div v-if="loading" class="flex flex-col items-center justify-center rounded-xl bg-white py-10 sm:py-20 text-center">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
             <p class="mt-4 text-sm text-gray-500">Memuat dashboard…</p>
         </div>
@@ -144,7 +144,7 @@ onMounted(async () => {
                     <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
                         <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
                             <h3 class="font-semibold text-gray-900">Stok Menipis</h3>
-                            <RouterLink to="/inventory" class="text-xs font-semibold text-primary-600 hover:text-primary-700">
+                            <RouterLink to="/inventory" class="inline-block py-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700">
                                 Lihat semua
                             </RouterLink>
                         </div>
@@ -168,7 +168,7 @@ onMounted(async () => {
                     <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
                         <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
                             <h3 class="font-semibold text-gray-900">Penjualan Terbaru</h3>
-                            <RouterLink to="/sales" class="text-xs font-semibold text-primary-600 hover:text-primary-700">
+                            <RouterLink to="/sales" class="inline-block py-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700">
                                 Riwayat
                             </RouterLink>
                         </div>
@@ -176,20 +176,20 @@ onMounted(async () => {
                             <table class="w-full text-left text-sm">
                                 <thead class="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
                                     <tr>
-                                        <th class="px-5 py-2.5">Invoice</th>
-                                        <th class="px-5 py-2.5">Pelanggan</th>
-                                        <th class="px-5 py-2.5 text-right">Total</th>
-                                        <th class="px-5 py-2.5">Metode</th>
-                                        <th class="px-5 py-2.5">Waktu</th>
+                                        <th class="px-3 py-2.5 sm:px-5">Invoice</th>
+                                        <th class="px-3 py-2.5 sm:px-5">Pelanggan</th>
+                                        <th class="px-3 py-2.5 sm:px-5 text-right">Total</th>
+                                        <th class="px-3 py-2.5 sm:px-5">Metode</th>
+                                        <th class="px-3 py-2.5 sm:px-5">Waktu</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr v-for="sale in data.recent_sales" :key="sale.id" class="hover:bg-gray-50/60">
-                                        <td class="px-5 py-2.5 font-medium text-gray-900">{{ sale.invoice_no }}</td>
-                                        <td class="px-5 py-2.5 text-gray-600">{{ sale.customer }}</td>
-                                        <td class="px-5 py-2.5 text-right font-semibold text-gray-900">{{ formatRupiah(sale.total) }}</td>
-                                        <td class="px-5 py-2.5 text-gray-500 uppercase">{{ sale.payment_method }}</td>
-                                        <td class="px-5 py-2.5 text-gray-400">{{ formatDateTime(sale.created_at) }}</td>
+                                        <td class="px-3 py-2.5 sm:px-5 font-medium text-gray-900">{{ sale.invoice_no }}</td>
+                                        <td class="px-3 py-2.5 sm:px-5 text-gray-600">{{ sale.customer }}</td>
+                                        <td class="px-3 py-2.5 sm:px-5 text-right font-semibold text-gray-900">{{ formatRupiah(sale.total) }}</td>
+                                        <td class="px-3 py-2.5 sm:px-5 text-gray-500 uppercase">{{ sale.payment_method }}</td>
+                                        <td class="px-3 py-2.5 sm:px-5 text-gray-400">{{ formatDateTime(sale.created_at) }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -236,7 +236,7 @@ onMounted(async () => {
                                 <RouterLink
                                     v-if="insight.type === 'auto_restock'"
                                     :to="{ path: '/purchase', query: { product_id: insight.product_id, quantity: insight.recommended_quantity } }"
-                                    class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary-600 hover:text-primary-700"
+                                    class="mt-2 inline-flex items-center gap-1 py-1 text-xs font-semibold text-primary-600 hover:text-primary-700"
                                 >
                                     Buat Pesanan
                                 </RouterLink>
@@ -260,7 +260,7 @@ onMounted(async () => {
                         <h3 class="font-semibold text-gray-900">Pelanggan Perlu Perhatian</h3>
                         <p class="mt-0.5 text-xs text-gray-500">Belum bertransaksi lebih dari 45 hari. Sapu mereka untuk winback.</p>
                     </div>
-                    <RouterLink to="/customers" class="text-xs font-semibold text-primary-600 hover:text-primary-700">
+                    <RouterLink to="/customers" class="inline-block py-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700">
                         Lihat semua
                     </RouterLink>
                 </div>
@@ -281,7 +281,7 @@ onMounted(async () => {
                             :href="whatsappLink(customer.phone, 'Halo ' + customer.name + ', kami kangen! Ada promo spesial untuk Anda.')"
                             target="_blank"
                             rel="noopener"
-                            class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                            class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
                         >
                             WhatsApp
                         </a>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { useSyncStore } from '../stores/sync';
@@ -13,6 +13,10 @@ const router = useRouter();
 const route = useRoute();
 const mobileOpen = ref(false);
 
+watch(mobileOpen, (open) => {
+    document.body.style.overflow = open ? 'hidden' : '';
+});
+
 async function logout() {
     await auth.logout();
     await router.replace({ name: 'landing' });
@@ -24,6 +28,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     sync.destroy();
+    document.body.style.overflow = '';
 });
 
 const pageTitles = {
@@ -59,7 +64,7 @@ const today = () =>
             <div class="absolute inset-y-0 left-0 w-64 bg-white shadow-xl">
                 <button
                     type="button"
-                    class="absolute right-3 top-3 rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                    class="absolute right-3 top-3 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
                     @click="mobileOpen = false"
                     aria-label="Tutup menu"
                 >
@@ -75,10 +80,10 @@ const today = () =>
             <!-- Top bar -->
             <header class="sticky top-0 z-30 border-b border-gray-200 bg-white/90 backdrop-blur">
                 <div class="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-                    <div class="flex items-center gap-3">
+                    <div class="flex min-w-0 items-center gap-3">
                         <button
                             type="button"
-                            class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 lg:hidden"
+                            class="shrink-0 rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 lg:hidden"
                             @click="mobileOpen = true"
                             aria-label="Buka menu"
                         >
@@ -86,9 +91,9 @@ const today = () =>
                                 <path d="M4 6h16M4 12h16M4 18h16"></path>
                             </svg>
                         </button>
-                        <div>
-                            <h1 class="text-base font-bold text-gray-900 sm:text-lg">{{ title() }}</h1>
-                            <p class="hidden text-xs text-gray-400 sm:block">{{ today() }}</p>
+                        <div class="min-w-0">
+                            <h1 class="truncate text-base font-bold text-gray-900 sm:text-lg">{{ title() }}</h1>
+                            <p class="hidden truncate text-xs text-gray-400 sm:block">{{ today() }}</p>
                         </div>
                     </div>
 

@@ -55,6 +55,10 @@
 }
 
 @layer base {
+    html {
+        scroll-padding-top: 96px;
+    }
+
     body {
         @apply bg-gray-50 font-sans antialiased;
     }

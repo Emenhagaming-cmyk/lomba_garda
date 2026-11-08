@@ -13,6 +13,10 @@ class AuthController extends Controller
 {
     public function register(Request $request): JsonResponse
     {
+        if (! $request->hasSession()) {
+            return $this->sessionUnavailable();
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
@@ -38,6 +42,10 @@ class AuthController extends Controller
 
     public function login(Request $request): JsonResponse
     {
+        if (! $request->hasSession()) {
+            return $this->sessionUnavailable();
+        }
+
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
@@ -56,6 +64,16 @@ class AuthController extends Controller
                 'user' => new UserResource($request->user()),
             ],
         ]);
+    }
+
+    private function sessionUnavailable(): JsonResponse
+    {
+        return response()->json([
+            'error' => [
+                'code' => 'SESSION_UNAVAILABLE',
+                'message' => 'Sesi aplikasi tidak tersedia. Periksa konfigurasi SANCTUM_STATEFUL_DOMAINS dan APP_URL di server.',
+            ],
+        ], 500);
     }
 
     public function user(Request $request): JsonResponse

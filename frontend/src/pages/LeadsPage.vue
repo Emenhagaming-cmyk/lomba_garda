@@ -120,7 +120,7 @@ onMounted(loadLeads);
 
         <p v-if="error" class="rounded-xl bg-red-50 px-5 py-4 text-sm text-red-600">{{ error }}</p>
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -149,7 +149,7 @@ onMounted(loadLeads);
                                 v-if="nextStage(column.value)"
                                 type="button"
                                 :disabled="updating"
-                                class="flex-1 rounded-lg border border-primary-200 px-2 py-1 text-xs font-semibold text-primary-700 transition hover:bg-primary-50 disabled:opacity-50"
+                                class="flex-1 rounded-lg border border-primary-200 px-2.5 py-2 text-xs font-semibold text-primary-700 transition hover:bg-primary-50 disabled:opacity-50"
                                 @click="moveStage(lead, nextStage(column.value))"
                             >
                                 {{ leadStageLabel(nextStage(column.value)) }}
@@ -158,7 +158,7 @@ onMounted(loadLeads);
                                 v-if="column.value !== 'converted'"
                                 type="button"
                                 :disabled="updating"
-                                class="flex-1 rounded-lg bg-violet-50 px-2 py-1 text-xs font-semibold text-violet-700 transition hover:bg-violet-100 disabled:opacity-50"
+                                class="flex-1 rounded-lg bg-violet-50 px-2.5 py-2 text-xs font-semibold text-violet-700 transition hover:bg-violet-100 disabled:opacity-50"
                                 @click="moveStage(lead, 'converted')"
                             >
                                 Konversi
@@ -176,7 +176,7 @@ onMounted(loadLeads);
                     <label class="block text-sm font-medium text-gray-700">Nama *</label>
                     <input v-model="createForm.name" type="text" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" />
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Telepon</label>
                         <input v-model="createForm.phone" type="text" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" />

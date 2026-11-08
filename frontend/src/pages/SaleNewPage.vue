@@ -210,15 +210,15 @@ onMounted(async () => {
         <p v-if="error" class="rounded-xl bg-red-50 px-5 py-4 text-sm text-red-600">{{ error }}</p>
 
         <!-- Success -->
-        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-6">
+        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 sm:p-6">
             <div class="flex flex-col items-center gap-3 text-center">
-                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-white" aria-hidden="true">
+                <span class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-emerald-500 text-white" aria-hidden="true">
                     <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2.5">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                 </span>
                 <div>
-                    <p class="text-lg font-bold text-emerald-800">Transaksi {{ success.invoice_no }} tersimpan</p>
+                    <p class="text-base font-bold text-emerald-800 sm:text-lg">Transaksi {{ success.invoice_no }} tersimpan</p>
                     <p class="text-sm text-emerald-600">
                         Total {{ formatRupiah(success.total) }} · stok berhasil diperbarui.
                         <span v-if="success.offline" class="ml-2 inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-medium text-yellow-700">
@@ -256,7 +256,7 @@ onMounted(async () => {
                     />
                 </div>
 
-                <div v-if="loading" class="mt-4 flex items-center justify-center rounded-xl bg-white py-16">
+                <div v-if="loading" class="mt-4 flex items-center justify-center rounded-xl bg-white py-10 sm:py-16">
                     <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
                 </div>
 
@@ -270,7 +270,7 @@ onMounted(async () => {
                         @click="addToCart(product)"
                     >
                         <div class="flex items-start justify-between gap-2">
-                            <p class="line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-primary-700">{{ product.name }}</p>
+                            <p class="line-clamp-2 min-w-0 text-sm font-semibold text-gray-900 group-hover:text-primary-700">{{ product.name }}</p>
                             <span
                                 class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold"
                                 :class="product.stock <= 0 ? 'bg-red-50 text-red-600' : product.stock <= product.min_stock ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'"
@@ -294,18 +294,18 @@ onMounted(async () => {
                     </div>
 
                     <div class="divide-y divide-gray-100 px-5">
-                        <div v-for="item in cartItems" :key="item.id" class="flex items-center gap-3 py-3">
+                        <div v-for="item in cartItems" :key="item.id" class="flex flex-wrap items-center gap-x-3 gap-y-2 py-3">
                             <div class="min-w-0 flex-1">
                                 <p class="truncate text-sm font-semibold text-gray-900">{{ item.name }}</p>
                                 <p class="text-xs text-gray-400">{{ formatRupiah(item.sell_price) }}</p>
                             </div>
                             <div class="flex items-center gap-1">
-                                <button type="button" class="h-7 w-7 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100" @click="changeQuantity(item.id, -1)">−</button>
+                                <button type="button" class="h-9 w-9 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100" @click="changeQuantity(item.id, -1)">−</button>
                                 <span class="w-8 text-center text-sm font-semibold text-gray-900">{{ item.quantity }}</span>
-                                <button type="button" class="h-7 w-7 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100" @click="changeQuantity(item.id, 1)">+</button>
+                                <button type="button" class="h-9 w-9 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100" @click="changeQuantity(item.id, 1)">+</button>
                             </div>
-                            <p class="w-20 text-right text-sm font-semibold text-gray-900">{{ formatRupiah(item.quantity * item.sell_price) }}</p>
-                            <button type="button" class="text-gray-300 hover:text-red-500" aria-label="Hapus" @click="removeItem(item.id)">
+                            <p class="w-16 shrink-0 text-right text-sm font-semibold text-gray-900 sm:w-20">{{ formatRupiah(item.quantity * item.sell_price) }}</p>
+                            <button type="button" class="p-2.5 -m-2.5 text-gray-300 hover:text-red-500" aria-label="Hapus" @click="removeItem(item.id)">
                                 <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14"></path>
                                 </svg>
@@ -326,7 +326,7 @@ onMounted(async () => {
                             </select>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Metode bayar</label>
                                 <select v-model="paymentMethod" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none">

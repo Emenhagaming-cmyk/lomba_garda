@@ -1,5 +1,6 @@
 <script setup>
 import PageHeader from '../components/PageHeader.vue';
+import PublicLayout from '../components/PublicLayout.vue';
 import { RouterLink } from 'vue-router';
 
 const features = [
@@ -11,11 +12,12 @@ const features = [
 </script>
 
 <template>
+    <PublicLayout>
     <div class="space-y-6">
         <PageHeader title="Fitur Produk" description="Semua yang dibutuhkan UMKM untuk mengelola bisnis dalam satu platform." />
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div v-for="f in features" :key="f.path" class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+            <div v-for="f in features" :key="f.path" class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md sm:p-6">
                 <RouterLink :to="f.path" class="block">
                     <h3 class="font-semibold text-gray-900">{{ f.title }}</h3>
                     <p class="mt-2 text-sm text-gray-500">{{ f.desc }}</p>
@@ -23,4 +25,5 @@ const features = [
             </div>
         </div>
     </div>
+</PublicLayout>
 </template>

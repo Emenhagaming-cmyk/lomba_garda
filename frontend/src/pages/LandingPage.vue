@@ -22,11 +22,11 @@ if (auth.isAuthenticated && route.name === 'landing') {
             <LandingHero />
 
             <section id="harga" class="mx-auto mt-12 max-w-3xl sm:mt-16">
-                <div class="rounded-3xl border border-gray-200 bg-white p-6 text-center shadow-sm sm:p-10">
-                    <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Kenapa memilih TokoKu?</h2>
-                    <p class="mt-4 text-lg text-gray-500">Dirancang khusus untuk UMKM Indonesia yang ingin mengelola bisnis tanpa ribet.</p>
+                <div class="rounded-3xl border border-gray-200 bg-white p-5 text-center shadow-sm sm:p-10">
+                    <h2 class="text-2xl font-bold text-gray-900 sm:text-4xl">Kenapa memilih TokoKu?</h2>
+                    <p class="mt-3 text-base text-gray-500 sm:mt-4 sm:text-lg">Dirancang khusus untuk UMKM Indonesia yang ingin mengelola bisnis tanpa ribet.</p>
 
-                    <ul class="mt-10 space-y-4 text-left max-w-md mx-auto">
+                    <ul class="mx-auto mt-8 max-w-md space-y-4 text-left sm:mt-10">
                         <li class="flex items-start gap-3">
                             <svg class="h-5 w-5 text-primary-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5"></path></svg>
                             <span class="text-sm text-gray-600"><strong class="text-gray-900">Satu input, semua ter-update</strong><br> transaksi langsung memperbarui stok, keuangan, pelanggan, dan laporan</span>
@@ -51,7 +51,7 @@ if (auth.isAuthenticated && route.name === 'landing') {
 
                     <RouterLink
                         to="/register"
-                        class="mt-10 inline-block rounded-xl bg-primary-600 px-8 py-3 font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700"
+                        class="mt-8 inline-block w-full rounded-xl bg-primary-600 px-8 py-3 font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 sm:mt-10 sm:w-auto"
                     >
                         Coba Sekarang, Gratis
                     </RouterLink>
@@ -59,23 +59,23 @@ if (auth.isAuthenticated && route.name === 'landing') {
             </section>
 
             <section id="cara-kerja" class="-mx-4 mt-12 border-y border-gray-200 bg-gray-50 px-4 sm:mt-16">
-                <div class="mx-auto grid max-w-6xl gap-8 py-14 sm:grid-cols-3 sm:gap-10 sm:py-20">
+                <div class="mx-auto grid max-w-6xl gap-8 py-10 sm:grid-cols-3 sm:gap-10 sm:py-20">
                     <div class="flex gap-4">
-                        <span class="text-4xl font-bold text-primary-200">01</span>
+                        <span class="text-3xl font-bold text-primary-200 sm:text-4xl">01</span>
                         <div>
                             <h3 class="font-semibold text-gray-900">Catat transaksi</h3>
                             <p class="mt-1.5 text-sm text-gray-500">Input penjualan singkat tanpa perlu mengetik ulang laporan. Repeat order untuk pelanggan langganan.</p>
                         </div>
                     </div>
                     <div class="flex gap-4">
-                        <span class="text-4xl font-bold text-primary-200">02</span>
+                        <span class="text-3xl font-bold text-primary-200 sm:text-4xl">02</span>
                         <div>
                             <h3 class="font-semibold text-gray-900">TokoKu memproses</h3>
                             <p class="mt-1.5 text-sm text-gray-500">Stok, keuangan, riwayat pelanggan, dan laporan diperbarui otomatis dari data transaksi.</p>
                         </div>
                     </div>
                     <div class="flex gap-4">
-                        <span class="text-4xl font-bold text-primary-200">03</span>
+                        <span class="text-3xl font-bold text-primary-200 sm:text-4xl">03</span>
                         <div>
                             <h3 class="font-semibold text-gray-900">Ambil keputusan</h3>
                             <p class="mt-1.5 text-sm text-gray-500">Terima rekomendasi: apa yang harus di-restock, pelanggan mana yang perlu di follow-up dan masalah yang perlu diperhatikan hari ini.</p>
@@ -84,17 +84,17 @@ if (auth.isAuthenticated && route.name === 'landing') {
                 </div>
             </section>
 
-            <section id="cta" class="mx-auto max-w-6xl py-14 text-center sm:py-20">
+            <section id="cta" class="mx-auto max-w-6xl py-10 text-center sm:py-20">
                 <img
                     :src="'/logo.png'"
                     alt="TokoKu"
-                    class="mx-auto mb-6 h-20 w-20 object-contain"
+                    class="mx-auto mb-5 h-16 w-16 object-contain sm:mb-6 sm:h-20 sm:w-20"
                 >
-                <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Siap mengelola bisnismu lebih mudah?</h2>
-                <p class="mx-auto mt-4 max-w-xl text-lg text-gray-500">Satu platform untuk operasional, pelanggan, keuangan, dan keputusan bisnis. Gratis untuk memulai.</p>
+                <h2 class="text-2xl font-bold text-gray-900 sm:text-4xl">Siap mengelola bisnismu lebih mudah?</h2>
+                <p class="mx-auto mt-3 max-w-xl text-base text-gray-500 sm:mt-4 sm:text-lg">Satu platform untuk operasional, pelanggan, keuangan, dan keputusan bisnis. Gratis untuk memulai.</p>
                 <RouterLink
                     to="/register"
-                    class="mt-8 inline-block rounded-xl bg-primary-600 px-8 py-3 font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700"
+                    class="mt-8 inline-block w-full rounded-xl bg-primary-600 px-8 py-3 font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 sm:w-auto"
                 >
                     Daftar TokoKu Gratis
                 </RouterLink>

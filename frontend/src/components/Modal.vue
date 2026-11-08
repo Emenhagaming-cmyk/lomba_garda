@@ -19,7 +19,7 @@ const emit = defineEmits(['close']);
                     <h3 class="text-base font-bold text-gray-900">{{ title }}</h3>
                     <button
                         type="button"
-                        class="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+                        class="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
                         aria-label="Tutup"
                         @click="emit('close')"
                     >

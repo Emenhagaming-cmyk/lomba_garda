@@ -72,7 +72,7 @@ onMounted(loadSales);
             <span class="text-sm text-gray-400">{{ pagination.total.toLocaleString('id-ID') }} transaksi</span>
         </div>
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -83,29 +83,29 @@ onMounted(loadSales);
                 <table class="w-full text-left text-sm">
                     <thead class="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
                         <tr>
-                            <th class="px-5 py-3">Invoice</th>
-                            <th class="px-5 py-3">Waktu</th>
-                            <th class="px-5 py-3">Pelanggan</th>
-                            <th class="px-5 py-3">Metode</th>
-                            <th class="px-5 py-3 text-right">Total</th>
+                            <th class="px-3 py-3 sm:px-5">Invoice</th>
+                            <th class="px-3 py-3 sm:px-5">Waktu</th>
+                            <th class="px-3 py-3 sm:px-5">Pelanggan</th>
+                            <th class="px-3 py-3 sm:px-5">Metode</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Total</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <tr v-for="sale in sales" :key="sale.id" class="hover:bg-gray-50/60">
-                            <td class="px-5 py-3 font-medium text-gray-900">{{ sale.invoice_no }}</td>
-                            <td class="px-5 py-3 text-gray-600">{{ formatDateTime(sale.created_at) }}</td>
-                            <td class="px-5 py-3 text-gray-600">{{ sale.customer?.name || 'Walk-in' }}</td>
-                            <td class="px-5 py-3">
+                            <td class="px-3 py-3 sm:px-5 font-medium text-gray-900">{{ sale.invoice_no }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">{{ formatDateTime(sale.created_at) }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">{{ sale.customer?.name || 'Walk-in' }}</td>
+                            <td class="px-3 py-3 sm:px-5">
                                 <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
                                     {{ paymentMethodLabel(sale.payment_method) }}
                                 </span>
                             </td>
-                            <td class="px-5 py-3 text-right font-semibold text-gray-900">{{ formatRupiah(sale.total) }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right font-semibold text-gray-900">{{ formatRupiah(sale.total) }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div v-else class="px-5 py-16 text-center">
+            <div v-else class="px-5 py-10 sm:py-16 text-center">
                 <p class="text-sm font-medium text-gray-700">Belum ada penjualan</p>
                 <p class="mt-1 text-sm text-gray-400">Catat transaksi pertama untuk mulai mengisi riwayat.</p>
                 <RouterLink to="/sales/new" class="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700">

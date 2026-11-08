@@ -97,13 +97,13 @@ onMounted(load);
     <div class="space-y-6">
         <PageHeader title="Follow-up" description="Jadwal tindak lanjut lead dan pelanggan yang mulai pasif.">
             <template #actions>
-                <button type="button" class="text-sm font-semibold text-primary-600 hover:text-primary-700" @click="load">Muat ulang</button>
+                <button type="button" class="rounded-lg px-2 py-2 text-sm font-semibold text-primary-600 hover:bg-primary-50 hover:text-primary-700" @click="load">Muat ulang</button>
             </template>
         </PageHeader>
 
         <p v-if="error" class="rounded-xl bg-red-50 px-5 py-4 text-sm text-red-600">{{ error }}</p>
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -111,27 +111,27 @@ onMounted(load);
             <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
                 <div class="rounded-xl border border-red-100 bg-red-50/70 px-5 py-4">
                     <p class="text-sm text-red-600">Terlambat</p>
-                    <p class="mt-1 text-2xl font-bold text-red-700">{{ data.counts.overdue || 0 }}</p>
+                    <p class="mt-1 text-xl font-bold sm:text-2xl text-red-700">{{ data.counts.overdue || 0 }}</p>
                 </div>
                 <div class="rounded-xl border border-amber-100 bg-amber-50/70 px-5 py-4">
                     <p class="text-sm text-amber-600">Hari ini</p>
-                    <p class="mt-1 text-2xl font-bold text-amber-700">{{ data.counts.today || 0 }}</p>
+                    <p class="mt-1 text-xl font-bold sm:text-2xl text-amber-700">{{ data.counts.today || 0 }}</p>
                 </div>
                 <div class="rounded-xl border border-gray-200 bg-white px-5 py-4">
                     <p class="text-sm text-gray-500">7 hari ke depan</p>
-                    <p class="mt-1 text-2xl font-bold text-gray-900">{{ data.counts.upcoming || 0 }}</p>
+                    <p class="mt-1 text-xl font-bold sm:text-2xl text-gray-900">{{ data.counts.upcoming || 0 }}</p>
                 </div>
                 <div class="rounded-xl border border-primary-100 bg-primary-50/70 px-5 py-4">
                     <p class="text-sm text-primary-600">Pelanggan pasif</p>
-                    <p class="mt-1 text-2xl font-bold text-primary-700">{{ data.counts.customers || 0 }}</p>
+                    <p class="mt-1 text-xl font-bold sm:text-2xl text-primary-700">{{ data.counts.customers || 0 }}</p>
                 </div>
             </div>
 
-            <p v-if="!hasAny" class="rounded-xl bg-white px-5 py-12 text-center text-sm text-gray-500">
+            <p v-if="!hasAny" class="rounded-xl bg-white px-5 py-8 sm:py-12 text-center text-sm text-gray-500">
                 Tidak ada follow-up yang perlu dilakukan. Kerja bagus!
             </p>
 
-            <section v-for="group in groups" :key="group.key" class="rounded-xl border p-5" :class="group.classes">
+            <section v-for="group in groups" :key="group.key" class="rounded-xl border p-4 sm:p-5" :class="group.classes">
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="font-semibold text-gray-900">{{ group.label }}</h3>
                     <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600">{{ group.items.length }}</span>
@@ -152,20 +152,20 @@ onMounted(load);
                             <p v-if="lead.notes" class="mt-0.5 text-xs italic text-gray-400">{{ lead.notes }}</p>
                         </div>
 
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <a
                                 v-if="whatsappLink(lead.phone, leadMessage(lead))"
                                 :href="whatsappLink(lead.phone, leadMessage(lead))"
                                 target="_blank"
                                 rel="noopener"
-                                class="rounded-lg border border-emerald-200 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50"
+                                class="rounded-lg border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-50"
                             >
                                 WhatsApp
                             </a>
                             <button
                                 type="button"
                                 :disabled="updating"
-                                class="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 disabled:opacity-50"
+                                class="rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50 disabled:opacity-50"
                                 @click="startReschedule(lead)"
                             >
                                 Jadwalkan ulang
@@ -173,7 +173,7 @@ onMounted(load);
                             <button
                                 type="button"
                                 :disabled="updating"
-                                class="rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-700 disabled:opacity-50"
+                                class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700 disabled:opacity-50"
                                 @click="markDone(lead)"
                             >
                                 Selesai
@@ -183,7 +183,7 @@ onMounted(load);
                 </div>
             </section>
 
-            <div class="rounded-xl border border-gray-200 bg-white p-5">
+            <div class="rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="font-semibold text-gray-900">Pelanggan perlu perhatian</h3>
                     <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600">{{ data.customers.length }}</span>
@@ -203,17 +203,17 @@ onMounted(load);
                             </p>
                         </div>
 
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center justify-end gap-2">
                             <a
                                 v-if="customer.phone"
                                 :href="whatsappLink(customer.phone, customerMessage(customer))"
                                 target="_blank"
                                 rel="noopener"
-                                class="rounded-lg border border-emerald-200 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50"
+                                class="rounded-lg border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-50"
                             >
                                 WhatsApp
                             </a>
-                            <RouterLink :to="{ name: 'sales-new', query: { customer_id: customer.id } }" class="rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-700">
+                            <RouterLink :to="{ name: 'sales-new', query: { customer_id: customer.id } }" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700">
                                 Buat penjualan
                             </RouterLink>
                         </div>

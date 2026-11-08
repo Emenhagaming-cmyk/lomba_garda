@@ -138,7 +138,7 @@ onMounted(loadStock);
             </button>
         </div>
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -149,36 +149,36 @@ onMounted(loadStock);
                 <table class="w-full text-left text-sm">
                     <thead class="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
                         <tr>
-                            <th class="px-5 py-3">Produk</th>
-                            <th class="px-5 py-3">Kategori</th>
-                            <th class="px-5 py-3">Supplier</th>
-                            <th class="px-5 py-3 text-right">Stok</th>
-                            <th class="px-5 py-3 text-right">Minimum</th>
-                            <th class="px-5 py-3 text-right">Status</th>
-                            <th class="px-5 py-3 text-right">Aksi</th>
+                            <th class="px-3 py-3 sm:px-5">Produk</th>
+                            <th class="px-3 py-3 sm:px-5">Kategori</th>
+                            <th class="px-3 py-3 sm:px-5">Supplier</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Stok</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Minimum</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Status</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <tr v-for="item in stock" :key="item.id" class="hover:bg-gray-50/60">
-                            <td class="px-5 py-3">
+                            <td class="px-3 py-3 sm:px-5">
                                 <p class="font-semibold text-gray-900">{{ item.name }}</p>
                                 <p v-if="item.last_updated" class="text-xs text-gray-400">update {{ formatDateTime(item.last_updated) }}</p>
                             </td>
-                            <td class="px-5 py-3 text-gray-600">{{ item.category || '—' }}</td>
-                            <td class="px-5 py-3 text-gray-600">{{ item.supplier || '—' }}</td>
-                            <td class="px-5 py-3 text-right font-semibold text-gray-900">{{ item.stock.toLocaleString('id-ID') }}</td>
-                            <td class="px-5 py-3 text-right text-gray-500">{{ item.min_stock }}</td>
-                            <td class="px-5 py-3 text-right">
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">{{ item.category || '—' }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">{{ item.supplier || '—' }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right font-semibold text-gray-900">{{ item.stock.toLocaleString('id-ID') }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right text-gray-500">{{ item.min_stock }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right">
                                 <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="statusBadge(item)">
                                     {{ statusLabel(item) }}
                                 </span>
                             </td>
-                            <td class="px-5 py-3 text-right">
+                            <td class="px-3 py-3 sm:px-5 text-right">
                                 <div class="inline-flex items-center gap-1">
-                                    <button type="button" class="rounded-lg px-2 py-1 text-xs font-semibold text-primary-600 hover:bg-primary-50" @click="openAdjust(item)">
+                                    <button type="button" class="rounded-lg px-2.5 py-2 text-xs font-semibold text-primary-600 hover:bg-primary-50" @click="openAdjust(item)">
                                         Adjust
                                     </button>
-                                    <button type="button" class="rounded-lg px-2 py-1 text-xs font-semibold text-gray-500 hover:bg-gray-100" @click="openMovements(item)">
+                                    <button type="button" class="rounded-lg px-2.5 py-2 text-xs font-semibold text-gray-500 hover:bg-gray-100" @click="openMovements(item)">
                                         Riwayat
                                     </button>
                                 </div>
@@ -187,7 +187,7 @@ onMounted(loadStock);
                     </tbody>
                 </table>
             </div>
-            <div v-else class="px-5 py-16 text-center text-sm text-gray-500">Tidak ada produk dalam filter ini.</div>
+            <div v-else class="px-5 py-10 sm:py-16 text-center text-sm text-gray-500">Tidak ada produk dalam filter ini.</div>
         </div>
 
         <!-- Adjust modal -->

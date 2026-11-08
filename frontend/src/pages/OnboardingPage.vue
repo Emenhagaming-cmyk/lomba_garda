@@ -99,7 +99,7 @@ async function submit() {
             </div>
 
             <div
-                class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8"
+                class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8"
             >
                 <!-- Stepper -->
                 <div
@@ -158,7 +158,7 @@ async function submit() {
                             class="text-sm font-semibold text-gray-800 group-hover:text-primary-700"
                             >{{ item.label }}</span
                         >
-                        <span class="text-[11px] leading-tight text-gray-400">{{
+                        <span class="hidden text-[11px] leading-tight text-gray-400 sm:block">{{
                             item.description
                         }}</span>
                     </button>
@@ -204,7 +204,7 @@ async function submit() {
                         {{ error }}
                     </p>
 
-                    <div class="mt-6 flex items-center justify-between gap-3">
+                    <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <button
                             type="button"
                             class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
@@ -215,7 +215,7 @@ async function submit() {
                         <button
                             type="submit"
                             :disabled="saving"
-                            class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                         >
                             {{ saving ? "Menyimpan…" : "Masuk ke Dashboard" }}
                             <svg

@@ -105,7 +105,7 @@ onMounted(loadCustomers);
             <span class="text-sm text-gray-400">{{ customers.length }} pelanggan</span>
         </div>
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -113,26 +113,26 @@ onMounted(loadCustomers);
 
         <div v-else class="rounded-xl border border-gray-200 bg-white shadow-sm">
             <div v-if="customers.length" class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
+                <table class="w-full min-w-[560px] text-left text-sm">
                     <thead class="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
                         <tr>
-                            <th class="px-5 py-3">Nama</th>
-                            <th class="px-5 py-3">Kontak</th>
-                            <th class="px-5 py-3 text-right">Transaksi</th>
-                            <th class="px-5 py-3 text-right">Total Belanja</th>
-                            <th class="px-5 py-3 text-right">Segmen</th>
+                            <th class="px-3 py-3 sm:px-5">Nama</th>
+                            <th class="px-3 py-3 sm:px-5">Kontak</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Transaksi</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Total Belanja</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Segmen</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <tr v-for="customer in customers" :key="customer.id" class="cursor-pointer hover:bg-gray-50/60" @click="openDetail(customer)">
-                            <td class="px-5 py-3 font-semibold text-gray-900">{{ customer.name }}</td>
-                            <td class="px-5 py-3 text-gray-600">
+                            <td class="px-3 py-3 sm:px-5 font-semibold text-gray-900">{{ customer.name }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">
                                 <p class="text-sm">{{ customer.phone || '—' }}</p>
                                 <p class="text-xs text-gray-400">{{ customer.email || '' }}</p>
                             </td>
-                            <td class="px-5 py-3 text-right text-gray-600">{{ customer.order_count }}</td>
-                            <td class="px-5 py-3 text-right font-semibold text-gray-900">{{ formatRupiah(customer.total_spending) }}</td>
-                            <td class="px-5 py-3 text-right">
+                            <td class="px-3 py-3 sm:px-5 text-right text-gray-600">{{ customer.order_count }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right font-semibold text-gray-900">{{ formatRupiah(customer.total_spending) }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right">
                                 <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="segmentClasses(customer.segment)">
                                     {{ segmentLabel(customer.segment) }}
                                 </span>
@@ -141,7 +141,7 @@ onMounted(loadCustomers);
                     </tbody>
                 </table>
             </div>
-            <div v-else class="px-5 py-16 text-center">
+            <div v-else class="px-5 py-10 sm:py-16 text-center">
                 <p class="text-sm font-medium text-gray-700">Belum ada pelanggan</p>
                 <p class="mt-1 text-sm text-gray-400">Pelanggan muncul otomatis saat transaksi dicatat dengan nama.</p>
             </div>
@@ -153,7 +153,7 @@ onMounted(loadCustomers);
             <div class="h-6 w-6 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
         <div v-else-if="detail" class="space-y-5">
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div class="rounded-lg bg-gray-50 px-3 py-2.5 text-center">
                     <p class="text-lg font-bold text-gray-900">{{ formatRupiah(detail.metrics.total_spending) }}</p>
                     <p class="text-xs text-gray-500">Total Belanja</p>
@@ -226,7 +226,7 @@ onMounted(loadCustomers);
                     <label class="block text-sm font-medium text-gray-700">Nama *</label>
                     <input v-model="createForm.name" type="text" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" placeholder="Nama pelanggan" />
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Telepon</label>
                         <input v-model="createForm.phone" type="text" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" />

@@ -170,8 +170,8 @@ onMounted(async () => {
     <div class="space-y-6">
         <PageHeader title="Produk" description="Katalog produk, harga, dan margin.">
             <template #actions>
-                <div class="flex items-center gap-2">
-                    <div class="relative">
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="relative min-w-0 flex-1">
                         <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="11" cy="11" r="7"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -180,12 +180,12 @@ onMounted(async () => {
                             v-model="search"
                             type="text"
                             placeholder="Cari produk…"
-                            class="rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30"
+                            class="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30"
                         />
                     </div>
                     <button
                         type="button"
-                        class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
+                        class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
                         @click="openCreate"
                     >
                         <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -198,7 +198,7 @@ onMounted(async () => {
             </template>
         </PageHeader>
 
-        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-20">
+        <div v-if="loading" class="flex items-center justify-center rounded-xl bg-white py-10 sm:py-20">
             <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
         </div>
 
@@ -209,25 +209,25 @@ onMounted(async () => {
                 <table class="w-full text-left text-sm">
                     <thead class="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
                         <tr>
-                            <th class="px-5 py-3">Produk</th>
-                            <th class="px-5 py-3">Kategori</th>
-                            <th class="px-5 py-3 text-right">Stok</th>
-                            <th class="px-5 py-3 text-right">Harga Beli</th>
-                            <th class="px-5 py-3 text-right">Harga Jual</th>
-                            <th class="px-5 py-3 text-right">Margin</th>
-                            <th class="px-5 py-3 text-right">Aksi</th>
+                            <th class="px-3 py-3 sm:px-5">Produk</th>
+                            <th class="px-3 py-3 sm:px-5">Kategori</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Stok</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Harga Beli</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Harga Jual</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Margin</th>
+                            <th class="px-3 py-3 sm:px-5 text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <tr v-for="product in products" :key="product.id" class="hover:bg-gray-50/60">
-                            <td class="px-5 py-3">
+                            <td class="px-3 py-3 sm:px-5">
                                 <p class="font-semibold text-gray-900" :class="!product.is_active ? 'text-gray-400 line-through' : ''">
                                     {{ product.name }}
                                 </p>
                                 <p class="text-xs text-gray-400">{{ product.sku || '—' }} {{ product.supplier ? '· ' + product.supplier : '' }}</p>
                             </td>
-                            <td class="px-5 py-3 text-gray-600">{{ product.category || '—' }}</td>
-                            <td class="px-5 py-3 text-right">
+                            <td class="px-3 py-3 sm:px-5 text-gray-600">{{ product.category || '—' }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right">
                                 <span class="inline-flex items-center gap-2">
                                     <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="badgeClasses(product.stock, product.min_stock)">
                                         {{ product.stock }} {{ product.unit }}
@@ -235,16 +235,16 @@ onMounted(async () => {
                                     <span class="text-xs text-gray-400">{{ stockStatusLabel(product.stock, product.min_stock) }}</span>
                                 </span>
                             </td>
-                            <td class="px-5 py-3 text-right text-gray-600">{{ formatRupiah(product.buy_price) }}</td>
-                            <td class="px-5 py-3 text-right font-semibold text-gray-900">{{ formatRupiah(product.sell_price) }}</td>
-                            <td class="px-5 py-3 text-right text-emerald-600">
+                            <td class="px-3 py-3 sm:px-5 text-right text-gray-600">{{ formatRupiah(product.buy_price) }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right font-semibold text-gray-900">{{ formatRupiah(product.sell_price) }}</td>
+                            <td class="px-3 py-3 sm:px-5 text-right text-emerald-600">
                                 {{ product.sell_price ? Math.round(((product.sell_price - product.hpp) / product.sell_price) * 100) + '%' : '—' }}
                             </td>
-                            <td class="px-5 py-3 text-right">
+                            <td class="px-3 py-3 sm:px-5 text-right">
                                 <div class="inline-flex items-center gap-1">
                                     <button
                                         type="button"
-                                        class="rounded-lg px-2 py-1 text-xs font-semibold text-primary-600 hover:bg-primary-50"
+                                        class="rounded-lg px-2.5 py-2 text-xs font-semibold text-primary-600 hover:bg-primary-50"
                                         @click="openEdit(product)"
                                     >
                                         Edit
@@ -252,7 +252,7 @@ onMounted(async () => {
                                     <button
                                         v-if="product.is_active"
                                         type="button"
-                                        class="rounded-lg px-2 py-1 text-xs font-semibold text-red-600 hover:bg-red-50"
+                                        class="rounded-lg px-2.5 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
                                         @click="deactivate(product)"
                                     >
                                         Hapus
@@ -263,7 +263,7 @@ onMounted(async () => {
                     </tbody>
                 </table>
             </div>
-            <div v-else class="px-5 py-16 text-center">
+            <div v-else class="px-5 py-10 sm:py-16 text-center">
                 <p class="text-sm font-medium text-gray-700">Belum ada produk</p>
                 <p class="mt-1 text-sm text-gray-400">Tambahkan produk pertama ke katalog usaha kamu.</p>
                 <button type="button" class="mt-4 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700" @click="openCreate">
@@ -284,7 +284,7 @@ onMounted(async () => {
                     <input id="p-name" v-model="form.name" type="text" required class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30" />
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label for="p-sku" class="block text-sm font-medium text-gray-700">SKU / Kode</label>
                         <input id="p-sku" v-model="form.sku" type="text" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" />
@@ -298,7 +298,7 @@ onMounted(async () => {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label for="p-unit" class="block text-sm font-medium text-gray-700">Satuan</label>
                         <select id="p-unit" v-model="form.unit" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none">
@@ -320,7 +320,7 @@ onMounted(async () => {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label for="p-buy" class="block text-sm font-medium text-gray-700">Harga beli (Rp) *</label>
                         <input id="p-buy" v-model="form.buy_price" type="number" min="0" required class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" />
@@ -331,7 +331,7 @@ onMounted(async () => {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label for="p-hpp" class="block text-sm font-medium text-gray-700">HPP (Rp)</label>
                         <input id="p-hpp" v-model="form.hpp" type="number" min="0" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none" />

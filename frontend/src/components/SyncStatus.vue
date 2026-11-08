@@ -32,7 +32,7 @@ const statusLabels = {
 </script>
 
 <template>
-    <div :class="statusClasses" role="status" aria-live="polite">
+    <div :class="statusClasses" role="status" aria-live="polite" :title="statusLabels[sync.syncStatus]">
         <svg v-if="sync.syncStatus === 'offline'" class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
@@ -48,8 +48,8 @@ const statusLabels = {
         <svg v-else class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span>{{ statusLabels[sync.syncStatus] }}</span>
-        <span v-if="sync.lastSyncTime" class="text-[10px] opacity-75">
+        <span class="hidden sm:inline">{{ statusLabels[sync.syncStatus] }}</span>
+        <span v-if="sync.lastSyncTime" class="hidden text-[10px] opacity-75 sm:inline">
             ({{ formatTime(sync.lastSyncTime) }})
         </span>
     </div>

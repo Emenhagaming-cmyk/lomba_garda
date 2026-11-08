@@ -8,6 +8,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportAiController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
@@ -56,4 +57,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/leads/{lead}', [LeadController::class, 'update']);
 
     Route::get('/reports/summary', [ReportController::class, 'summary']);
+    Route::post('/reports/ai/chat', [ReportAiController::class, 'chat']);
 });

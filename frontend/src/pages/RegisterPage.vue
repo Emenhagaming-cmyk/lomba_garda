@@ -33,10 +33,10 @@ async function submit() {
 <template>
     <div class="min-h-screen flex bg-white">
         <!-- Left: Form -->
-        <div class="relative flex w-full items-center justify-center px-6 py-12 lg:w-1/2">
+        <div class="relative flex w-full items-center justify-center px-5 py-8 sm:px-6 sm:py-12 lg:w-1/2">
             <RouterLink
                 to="/"
-                class="absolute top-6 left-6 flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-semibold text-primary-600 transition hover:border-primary-200 hover:bg-primary-50"
+                class="absolute top-5 left-5 flex items-center gap-2 rounded-full sm:top-6 sm:left-6 border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-primary-600 transition hover:border-primary-200 hover:bg-primary-50"
             >
                 <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M10 3l-5 5 5 5"></path>
@@ -46,11 +46,11 @@ async function submit() {
 
             <div class="w-full max-w-sm">
                 <div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-primary-600">TokoKu</h1>
+                    <h1 class="text-2xl font-bold text-primary-600 sm:text-3xl">TokoKu</h1>
                     <p class="text-gray-500 mt-2">Buat akun dan mulai kelola bisnis UMKM-mu</p>
                 </div>
 
-                <form @submit.prevent="submit" class="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
+                <form @submit.prevent="submit" class="bg-white border border-gray-200 rounded-2xl p-5 space-y-4 shadow-sm sm:p-6">
                     <div v-if="errorMessage" role="alert" class="text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg px-3 py-2 whitespace-pre-line">
                         {{ errorMessage }}
                     </div>

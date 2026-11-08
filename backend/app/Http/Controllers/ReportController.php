@@ -23,7 +23,9 @@ class ReportController extends Controller
         $cogs = (int) SaleItem::whereHas('sale', fn ($q) => $q->where('business_id', $businessId)->whereBetween('created_at', [$from, $to]))
             ->selectRaw('SUM(cost_price * quantity) as cogs')
             ->value('cogs');
-        $expenses = (int) Expense::where('business_id', $businessId)->whereBetween('created_at', [$from, $to])->sum('amount');
+        $expenses = (int) Expense::where('business_id', $businessId)
+            ->whereBetween('expense_date', [$from->toDateString(), $to->toDateString()])
+            ->sum('amount');
         $gross = max(0, $revenue - $cogs);
         $net = $gross - $expenses;
 

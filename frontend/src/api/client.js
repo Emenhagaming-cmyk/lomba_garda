@@ -48,7 +48,21 @@ export function formatApiError(error, fallback) {
         return Object.values(payload.details).flat().join('\n');
     }
 
-    return message || fallback;
+    if (message) {
+        return message;
+    }
+
+    const status = error?.response?.status;
+
+    if (status === 419) {
+        return 'Sesi kedaluwarsa. Muat ulang halaman lalu coba lagi.';
+    }
+
+    if (status >= 500) {
+        return 'Terjadi kesalahan server. Coba lagi beberapa saat.';
+    }
+
+    return fallback;
 }
 
 export async function requestWithOfflineSupport(config, offlineData = null) {

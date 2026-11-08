@@ -4,9 +4,9 @@
             <!-- <div class="absolute -top-40 left-1/2 h-[26rem] w-[36rem] -translate-x-1/2 rounded-full bg-primary-100 blur-3xl sm:h-[34rem] sm:w-[54rem]"></div> -->
         </div>
 
-        <div class="relative mx-auto grid max-w-6xl items-center gap-10 pb-14 sm:pb-16 lg:grid-cols-2 lg:gap-16 lg:pb-24">
+        <div class="relative mx-auto grid max-w-6xl items-center gap-8 pb-10 sm:gap-10 sm:pb-16 lg:grid-cols-2 lg:gap-16 lg:pb-24">
             <div class="text-center lg:text-left">
-                <h1 class="text-3xl leading-tight font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+                <h1 class="text-2xl leading-snug font-bold text-gray-900 sm:text-4xl sm:leading-tight lg:text-5xl">
                     Satu aplikasi untuk <span class="text-primary-600">seluruh operasional</span>
                     bisnis <b>UMKM</b> anda.
                 </h1>
@@ -34,8 +34,8 @@
                     Tanpa kartu kredit dan Bisa dipakai secara offline.
                 </p> -->
 
-                <div class="mt-12 flex justify-center lg:hidden">
-                    <AppMockCard class="w-full max-w-md rotate-1 shadow-2xl shadow-gray-200" />
+                <div class="mt-10 flex justify-center sm:mt-12 lg:hidden">
+                    <AppMockCard class="w-full max-w-md shadow-2xl shadow-gray-200 sm:rotate-1" />
                 </div>
             </div>
 

@@ -15,7 +15,7 @@ defineProps({
 
         <div
             role="status"
-            class="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-6 py-16 text-center"
+            class="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-5 py-10 sm:px-6 sm:py-16 text-center"
         >
             <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-50" aria-hidden="true">
                 <svg viewBox="0 0 24 24" class="h-7 w-7 text-primary-500" fill="none" stroke="currentColor" stroke-width="1.5">
