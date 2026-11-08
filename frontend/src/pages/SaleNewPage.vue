@@ -199,9 +199,9 @@ onMounted(async () => {
 
 <template>
     <div class="space-y-6">
-        <PageHeader title="Transaksi Baru" description="Catat penjualan — stok, keuangan, dan pelanggan ter-update otomatis.">
+        <PageHeader title="Transaksi Baru" description="Catat semua penjualanmu, stok, keuangan dan pelanggan ter-update otomatis.">
             <template #actions>
-                <RouterLink to="/sales" class="text-sm font-semibold text-primary-600 hover:text-primary-700">← Riwayat Penjualan</RouterLink>
+                <RouterLink to="/sales" class="text-sm font-semibold text-primary-600 hover:text-primary-700">Riwayat Penjualan</RouterLink>
             </template>
         </PageHeader>
 

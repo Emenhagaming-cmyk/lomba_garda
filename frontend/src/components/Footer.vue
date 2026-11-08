@@ -1,5 +1,5 @@
 <template>
-    <footer class="overflow-hidden border-t border-gray-200 bg-gray-50 text-gray-900">
+    <footer class="overflow-hidden border-t border-gray-200 bg-white-50 text-gray-900">
         <div class="mx-auto max-w-6xl px-4 pt-10 sm:pt-12">
             <div class="flex flex-col gap-7 sm:flex-row sm:items-start sm:justify-between sm:gap-12">
                 <nav class="grid grid-cols-3 gap-x-4 gap-y-7 sm:flex sm:gap-x-14" aria-label="Navigasi footer">
@@ -33,10 +33,10 @@
                 </nav>
 
                 <div class="sm:text-right">
-                    <h4 class="mb-2.5 text-sm font-semibold text-gray-900">Didukung oleh</h4>
+                    <h4 class="mb-2.5 text-sm font-semibold text-gray-900"></h4>
                     <div class="flex items-center gap-4 sm:justify-end">
-                        <img :src="'/panitia/garda.png'" alt="Garda" class="h-9 w-auto object-contain sm:h-10">
-                        <img :src="'/panitia/gtnic.png'" alt="GTNIC 2026" class="h-9 w-auto object-contain sm:h-10">
+                        <img :src="'/panitia/gardanew.png'" alt="Garda" class="h-9 w-auto object-contain sm:h-20">
+                        <img :src="'/panitia/gtnic2.png'" alt="GTNIC 2026" class="h-9 w-auto object-contain sm:h-20">
                     </div>
                 </div>
 
