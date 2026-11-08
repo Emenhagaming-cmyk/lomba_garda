@@ -25,6 +25,10 @@
           @click.prevent="scrollTo('cara-kerja')"
           class="rounded-full px-2.5 py-2 text-xs whitespace-nowrap text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 sm:px-3.5 sm:text-sm"
         >Cara kerja</a>
+        <RouterLink
+          to="/blog"
+          class="rounded-full px-2.5 py-2 text-xs whitespace-nowrap text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 sm:px-3.5 sm:text-sm"
+        >Berita</RouterLink>
 
         <div class="mx-1 h-4 w-px shrink-0 bg-gray-200"></div>
       </div>
