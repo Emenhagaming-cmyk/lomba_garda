@@ -71,7 +71,9 @@ onMounted(loadArticle);
                     <span>{{ article.read_minutes }} menit baca</span>
                 </div>
                 <h1 class="text-3xl font-bold leading-tight text-gray-900">{{ article.title }}</h1>
-                <p class="text-sm text-gray-500">Oleh {{ article.author }}</p>
+                <p class="text-sm text-gray-500">
+                    Oleh {{ article.author }}<span v-if="article.author_role"> · {{ article.author_role }}</span>
+                </p>
             </header>
 
             <div class="article-body space-y-4 text-[15px] leading-relaxed text-gray-700" v-html="bodyHtml"></div>

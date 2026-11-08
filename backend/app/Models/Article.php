@@ -13,6 +13,7 @@ class Article extends Model
         'title',
         'category',
         'author',
+        'author_role',
         'excerpt',
         'body',
         'read_minutes',

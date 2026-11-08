@@ -59,6 +59,7 @@ class ArticleController extends Controller
             'title' => $article->title,
             'category' => $article->category,
             'author' => $article->author,
+            'author_role' => $article->author_role,
             'excerpt' => $article->excerpt,
             'read_minutes' => $article->read_minutes,
             'published_at' => $article->published_at?->toIso8601String(),

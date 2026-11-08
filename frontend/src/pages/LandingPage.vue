@@ -4,6 +4,7 @@ import FloatingNav from '../components/FloatingNav.vue';
 import Footer from '../components/Footer.vue';
 import ShowcaseSection from '../components/landing/ShowcaseSection.vue';
 import ContrastSection from '../components/landing/ContrastSection.vue';
+import StoriesSection from '../components/landing/StoriesSection.vue';
 </script>
 
 <template>
@@ -79,6 +80,8 @@ import ContrastSection from '../components/landing/ContrastSection.vue';
             <ShowcaseSection />
 
             <ContrastSection />
+
+            <StoriesSection />
 
             <section id="cta" class="mx-auto max-w-6xl py-10 text-center sm:py-20">
                 <img
