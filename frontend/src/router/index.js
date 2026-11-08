@@ -96,6 +96,12 @@ const router = createRouter({
             meta: { public: true },
         },
         {
+            path: '/blog/:slug',
+            name: 'blog-post',
+            component: () => import('../pages/BlogPostPage.vue'),
+            meta: { public: true },
+        },
+        {
             path: '/help',
             name: 'help',
             component: () => import('../pages/HelpPage.vue'),
@@ -210,7 +216,7 @@ router.beforeEach(async (to) => {
         await auth.fetchUser();
     }
 
-    if (to.meta.public && auth.isAuthenticated && to.name !== 'landing') {
+    if (to.meta.public && auth.isAuthenticated && !['landing', 'blog', 'blog-post'].includes(to.name)) {
         return { name: 'dashboard' };
     }
 

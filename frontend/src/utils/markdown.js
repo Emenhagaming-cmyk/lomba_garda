@@ -32,11 +32,20 @@ export function renderMarkdown(text) {
             continue;
         }
 
-        const heading = line.match(/^#{1,6}\s+(.*)$/);
+        const heading = line.match(/^(#{1,6})\s+(.*)$/);
 
         if (heading) {
             closeList();
-            html += `<p class="font-semibold">${renderInline(heading[1])}</p>`;
+            const size = heading[1].length === 1 ? ' text-lg' : '';
+            html += `<p class="font-bold${size}">${renderInline(heading[2])}</p>`;
+            continue;
+        }
+
+        const quote = line.match(/^&gt;\s?(.*)$/);
+
+        if (quote) {
+            closeList();
+            html += `<blockquote class="border-l-2 border-primary-600 pl-3 italic text-gray-600">${renderInline(quote[1])}</blockquote>`;
             continue;
         }
 

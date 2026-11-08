@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CustomerController;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get('/showcase', [ShowcaseController::class, 'index']);
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/articles/{article}', [ArticleController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);

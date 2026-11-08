@@ -18,7 +18,7 @@
                         <ul class="space-y-0.5 text-sm text-gray-500">
                             <li><RouterLink to="/about" class="inline-block py-1 transition hover:text-gray-900">Tentang</RouterLink></li>
                             <li><RouterLink to="/careers" class="inline-block py-1 transition hover:text-gray-900">Karir</RouterLink></li>
-                            <li><RouterLink to="/blog" class="inline-block py-1 transition hover:text-gray-900">Blog</RouterLink></li>
+                            <li><RouterLink to="/blog" class="inline-block py-1 transition hover:text-gray-900">Berita</RouterLink></li>
                         </ul>
                     </div>
 
