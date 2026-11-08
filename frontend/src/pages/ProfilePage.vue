@@ -31,7 +31,7 @@ const icons = {
 
 const menus = computed(() => [
     { key: 'profile', label: 'Profil Saya', enabled: true },
-    { key: 'messages', label: 'Pesan', enabled: false, hint: 'Segera' },
+    { key: 'messages', label: 'Pesan', enabled: isSeller.value, hint: isSeller.value ? '' : 'Khusus penjual' },
     { key: 'favourite', label: 'Favorit', enabled: false, hint: 'Segera' },
     { key: 'location', label: 'Lokasi', enabled: false, hint: 'Segera' },
     { key: 'settings', label: 'Pengaturan', enabled: isSeller.value },
@@ -54,6 +54,12 @@ function openMenu(menu) {
     if (menu.key === 'profile') {
         editing.value = true;
         name.value = user.value?.name ?? '';
+
+        return;
+    }
+
+    if (menu.key === 'messages') {
+        router.push({ name: 'messages' });
 
         return;
     }

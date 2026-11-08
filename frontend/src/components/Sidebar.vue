@@ -19,6 +19,7 @@ const navGroups = [
         items: [
             { name: 'Stok', path: '/inventory', icon: 'warehouse' },
             { name: 'Pembelian', path: '/purchase', icon: 'truck' },
+            { name: 'Pemasok', path: '/suppliers', icon: 'pin' },
         ],
     },
     {
@@ -27,6 +28,7 @@ const navGroups = [
             { name: 'Pelanggan', path: '/customers', icon: 'users' },
             { name: 'Leads', path: '/leads', icon: 'target' },
             { name: 'Follow-up', path: '/follow-ups', icon: 'clock' },
+            { name: 'Pesan', path: '/messages', icon: 'chat' },
         ],
     },
     {
@@ -98,6 +100,13 @@ const navGroups = [
                                     <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
                                     <circle cx="5.5" cy="18.5" r="2.5"></circle>
                                     <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                </template>
+                                <template v-else-if="item.icon === 'pin'">
+                                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 0 1 18 0Z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </template>
+                                <template v-else-if="item.icon === 'chat'">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                 </template>
                                 <template v-else-if="item.icon === 'users'">
                                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>

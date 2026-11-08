@@ -11,8 +11,10 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportAiController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShowcaseController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
@@ -62,4 +64,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/reports/summary', [ReportController::class, 'summary']);
     Route::post('/reports/ai/chat', [ReportAiController::class, 'chat']);
+
+    Route::get('/shops', [ShopController::class, 'index']);
+
+    Route::get('/threads', [ThreadController::class, 'index']);
+    Route::post('/threads', [ThreadController::class, 'store']);
+    Route::get('/threads/{thread}/messages', [ThreadController::class, 'messages']);
+    Route::post('/threads/{thread}/messages', [ThreadController::class, 'reply']);
 });

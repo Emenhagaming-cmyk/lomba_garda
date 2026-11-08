@@ -155,6 +155,16 @@ const router = createRouter({
                     component: () => import('../pages/PurchasePage.vue'),
                 },
                 {
+                    path: '/suppliers',
+                    name: 'suppliers',
+                    component: () => import('../pages/SuppliersPage.vue'),
+                },
+                {
+                    path: '/messages',
+                    name: 'messages',
+                    component: () => import('../pages/MessagesPage.vue'),
+                },
+                {
                     path: '/customers',
                     name: 'customers',
                     component: () => import('../pages/CustomersPage.vue'),
