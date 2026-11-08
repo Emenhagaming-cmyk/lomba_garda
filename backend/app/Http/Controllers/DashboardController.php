@@ -125,7 +125,7 @@ class DashboardController extends Controller
 
         foreach ($deadStock as $product) {
             $last = $lastSales->get($product->id);
-            $days = $last ? Carbon::parse($last)->diffInDays() : 30;
+            $days = $last ? (int) Carbon::parse($last)->diffInDays() : 30;
 
             $insights->push([
                 'type' => 'dead_stock',
@@ -195,7 +195,7 @@ class DashboardController extends Controller
                     'id' => $p->id,
                     'name' => $p->name,
                     'stock' => $p->stock,
-                    'last_sold_days' => $lastSales->has($p->id) ? Carbon::parse($lastSales->get($p->id))->diffInDays() : null,
+                    'last_sold_days' => $lastSales->has($p->id) ? (int) Carbon::parse($lastSales->get($p->id))->diffInDays() : null,
                 ]),
                 'at_risk_customers' => $atRisk,
                 'recent_sales' => $recentSales,
