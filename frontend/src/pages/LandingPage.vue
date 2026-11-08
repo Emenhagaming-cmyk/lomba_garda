@@ -93,7 +93,7 @@ import StoriesSection from '../components/landing/StoriesSection.vue';
                 <p class="mx-auto mt-3 max-w-xl text-base text-gray-500 sm:mt-4 sm:text-lg">Satu platform untuk operasional, pelanggan, keuangan, dan keputusan bisnis. Gratis untuk memulai.</p>
                 <RouterLink
                     to="/register"
-                    class="mt-8 inline-block w-full rounded-xl bg-primary-600 px-8 py-3 font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 sm:w-auto"
+                    class="mt-8 inline-block w-auto rounded-xl bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 sm:px-8 sm:py-3 sm:text-base"
                 >
                     Daftar TokoKu Gratis
                 </RouterLink>

@@ -32,6 +32,14 @@
                     </div>
                 </nav>
 
+                <div class="sm:text-right">
+                    <h4 class="mb-2.5 text-sm font-semibold text-gray-900">Didukung oleh</h4>
+                    <div class="flex items-center gap-4 sm:justify-end">
+                        <img :src="'/panitia/garda.png'" alt="Garda" class="h-9 w-auto object-contain sm:h-10">
+                        <img :src="'/panitia/gtnic.png'" alt="GTNIC 2026" class="h-9 w-auto object-contain sm:h-10">
+                    </div>
+                </div>
+
                 <!-- <button
                     type="button"
                     class="self-start rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-white"
