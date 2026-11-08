@@ -32,13 +32,13 @@
                     </div>
                 </nav>
 
-                <button
+                <!-- <button
                     type="button"
                     class="self-start rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-white"
                     @click="backToTop"
                 >
                     Kembali ke atas <span aria-hidden="true">↑</span>
-                </button>
+                </button> -->
             </div>
 
             <div class="mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
