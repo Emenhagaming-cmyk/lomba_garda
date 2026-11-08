@@ -87,7 +87,7 @@ function analyzeCurrentPeriod() {
             <span v-if="loading" class="text-xs text-primary-600"></span>
         </header>
 
-        <div ref="scrollBox" class="max-h-[45vh] space-y-3 overflow-y-auto sm:max-h-[380px] px-4 py-3">
+        <div ref="scrollBox" class="max-h-[50vh] min-h-[260px] space-y-3 overflow-y-auto px-4 py-3 sm:max-h-[560px]">
             <div v-if="!messages.length" class="space-y-3">
                 <button
                     @click="analyzeCurrentPeriod"
