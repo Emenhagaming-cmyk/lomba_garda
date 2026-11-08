@@ -29,3 +29,13 @@ Homestead.yaml
 
 .vercel
 .env*
+
+# internal docs & agent tooling (bukan bagian aplikasi)
+.kilo/
+AGENTS.md
+PRD.md
+PRD_UMKM_Business_OS.docx
+docs/
+remotion-demo/
+frontend/src/components/sesi.md
+backend/dt_env.php
