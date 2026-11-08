@@ -2,16 +2,8 @@
 import LandingHero from '../components/LandingHero.vue';
 import FloatingNav from '../components/FloatingNav.vue';
 import Footer from '../components/Footer.vue';
-import { useAuthStore } from '../stores/auth';
-import { useRouter, useRoute } from 'vue-router';
-
-const auth = useAuthStore();
-const router = useRouter();
-const route = useRoute();
-
-if (auth.isAuthenticated && route.name === 'landing') {
-  router.replace({ name: 'dashboard' });
-}
+import ShowcaseSection from '../components/landing/ShowcaseSection.vue';
+import ContrastSection from '../components/landing/ContrastSection.vue';
 </script>
 
 <template>
@@ -83,6 +75,10 @@ if (auth.isAuthenticated && route.name === 'landing') {
                     </div>
                 </div>
             </section>
+
+            <ShowcaseSection />
+
+            <ContrastSection />
 
             <section id="cta" class="mx-auto max-w-6xl py-10 text-center sm:py-20">
                 <img

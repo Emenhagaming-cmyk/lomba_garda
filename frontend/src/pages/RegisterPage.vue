@@ -21,7 +21,7 @@ async function submit() {
 
     try {
         await auth.register(name.value, email.value, password.value, passwordConfirmation.value);
-        await router.replace({ name: 'dashboard' });
+        await router.replace({ name: 'landing' });
     } catch (error) {
         errorMessage.value = formatApiError(error, 'Unable to create your account.');
     } finally {

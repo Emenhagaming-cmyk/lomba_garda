@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(BusinessDemoSeeder::class);
+        $this->call(ShowcaseDemoSeeder::class);
     }
 }

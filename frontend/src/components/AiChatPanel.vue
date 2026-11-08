@@ -1,6 +1,7 @@
 <script setup>
 import { nextTick, ref } from 'vue';
 import { formatApiError, http } from '../api/client';
+import { renderMarkdown } from '../utils/markdown';
 
 const props = defineProps({
     period: {
@@ -115,11 +116,16 @@ function analyzeCurrentPeriod() {
                     :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
                 >
                     <p
-                        class="max-w-[85%] whitespace-pre-line break-words rounded-2xl px-3 py-2 text-sm"
-                        :class="message.role === 'user' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-900'"
+                        v-if="message.role === 'user'"
+                        class="max-w-[85%] whitespace-pre-line break-words rounded-2xl bg-primary-600 px-3 py-2 text-sm text-white"
                     >
                         {{ message.content }}
                     </p>
+                    <div
+                        v-else
+                        class="max-w-[85%] space-y-1.5 break-words rounded-2xl bg-gray-100 px-3 py-2 text-sm text-gray-900"
+                        v-html="renderMarkdown(message.content)"
+                    ></div>
                 </div>
 
                 <p v-if="loading" class="text-xs text-gray-500">Fabesky analisis dulu ya</p>

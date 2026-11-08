@@ -42,6 +42,7 @@ class ProductController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'sku' => ['sometimes', 'nullable', 'string', 'max:100', Rule::unique('products', 'sku')],
             'category' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'variant' => ['sometimes', 'nullable', 'string', 'max:100'],
             'unit' => ['sometimes', 'string', 'max:20'],
             'buy_price' => ['required', 'integer', 'min:0'],
@@ -50,6 +51,7 @@ class ProductController extends Controller
             'min_stock' => ['sometimes', 'integer', 'min:0'],
             'supplier_id' => $this->supplierRule($businessId),
             'initial_stock' => ['sometimes', 'integer', 'min:0'],
+            'is_showcased' => ['sometimes', 'boolean'],
         ]);
 
         $product = new Product($validated);
@@ -88,6 +90,7 @@ class ProductController extends Controller
             'name' => ['sometimes', 'string', 'max:255'],
             'sku' => ['sometimes', 'nullable', 'string', 'max:100', Rule::unique('products', 'sku')->ignore($product->id)],
             'category' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'variant' => ['sometimes', 'nullable', 'string', 'max:100'],
             'unit' => ['sometimes', 'string', 'max:20'],
             'buy_price' => ['sometimes', 'integer', 'min:0'],
@@ -96,12 +99,22 @@ class ProductController extends Controller
             'min_stock' => ['sometimes', 'integer', 'min:0'],
             'supplier_id' => $this->supplierRule($this->businessId($request->user())),
             'is_active' => ['sometimes', 'boolean'],
+            'is_showcased' => ['sometimes', 'boolean'],
         ]);
 
         $product->fill($validated);
         $product->save();
 
         return response()->json(['data' => ['product' => $this->serialize($product)]]);
+    }
+
+    public function showcase(Request $request, Product $product): JsonResponse
+    {
+        abort_unless($product->business_id === $this->businessId($request->user()), 404);
+
+        $product->update(['is_showcased' => ! $product->is_showcased]);
+
+        return response()->json(['data' => ['product' => $this->serialize($product->fresh())]]);
     }
 
     public function destroy(Request $request, Product $product): JsonResponse
@@ -131,6 +144,7 @@ class ProductController extends Controller
             'name' => $product->name,
             'sku' => $product->sku,
             'category' => $product->category,
+            'description' => $product->description,
             'variant' => $product->variant,
             'unit' => $product->unit,
             'buy_price' => $product->buy_price,
@@ -141,6 +155,7 @@ class ProductController extends Controller
             'supplier' => $product->supplier?->name,
             'supplier_id' => $product->supplier_id,
             'is_active' => $product->is_active,
+            'is_showcased' => $product->is_showcased,
             'stock_movements' => $product->relationLoaded('stockMovements')
                 ? $product->stockMovements->map(fn (StockMovement $m) => [
                     'id' => $m->id,

@@ -18,6 +18,7 @@ class Product extends Model
         'name',
         'sku',
         'category',
+        'description',
         'variant',
         'unit',
         'buy_price',
@@ -27,10 +28,12 @@ class Product extends Model
         'stock',
         'barcode',
         'is_active',
+        'is_showcased',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_showcased' => 'boolean',
     ];
 
     public function business(): BelongsTo

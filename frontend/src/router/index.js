@@ -30,6 +30,12 @@ const router = createRouter({
             meta: { requiresAuth: true, onboarding: true },
         },
         {
+            path: '/profile',
+            name: 'profile',
+            component: () => import('../pages/ProfilePage.vue'),
+            meta: { requiresAuth: true },
+        },
+        {
             path: '/privacy',
             name: 'privacy',
             component: () => import('../pages/PrivacyPage.vue'),
@@ -194,7 +200,7 @@ router.beforeEach(async (to) => {
         await auth.fetchUser();
     }
 
-    if (to.meta.public && auth.isAuthenticated) {
+    if (to.meta.public && auth.isAuthenticated && to.name !== 'landing') {
         return { name: 'dashboard' };
     }
 
@@ -206,7 +212,7 @@ router.beforeEach(async (to) => {
     }
 
     if (to.meta.guest && auth.isAuthenticated) {
-        return { name: 'dashboard' };
+        return { name: 'landing' };
     }
 
     if (to.meta.requiresAuth && auth.isAuthenticated) {
@@ -216,8 +222,8 @@ router.beforeEach(async (to) => {
             await business.fetchBusiness();
         }
 
-        if (!business.hasBusiness && to.name !== 'onboarding') {
-            return { name: 'onboarding' };
+        if (!business.hasBusiness && to.name !== 'onboarding' && to.name !== 'profile') {
+            return { name: 'profile' };
         }
 
         if (business.hasBusiness && to.name === 'onboarding') {

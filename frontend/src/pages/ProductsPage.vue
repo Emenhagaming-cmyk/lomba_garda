@@ -121,8 +121,16 @@ async function saveProduct() {
     }
 }
 
-async function deactivate(product) {
-    if (!window.confirm(`Nonaktifkan "${product.name}"? Produk tetap tersimpan untuk riwayat.`)) {
+async function toggleShowcase(product) {
+    try {
+        await http.post(`/products/${product.id}/showcase`);
+        await loadProducts();
+    } catch (err) {
+        error.value = formatApiError(err, 'Gagal mengubah status posting.');
+    }
+}
+
+async function deactivate(product) {    if (!window.confirm(`Nonaktifkan "${product.name}"? Produk tetap tersimpan untuk riwayat.`)) {
         return;
     }
 
@@ -242,6 +250,14 @@ onMounted(async () => {
                             </td>
                             <td class="px-3 py-3 sm:px-5 text-right">
                                 <div class="inline-flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        class="rounded-lg px-2.5 py-2 text-xs font-semibold transition"
+                                        :class="product.is_showcased ? 'text-emerald-700 hover:bg-emerald-50' : 'text-gray-500 hover:bg-gray-100'"
+                                        @click="toggleShowcase(product)"
+                                    >
+                                        {{ product.is_showcased ? 'Diposting' : 'Posting' }}
+                                    </button>
                                     <button
                                         type="button"
                                         class="rounded-lg px-2.5 py-2 text-xs font-semibold text-primary-600 hover:bg-primary-50"

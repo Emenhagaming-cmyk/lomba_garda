@@ -46,10 +46,13 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async logout() {
-            await fetchCsrfCookie();
-            await http.post('/logout');
-            this.user = null;
-            useBusinessStore().reset();
+            try {
+                await fetchCsrfCookie();
+                await http.post('/logout');
+            } finally {
+                this.user = null;
+                useBusinessStore().reset();
+            }
         },
     },
 });

@@ -11,14 +11,17 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportAiController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ShowcaseController;
 use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
+Route::get('/showcase', [ShowcaseController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
+    Route::put('/profile', [AuthController::class, 'updateProfile']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
@@ -29,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::get('/products/{product}', [ProductController::class, 'show']);
     Route::put('/products/{product}', [ProductController::class, 'update']);
+    Route::post('/products/{product}/showcase', [ProductController::class, 'showcase']);
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 
     Route::get('/customers', [CustomerController::class, 'index']);

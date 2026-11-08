@@ -18,8 +18,13 @@ watch(mobileOpen, (open) => {
 });
 
 async function logout() {
-    await auth.logout();
-    await router.replace({ name: 'landing' });
+    try {
+        await auth.logout();
+    } catch (error) {
+        console.error('Gagal logout di server:', error);
+    } finally {
+        await router.replace({ name: 'landing' });
+    }
 }
 
 onMounted(() => {
