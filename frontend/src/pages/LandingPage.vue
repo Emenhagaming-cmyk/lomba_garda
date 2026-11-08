@@ -41,7 +41,7 @@ import StoriesSection from '../components/landing/StoriesSection.vue';
                             <span class="text-sm text-gray-600"><strong class="text-gray-900">Mudah digunakan</strong><br> Tutorial yang mudah dipahami dijamin langsung bisa pakai!</span>
                         </li>
                     </ul>
-
+                       
                     <RouterLink
                         to="/register"
                         class="mt-8 inline-block w-full rounded-xl bg-primary-600 px-8 py-3 font-semibold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 sm:mt-10 sm:w-auto"
@@ -51,24 +51,26 @@ import StoriesSection from '../components/landing/StoriesSection.vue';
                 </div>
             </section>
 
-            <section id="cara-kerja" class="-mx-4 mt-12 border-y border-gray-200 bg-gray-50 px-4 sm:mt-16">
+            <h1 class="mt-12 text-center text-2xl font-bold text-gray-900 sm:mt-16 sm:text-4xl">Bagaimana Cara Menggunakan Tokoku?</h1>
+
+            <section id="cara-kerja" class="-mx-4 mt-6 border-y border-gray-200 bg-white-50 px-4 sm:mt-8">
                 <div class="mx-auto grid max-w-6xl gap-8 py-10 sm:grid-cols-3 sm:gap-10 sm:py-20">
                     <div class="flex gap-4">
-                        <span class="text-3xl font-bold text-primary-200 sm:text-4xl">01</span>
+                        <span class="text-3xl font-bold text-primary-500 sm:text-4xl">01</span>
                         <div>
                             <h3 class="font-semibold text-gray-900">Catat transaksi</h3>
                             <p class="mt-1.5 text-sm text-gray-500">Input penjualan singkat tanpa perlu mengetik ulang laporan. Repeat order untuk pelanggan langganan.</p>
                         </div>
                     </div>
                     <div class="flex gap-4">
-                        <span class="text-3xl font-bold text-primary-200 sm:text-4xl">02</span>
+                        <span class="text-3xl font-bold text-primary-500 sm:text-4xl">02</span>
                         <div>
                             <h3 class="font-semibold text-gray-900">TokoKu memproses</h3>
                             <p class="mt-1.5 text-sm text-gray-500">Stok, keuangan, riwayat pelanggan, dan laporan diperbarui otomatis dari data transaksi.</p>
                         </div>
                     </div>
                     <div class="flex gap-4">
-                        <span class="text-3xl font-bold text-primary-200 sm:text-4xl">03</span>
+                        <span class="text-3xl font-bold text-primary-500 sm:text-4xl">03</span>
                         <div>
                             <h3 class="font-semibold text-gray-900">Ambil keputusan</h3>
                             <p class="mt-1.5 text-sm text-gray-500">Terima rekomendasi: apa yang harus di-restock, pelanggan mana yang perlu di follow-up dan masalah yang perlu diperhatikan hari ini.</p>
