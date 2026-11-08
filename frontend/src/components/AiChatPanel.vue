@@ -80,10 +80,10 @@ function analyzeCurrentPeriod() {
     <aside class="flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm">
         <header class="flex items-center justify-between gap-2 border-b border-gray-200 px-4 py-3">
             <div>
-                <h3 class="text-sm font-semibold text-gray-900">Fabesky</h3>
-                <p class="text-xs text-gray-500">Tanya apa saja soal data bisnis kamu</p>
+                <h3 class="text-sm font-semibold text-gray-900">Fabesky AI</h3>
+                <p class="text-xs text-gray-500">AI assistant</p>
             </div>
-            <span v-if="loading" class="text-xs text-primary-600">menganalisis…</span>
+            <span v-if="loading" class="text-xs text-primary-600"></span>
         </header>
 
         <div ref="scrollBox" class="max-h-[45vh] space-y-3 overflow-y-auto sm:max-h-[380px] px-4 py-3">
@@ -122,7 +122,7 @@ function analyzeCurrentPeriod() {
                     </p>
                 </div>
 
-                <p v-if="loading" class="text-xs text-gray-500">AI sedang menganalisis data…</p>
+                <p v-if="loading" class="text-xs text-gray-500">Fabesky analisis dulu ya</p>
             </template>
         </div>
 
