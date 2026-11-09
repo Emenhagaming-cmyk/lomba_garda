@@ -56,7 +56,7 @@
             </div>
 
             <div class="-mb-[0.06em] mt-3 select-none sm:mt-5" aria-hidden="true">
-                <span class="block whitespace-nowrap text-[27vw] font-extrabold leading-[0.72] tracking-[-0.06em] text-gray-900 sm:text-[21vw] lg:text-[18rem]">TokoKu</span>
+                <span class="block whitespace-nowrap text-[30vw] font-extrabold leading-[0.72] tracking-[-0.06em] text-gray-900 sm:text-[21vw] lg:text-[18rem]">TokoKu</span>
             </div>
         </div>
     </footer>
