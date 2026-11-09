@@ -19,6 +19,8 @@ class Product extends Model
         'sku',
         'category',
         'description',
+        'image_url',
+        'image_credit',
         'variant',
         'unit',
         'buy_price',
@@ -49,6 +51,11 @@ class Product extends Model
     public function stockMovements(): HasMany
     {
         return $this->hasMany(StockMovement::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
     }
 
     public function saleItems(): HasMany

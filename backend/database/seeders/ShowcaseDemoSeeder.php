@@ -11,6 +11,24 @@ class ShowcaseDemoSeeder extends Seeder
 {
     public function run(): void
     {
+        $images = [
+            'Kopi Arabica Gayo 250g' => ['/products/kopi-arabica-gayo.jpg', 'Foto: Umer Shabib · CC BY · Coffee Beans'],
+            'Cold Brew Botol 1L' => ['/products/cold-brew.jpg', 'Foto: shalommama · CC BY · cold brew coffee'],
+            'Paket Manual Brew' => ['/products/manual-brew.jpg', 'Foto: nan palmero · CC BY'],
+            'Keripik Tempe Premium' => ['/products/keripik-tempe.jpg', 'Foto: moria · CC BY · Tricolore Tempeh'],
+            'Kacang Mede Sangrai' => ['/products/kacang-mede.jpg', 'Foto: Bernt Rostad · CC BY · Cashew nuts'],
+            'Oleh-oleh Paket Hemat' => ['/products/oleh-oleh.jpg', 'Foto: ann_espino · CC BY · Indonesian snacks'],
+            'Roti Sobek Cokelat' => ['/products/roti-sobek.jpg', 'Foto: stu_spivack · CC BY-SA · chocolate brioche'],
+            'Croissant Butter' => ['/products/croissant.jpg', 'Foto: The Marmot · CC BY · Butter Croissants'],
+            'Kue Kering Nastar' => ['/products/nastar.jpg', 'Foto: avlxyz · CC BY-SA · Pineapple Tarts'],
+            'Kopi Arabica Gayo' => ['/products/kopi-arabica-gayo.jpg', 'Foto: Umer Shabib · CC BY · Coffee Beans'],
+            'Cappuccino' => ['/products/cappuccino.jpg', 'Foto: Chic Bee · CC BY'],
+            'Matcha Latte' => ['/products/matcha-latte.jpg', 'Foto: Kirinohana · CC BY · Matcha Latte'],
+            'Croissant' => ['/products/croissant.jpg', 'Foto: The Marmot · CC BY · Butter Croissants'],
+            'Roti Bakar Coklat' => ['/products/roti-bakar.jpg', 'Foto: Daniel. · CC BY · Kaya Toast with Coffee'],
+            'Nasi Goreng Special' => ['/products/nasi-goreng.jpg', 'Foto: BPPrice · CC BY · Nasi Goreng'],
+        ];
+
         $stores = [
             [
                 'user' => ['name' => 'Nadia Kopi', 'email' => 'nadia@tokoku.app'],
@@ -72,7 +90,7 @@ class ShowcaseDemoSeeder extends Seeder
             );
 
             foreach ($store['products'] as $index => [$name, $category, $sellPrice, $description]) {
-                Product::firstOrCreate(
+                $product = Product::firstOrCreate(
                     ['business_id' => $business->id, 'name' => $name],
                     [
                         'sku' => 'SC-'.str_pad((string) ($business->id * 10 + $index), 4, '0', STR_PAD_LEFT),
@@ -88,6 +106,8 @@ class ShowcaseDemoSeeder extends Seeder
                         'is_showcased' => true,
                     ],
                 );
+
+                $this->attachImage($product, $images[$name] ?? null);
             }
         }
 
@@ -107,9 +127,28 @@ class ShowcaseDemoSeeder extends Seeder
         ];
 
         foreach ($showcaseCopy as $name => $description) {
-            Product::where('business_id', $demoBusiness->id)
+            $product = Product::where('business_id', $demoBusiness->id)
                 ->where('name', $name)
-                ->update(['is_showcased' => true, 'description' => $description]);
+                ->first();
+
+            if ($product === null) {
+                continue;
+            }
+
+            $product->update(['is_showcased' => true, 'description' => $description]);
+            $this->attachImage($product, $images[$name] ?? null);
         }
+    }
+
+    private function attachImage(Product $product, ?array $image): void
+    {
+        if ($image === null || $product->image_url !== null) {
+            return;
+        }
+
+        $product->update([
+            'image_url' => $image[0],
+            'image_credit' => $image[1],
+        ]);
     }
 }

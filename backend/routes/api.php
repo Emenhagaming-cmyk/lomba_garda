@@ -9,6 +9,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportAiController;
 use App\Http\Controllers\ReportController;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get('/showcase', [ShowcaseController::class, 'index']);
+Route::get('/showcase/{product}', [ShowcaseController::class, 'show']);
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/articles/{article}', [ArticleController::class, 'show']);
 
@@ -35,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/business', [BusinessController::class, 'store']);
 
     Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/product-images', [ProductImageController::class, 'index']);
     Route::post('/products', [ProductController::class, 'store']);
     Route::get('/products/{product}', [ProductController::class, 'show']);
     Route::put('/products/{product}', [ProductController::class, 'update']);

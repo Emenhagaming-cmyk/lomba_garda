@@ -33,7 +33,15 @@ const form = ref({
     min_stock: '',
     supplier_id: '',
     initial_stock: '',
+    image_url: '',
+    image_credit: '',
 });
+
+const showImagePicker = ref(false);
+const imageSearch = ref('');
+const imageResults = ref([]);
+const imageLoading = ref(false);
+const imageError = ref('');
 
 async function loadProducts() {
     loading.value = true;
@@ -62,6 +70,8 @@ function openCreate() {
         min_stock: '',
         supplier_id: '',
         initial_stock: '',
+        image_url: '',
+        image_credit: '',
     });
     formError.value = '';
     showForm.value = true;
@@ -80,9 +90,50 @@ function openEdit(product) {
         min_stock: product.min_stock,
         supplier_id: product.supplier_id || '',
         initial_stock: '',
+        image_url: product.image_url || '',
+        image_credit: product.image_credit || '',
     });
     formError.value = '';
     showForm.value = true;
+}
+
+function openImagePicker() {
+    imageSearch.value = form.value.name || '';
+    imageResults.value = [];
+    imageError.value = '';
+    showImagePicker.value = true;
+}
+
+async function searchImages() {
+    const term = imageSearch.value.trim();
+
+    if (term.length < 2) {
+        imageError.value = 'Ketik minimal 2 karakter untuk mencari gambar.';
+        return;
+    }
+
+    imageLoading.value = true;
+    imageError.value = '';
+    imageResults.value = [];
+
+    try {
+        const { data } = await http.get('/product-images', { params: { q: term } });
+        imageResults.value = data.data.images ?? [];
+
+        if (!imageResults.value.length) {
+            imageError.value = 'Belum ada hasil. Coba kata kunci lain.';
+        }
+    } catch (err) {
+        imageError.value = formatApiError(err, 'Gagal mencari gambar.');
+    } finally {
+        imageLoading.value = false;
+    }
+}
+
+function pickImage(image) {
+    form.value.image_url = image.thumbnail || image.url;
+    form.value.image_credit = `Foto: ${image.creator || 'Anonim'} · CC ${image.license || 'BY'} · ${image.title.slice(0, 80)}`.slice(0, 255);
+    showImagePicker.value = false;
 }
 
 async function saveProduct() {
@@ -98,6 +149,8 @@ async function saveProduct() {
         hpp: form.value.hpp === '' ? undefined : Number(form.value.hpp),
         min_stock: Number(form.value.min_stock) || 0,
         supplier_id: form.value.supplier_id || undefined,
+        image_url: form.value.image_url.trim() || undefined,
+        image_credit: form.value.image_credit.trim() || undefined,
     };
 
     saving.value = true;
@@ -229,10 +282,26 @@ onMounted(async () => {
                     <tbody class="divide-y divide-gray-100">
                         <tr v-for="product in products" :key="product.id" class="hover:bg-gray-50/60">
                             <td class="px-3 py-3 sm:px-5">
-                                <p class="font-semibold text-gray-900" :class="!product.is_active ? 'text-gray-400 line-through' : ''">
-                                    {{ product.name }}
-                                </p>
-                                <p class="text-xs text-gray-400">{{ product.sku || '—' }} {{ product.supplier ? '· ' + product.supplier : '' }}</p>
+                                <div class="flex items-center gap-3">
+                                    <div class="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-gray-100 bg-gray-50">
+                                        <img
+                                            v-if="product.image_url"
+                                            :src="product.image_url"
+                                            :alt="product.name"
+                                            class="h-full w-full object-cover"
+                                            loading="lazy"
+                                        />
+                                        <span v-else class="flex h-full w-full items-center justify-center text-xs font-bold text-gray-300">
+                                            {{ product.name.charAt(0).toUpperCase() }}
+                                        </span>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="font-semibold text-gray-900" :class="!product.is_active ? 'text-gray-400 line-through' : ''">
+                                            {{ product.name }}
+                                        </p>
+                                        <p class="truncate text-xs text-gray-400">{{ product.sku || '—' }} {{ product.supplier ? '· ' + product.supplier : '' }}</p>
+                                    </div>
+                                </div>
                             </td>
                             <td class="px-3 py-3 sm:px-5 text-gray-600">{{ product.category || '—' }}</td>
                             <td class="px-3 py-3 sm:px-5 text-right">
@@ -336,6 +405,48 @@ onMounted(async () => {
                     </div>
                 </div>
 
+                <div>
+                    <div class="flex items-center justify-between">
+                        <label for="p-image" class="block text-sm font-medium text-gray-700">URL gambar</label>
+                        <button
+                            type="button"
+                            class="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 hover:text-primary-700"
+                            @click="openImagePicker"
+                        >
+                            <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="7"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            Cari gambar
+                        </button>
+                    </div>
+                    <div class="mt-1.5 flex items-start gap-3">
+                        <input
+                            id="p-image"
+                            v-model="form.image_url"
+                            type="text"
+                            placeholder="https://… atau /products/gambar.jpg"
+                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
+                        />
+                        <div class="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                            <img
+                                v-if="form.image_url"
+                                :src="form.image_url"
+                                alt="Pratinjau gambar produk"
+                                class="h-full w-full object-cover"
+                            />
+                            <span v-else class="flex h-full w-full items-center justify-center text-[10px] text-gray-400">Preview</span>
+                        </div>
+                    </div>
+                    <input
+                        v-model="form.image_credit"
+                        type="text"
+                        maxlength="255"
+                        placeholder="Kredit foto (opsional)"
+                        class="mt-2 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
+                    />
+                </div>
+
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label for="p-buy" class="block text-sm font-medium text-gray-700">Harga beli (Rp) *</label>
@@ -375,6 +486,64 @@ onMounted(async () => {
                     </button>
                 </div>
             </form>
+        </Modal>
+
+        <!-- Modal cari gambar -->
+        <Modal
+            v-if="showImagePicker"
+            title="Cari gambar produk"
+            max-width="max-w-2xl"
+            @close="showImagePicker = false"
+        >
+            <form class="flex gap-2" @submit.prevent="searchImages">
+                <input
+                    v-model="imageSearch"
+                    type="text"
+                    placeholder="mis. kopi, roti, keripik…"
+                    class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
+                />
+                <button
+                    type="submit"
+                    :disabled="imageLoading"
+                    class="shrink-0 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700 disabled:opacity-60"
+                >
+                    {{ imageLoading ? 'Mencari…' : 'Cari' }}
+                </button>
+            </form>
+            <p class="mt-2 text-xs text-gray-400">
+                Hasil dari Openverse. Pilih gambar berlisensi CC — kredit otomatis diisi.
+            </p>
+
+            <div v-if="imageLoading" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <div v-for="n in 8" :key="n" class="aspect-square animate-pulse rounded-lg bg-gray-100"></div>
+            </div>
+
+            <p v-else-if="imageError" class="mt-4 rounded-lg bg-gray-50 px-3 py-6 text-center text-sm text-gray-500">
+                {{ imageError }}
+            </p>
+
+            <div v-else-if="imageResults.length" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <button
+                    v-for="image in imageResults"
+                    :key="image.id"
+                    type="button"
+                    class="group overflow-hidden rounded-lg border border-gray-200 text-left transition hover:border-primary-400 hover:shadow-sm"
+                    @click="pickImage(image)"
+                >
+                    <img
+                        :src="image.thumbnail"
+                        :alt="image.title"
+                        class="aspect-square w-full object-cover"
+                        loading="lazy"
+                    />
+                    <div class="p-2">
+                        <p class="line-clamp-1 text-xs font-semibold text-gray-800">{{ image.title }}</p>
+                        <p class="mt-0.5 line-clamp-1 text-[10px] text-gray-400">
+                            {{ image.creator || 'Anonim' }} · CC {{ image.license || 'BY' }}
+                        </p>
+                    </div>
+                </button>
+            </div>
         </Modal>
     </div>
 </template>
