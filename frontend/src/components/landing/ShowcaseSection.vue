@@ -68,11 +68,11 @@ function imageFailed(product) {
                         v-else
                         class="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary-100 via-primary-50 to-amber-50"
                     >
-                        <span class="text-3xl font-bold text-primary-300">{{ product.name.charAt(0).toUpperCase() }}</span>
+                        <!-- <span class="text-3xl font-bold text-primary-300">{{ product.name.charAt(0).toUpperCase() }}</span> -->
                     </div>
-                    <span class="absolute left-3 top-3 inline-flex rounded-full bg-white/90 px-2.5 py-0.5 text-[11px] font-semibold text-primary-700 backdrop-blur">
+                    <!-- <span class="absolute left-3 top-3 inline-flex rounded-full bg-white/90 px-2.5 py-0.5 text-[11px] font-semibold text-primary-700 backdrop-blur">
                         {{ product.category || 'Produk' }}
-                    </span>
+                    </span> -->
                 </div>
 
                 <div class="flex flex-1 flex-col p-5">
@@ -80,10 +80,10 @@ function imageFailed(product) {
 
                     <div v-if="product.review_count" class="mt-1.5 flex items-center gap-1.5">
                         <StarRating :rating="product.rating_avg || 0" size="sm" />
-                        <span class="text-xs font-semibold text-gray-700">
+                        <!-- <span class="text-xs font-semibold text-gray-700">
                             {{ Number(product.rating_avg).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) }}
                         </span>
-                        <span class="text-xs text-gray-400">({{ formatNumber(product.review_count) }})</span>
+                        <span class="text-xs text-gray-400">({{ formatNumber(product.review_count) }})</span> -->
                     </div>
 
                     <p v-if="product.description" class="mt-1.5 line-clamp-2 text-sm text-gray-500">{{ product.description }}</p>
