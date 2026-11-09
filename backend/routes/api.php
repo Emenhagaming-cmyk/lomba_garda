@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportAiController;
@@ -67,6 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/reports/summary', [ReportController::class, 'summary']);
     Route::post('/reports/ai/chat', [ReportAiController::class, 'chat']);
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
 
     Route::get('/shops', [ShopController::class, 'index']);
 

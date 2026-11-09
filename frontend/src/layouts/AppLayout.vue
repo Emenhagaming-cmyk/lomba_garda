@@ -6,6 +6,7 @@ import { useSyncStore } from '../stores/sync';
 import { onMounted, onUnmounted } from 'vue';
 import Sidebar from '../components/Sidebar.vue';
 import SyncStatus from '../components/SyncStatus.vue';
+import NotificationBell from '../components/NotificationBell.vue';
 
 const auth = useAuthStore();
 const sync = useSyncStore();
@@ -105,17 +106,7 @@ const today = () =>
                     <div class="flex items-center gap-2 sm:gap-3">
                         <SyncStatus />
 
-                        <button
-                            type="button"
-                            class="relative rounded-lg p-2 text-gray-500 transition hover:bg-gray-100"
-                            aria-label="Notifikasi"
-                        >
-                            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                            </svg>
-                            <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500"></span>
-                        </button>
+                        <NotificationBell />
 
                         <div class="hidden items-center gap-2.5 border-l border-gray-200 pl-3 sm:flex">
                             <div
